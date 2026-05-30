@@ -8,7 +8,7 @@ export type MenuItem = {
 export const menuItems: MenuItem[] = [
   {
     id: 1,
-    name: 'Classic Cheeseburger Classic Cheeseburger Classic Cheeseburger',
+    name: 'Classic Cheeseburger',
     description: 'Beef patty, cheddar cheese, lettuce, tomato, and house sauce.',
     price: 12.99,
   },
