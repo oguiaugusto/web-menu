@@ -3,7 +3,7 @@ import { cn } from '@/utils/cn';
 const VARIANTS = {
   primary: 'bg-red-muted enabled:hover:bg-red-muted-light text-white',
   'primary-outline':
-    'ring-red-muted text-red-muted enabled:hover:bg-red-muted ring-1 ring-inset enabled:hover:text-white',
+    'ring-red-muted text-red-muted enabled:hover:bg-red-muted ring-1 ring-inset enabled:hover:text-white transition',
 };
 
 type Props = Readonly<{ children: React.ReactNode }> & {
