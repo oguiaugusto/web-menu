@@ -3,8 +3,8 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
+import { Minus, Plus } from 'lucide-react';
 import { TEXT } from '@/constants/text';
-import { QuantitySelector } from './quantity-selector';
 import { useCart } from '@/providers/cart-provider';
 import { MenuItem } from '@/data/menu-items';
 import { Button } from '@/components/button';
@@ -25,7 +25,7 @@ export function QuantityAndAdd({ data }: Props) {
     setQuantity(1);
 
     toast.success(`${quantity}x ${data.name} ${TEXT.addedToCart}`, {
-      action: { label: 'Browse more items', onClick: () => router.push('/menu') },
+      action: { label: TEXT.browseMoreItems, onClick: () => router.push('/menu') },
       duration: 4000,
       position: 'bottom-center',
       className: `${inter.className}`,
@@ -39,12 +39,23 @@ export function QuantityAndAdd({ data }: Props) {
 
   return (
     <div className="mx-auto flex max-w-235 justify-between gap-4">
-      <QuantitySelector quantity={quantity} setQuantity={setQuantity} />
-      <Button
-        variant="primary"
-        className="flex max-w-60 flex-1 items-center justify-between"
-        onClick={handleAdd}
-      >
+      <div className="bg-red-muted flex items-center overflow-hidden rounded-lg text-white">
+        <button
+          className="enabled:hover:bg-red-muted-light h-full p-3 enabled:cursor-pointer enabled:active:brightness-106 disabled:opacity-70"
+          onClick={() => setQuantity((p) => (p > 1 ? p - 1 : p))}
+          disabled={quantity === 1}
+        >
+          <Minus size={20} />
+        </button>
+        <span className="w-8 text-center font-semibold select-none">{quantity}</span>
+        <button
+          className="enabled:hover:bg-red-muted-light h-full p-3 enabled:cursor-pointer enabled:active:brightness-106"
+          onClick={() => setQuantity((p) => p + 1)}
+        >
+          <Plus size={20} />
+        </button>
+      </div>
+      <Button variant="primary" className="flex max-w-60 flex-1 items-center justify-between" onClick={handleAdd}>
         <span>{TEXT.add}</span>
         <span>${data.price * quantity}</span>
       </Button>

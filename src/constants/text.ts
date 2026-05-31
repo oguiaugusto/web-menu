@@ -3,6 +3,7 @@ export const TEXT = {
   menuSubtitle: 'Fresh food made to order',
   add: 'Add',
   addedToCart: 'added to cart',
+  browseMoreItems: 'Browse more items',
   emptyCart: 'Your cart is empty',
   emptyCartSubtitle: 'Add some items from the menu to get started.',
   browseMenu: 'Browse menu',
