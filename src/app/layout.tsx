@@ -1,17 +1,14 @@
 import type { Metadata } from 'next';
-import { Figtree } from 'next/font/google';
+import { Toaster } from 'sonner';
+import { ScrollToTop } from '@/components/scroll-to-top';
 import { Header } from '@/components/header';
-import ScrollToTop from '@/components/scroll-to-top';
 import { CartProvider } from '@/providers/cart-provider';
+import { inter } from '@/constants/fonts';
 import './globals.css';
 
 export const metadata: Metadata = {
   title: 'Web Menu',
 };
-
-const inter = Figtree({
-  subsets: ['latin-ext'],
-});
 
 export default function RootLayout({
   children,
@@ -21,6 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.className} h-full antialiased`}>
       <body className="min-h-full">
+        <Toaster offset={{ bottom: '100px' }} mobileOffset={{ bottom: '100px' }} />
         <ScrollToTop />
         <CartProvider>
           <Header />
