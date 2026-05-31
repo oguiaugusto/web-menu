@@ -10,13 +10,14 @@ export function Header() {
           <img src="/logo-white.png" alt="Web Menu" width={42} height={42} className="block sm:hidden" />
           <img src="/logo-wide-white.png" alt="Web Menu" width={180} height={40} className="hidden sm:block" />
         </Link>
-        <button
+        <Link
+          href="/cart"
           aria-label="Cart"
           className="relative cursor-pointer rounded-full p-2 transition-opacity hover:drop-shadow-[0px_1px_1px_rgba(255,255,255,0.6)]"
         >
           <CartAmountBubble />
           <ShoppingCart size={28} />
-        </button>
+        </Link>
       </div>
     </header>
   );

@@ -13,6 +13,7 @@ type CartContextType = {
   items: CartItem[];
   addItem: (item: Omit<CartItem, 'quantity'>, quantity: number) => void;
   removeItem: (id: number) => void;
+  updateQuantity: (id: number, quantity: number) => void;
   clearCart: () => void;
   itemCount: number;
   total: number;
@@ -39,6 +40,16 @@ export function CartProvider({ children }: Readonly<{ children: React.ReactNode 
     setItems((p) => p.filter((x) => x.id !== id));
   };
 
+  const updateQuantity: CartContextType['updateQuantity'] = (id, quantity) => {
+    setItems((prev) =>
+      prev.map((x) =>
+        x.id === id
+          ? { ...x, quantity }
+          : x,
+      ),
+    );
+  };
+
   const clearCart = () => setItems([]);
 
   const itemCount = useMemo(() => items.reduce((acc, curr) => acc + curr.quantity, 0), [items]);
@@ -50,6 +61,7 @@ export function CartProvider({ children }: Readonly<{ children: React.ReactNode 
         items,
         addItem,
         removeItem,
+        updateQuantity,
         clearCart,
         itemCount,
         total,
