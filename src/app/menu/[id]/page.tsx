@@ -1,8 +1,5 @@
-import { BackButton } from '@/components/back-button';
-import { TEXT } from '@/constants/text';
-import { menuItems } from '@/data/menu-items';
 import { notFound } from 'next/navigation';
-import { QuantitySelector } from './_components/quantity-selector';
+import { menuItems } from '@/data/menu-items';
 import { QuantityAndAdd } from './_components/quantity-and-add';
 
 type Props = {
@@ -15,7 +12,6 @@ export default async function MenuItem({ params }: Props) {
   const { id } = await params;
 
   const data = menuItems.find((x) => String(x.id) === id);
-
   if (!data) notFound();
 
   return (
@@ -36,7 +32,7 @@ export default async function MenuItem({ params }: Props) {
         </div>
       </div>
       <div className="fixed right-0 bottom-0 left-0 border-t border-neutral-200 bg-white/95 p-4 backdrop-blur">
-        <QuantityAndAdd price={data.price} />
+        <QuantityAndAdd data={data} />
       </div>
     </main>
   );
