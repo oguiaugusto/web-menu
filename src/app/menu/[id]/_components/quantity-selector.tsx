@@ -13,17 +13,20 @@ export function QuantitySelector({ quantity, setQuantity }: Props) {
   const handleSub = () => setQuantity((p) => (p > 1 ? p - 1 : p));
 
   return (
-    <div className="bg-red-muted flex items-center rounded-xl text-white overflow-hidden">
+    <div className="bg-red-muted flex items-center overflow-hidden rounded-lg text-white">
       <button
-        className="cursor-pointer p-3 h-full hover:bg-red-muted-light disabled:opacity-70 hover:disabled:drop-shadow-none"
+        className="enabled:hover:bg-red-muted-light h-full p-3 enabled:cursor-pointer enabled:active:brightness-106 disabled:opacity-70"
         onClick={handleSub}
         disabled={quantity === 1}
       >
         <Minus size={20} />
       </button>
       <span className="w-8 text-center font-semibold select-none">{quantity}</span>
-      <button className="cursor-pointer h-full p-3 hover:bg-red-muted-light" onClick={handleAdd}>
-        <Plus size={20} className="" />
+      <button
+        className="enabled:hover:bg-red-muted-light h-full p-3 enabled:cursor-pointer enabled:active:brightness-106"
+        onClick={handleAdd}
+      >
+        <Plus size={20} />
       </button>
     </div>
   );

@@ -7,6 +7,7 @@ import { TEXT } from '@/constants/text';
 import { QuantitySelector } from './quantity-selector';
 import { useCart } from '@/providers/cart-provider';
 import { MenuItem } from '@/data/menu-items';
+import { Button } from '@/components/button';
 import { inter } from '@/constants/fonts';
 
 type Props = {
@@ -39,13 +40,14 @@ export function QuantityAndAdd({ data }: Props) {
   return (
     <div className="mx-auto flex max-w-235 justify-between gap-4">
       <QuantitySelector quantity={quantity} setQuantity={setQuantity} />
-      <button
-        className="bg-red-muted hover:bg-red-muted-light flex max-w-60 flex-1 cursor-pointer items-center justify-between rounded-xl px-5 py-3 font-medium text-white"
+      <Button
+        variant="primary"
+        className="flex max-w-60 flex-1 items-center justify-between"
         onClick={handleAdd}
       >
         <span>{TEXT.add}</span>
         <span>${data.price * quantity}</span>
-      </button>
+      </Button>
     </div>
   );
 }
