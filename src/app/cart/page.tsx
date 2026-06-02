@@ -1,7 +1,7 @@
 'use client';
 
 import { useCart } from '@/providers/cart-provider';
-import { Button } from '@/components/button';
+import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { TEXT } from '@/constants/text';
 import { CartItem } from './_components/cart-item';

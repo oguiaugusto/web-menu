@@ -6,13 +6,14 @@ const VARIANTS = {
     'ring-red-muted text-red-muted enabled:hover:bg-red-muted ring-1 ring-inset enabled:hover:text-white transition',
 };
 
-type Props = Readonly<{ children: React.ReactNode }> & {
+type Props = Readonly<{
+  children: React.ReactNode;
   variant: keyof typeof VARIANTS;
   type?: React.ButtonHTMLAttributes<HTMLButtonElement>['type'];
   className?: string;
   disabled?: boolean;
   onClick?: VoidFunction;
-};
+}>;
 
 export function Button(p: Props) {
   const className = cn(

@@ -7,7 +7,7 @@ import { Minus, Plus } from 'lucide-react';
 import { TEXT } from '@/constants/text';
 import { useCart } from '@/providers/cart-provider';
 import { MenuItem } from '@/data/menu-items';
-import { Button } from '@/components/button';
+import { Button } from '@/components/ui/button';
 import { inter } from '@/constants/fonts';
 
 type Props = {

@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@/components/button';
+import { Button } from '@/components/ui/button';
 import { CartItem as CartItemType, useCart } from '@/providers/cart-provider';
 import { Minus, Plus, Trash2 } from 'lucide-react';
 
