@@ -26,12 +26,9 @@ export default function CartPage() {
     <main className="mx-auto max-w-4xl px-4 py-6">
       <div className="mb-6 flex items-end justify-between">
         <h1 className="text-2xl font-bold">{TEXT.yourCart}</h1>
-        <button
-          className="text-red-muted hover:text-red-muted-light cursor-pointer font-semibold active:brightness-106"
-          onClick={() => clearCart()}
-        >
+        <Button variant="primary-text" onClick={() => clearCart()}>
           {TEXT.clearCart}
-        </button>
+        </Button>
       </div>
       <div className="space-y-3">
         {items.map((item) => (
