@@ -44,8 +44,6 @@ export default function CheckoutPage() {
     setFields((p) => ({ ...p, changeFor: 0 }));
   }, [fields.payment]);
 
-  console.log(JSON.stringify(fields, null, 2));
-
   return (
     <main className="mx-auto max-w-4xl px-4 py-6 lg:pb-16">
       <div className="mb-6">
