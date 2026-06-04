@@ -1,6 +1,7 @@
 'use client';
 
-import { createContext, useContext, useMemo, useState } from 'react';
+import { CART_KEY } from '@/constants/localStorage';
+import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 
 export type CartItem = {
   id: number;
@@ -41,19 +42,25 @@ export function CartProvider({ children }: Readonly<{ children: React.ReactNode 
   };
 
   const updateQuantity: CartContextType['updateQuantity'] = (id, quantity) => {
-    setItems((prev) =>
-      prev.map((x) =>
-        x.id === id
-          ? { ...x, quantity }
-          : x,
-      ),
-    );
+    setItems((prev) => prev.map((x) => (x.id === id ? { ...x, quantity } : x)));
   };
 
   const clearCart = () => setItems([]);
 
   const itemCount = useMemo(() => items.reduce((acc, curr) => acc + curr.quantity, 0), [items]);
   const total = useMemo(() => items.reduce((acc, curr) => acc + curr.price * curr.quantity, 0), [items]);
+
+  useEffect(() => {
+    const saved = localStorage.getItem(CART_KEY);
+
+    if (!saved) return;
+
+    setItems(JSON.parse(saved));
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem(CART_KEY, JSON.stringify(items));
+  }, [items]);
 
   return (
     <CartContext.Provider
