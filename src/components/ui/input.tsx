@@ -1,20 +1,22 @@
 type Props = Readonly<{
   label: string;
+  name?: string;
   placeholder?: string;
   value?: string;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
 }>;
 
-export function Input({ label, placeholder, value, onChange }: Props) {
+export function Input({ label, name, placeholder, value, onChange }: Props) {
   return (
-    <div className="space-y-1">
-      <label className="text-sm font-medium">{label}</label>
+    <label className="block space-y-1">
+      <span className="text-sm font-medium">{label}</span>
       <input
-        className="focus:border-red-muted shadow-red-muted/40 w-full rounded-xl border border-neutral-200 bg-white px-4 py-3 transition outline-none focus:shadow-xs"
+        className="focus:border-red-muted shadow-red-muted/40 w-full rounded-lg border border-neutral-200 bg-white px-4 py-3 transition outline-none focus:shadow-xs"
+        name={name}
         placeholder={placeholder}
         value={value}
         onChange={onChange}
       />
-    </div>
+    </label>
   );
 }
