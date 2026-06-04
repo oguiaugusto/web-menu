@@ -38,7 +38,7 @@ export default function CartPage() {
       <div className="sticky bottom-4 mt-6 rounded-2xl border border-neutral-200 bg-white p-4 shadow-lg">
         <div className="mb-4 flex items-center justify-between">
           <span className="text-neutral-500">{TEXT.total}</span>
-          <span className="text-xl font-bold">${total.toFixed(2)}</span>
+          <span className="text-xl font-bold">{TEXT.currency}{total.toFixed(2)}</span>
         </div>
         <Button variant="primary" className="w-full" onClick={() => router.push('/checkout')}>
           {TEXT.checkout}

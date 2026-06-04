@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import { menuItems } from '@/data/menu-items';
 import { QuantityAndAdd } from './_components/quantity-and-add';
+import { TEXT } from '@/constants/text';
 
 type Props = {
   params: Promise<{
@@ -27,7 +28,7 @@ export default async function MenuItem({ params }: Props) {
               <h1 className="text-2xl font-bold tracking-tight">{data.name}</h1>
               <p className="mt-2 text-sm leading-relaxed text-neutral-500">{data.description}</p>
             </div>
-            <span className="shrink-0 text-lg font-semibold">${data.price}</span>
+            <span className="shrink-0 text-lg font-semibold">{TEXT.currency}{data.price}</span>
           </div>
         </div>
       </div>

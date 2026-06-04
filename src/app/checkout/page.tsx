@@ -28,7 +28,7 @@ export default function CheckoutPage() {
     setFields((p) => ({ ...p, [e.target.name]: e.target.value }));
   };
 
-  const formatter = new Intl.NumberFormat('en-US', {
+  const formatter = new Intl.NumberFormat(TEXT.languageCountryISO, {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
@@ -94,7 +94,7 @@ export default function CheckoutPage() {
                 <Input
                   type="number"
                   name="changeFor"
-                  prefix="$"
+                  prefix={TEXT.currency}
                   value={formatter.format(fields.changeFor)}
                   label={TEXT.changeFor}
                   placeholder={TEXT.startingMoney}
@@ -113,7 +113,7 @@ export default function CheckoutPage() {
                   <span>
                     {item.quantity}x {item.name}
                   </span>
-                  <span>${(item.price * item.quantity).toFixed(2)}</span>
+                  <span>{TEXT.currency}{(item.price * item.quantity).toFixed(2)}</span>
                 </div>
               ))}
             </div>
@@ -127,7 +127,7 @@ export default function CheckoutPage() {
             <div className="my-4 border-t border-neutral-200" />
             <div className="flex justify-between font-semibold">
               <span>{TEXT.total}</span>
-              <span>${total.toFixed(2)}</span>
+              <span>{TEXT.currency}{total.toFixed(2)}</span>
             </div>
           </div>
           <Button variant="primary" className="w-full">

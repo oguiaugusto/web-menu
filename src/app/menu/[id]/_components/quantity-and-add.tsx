@@ -57,7 +57,7 @@ export function QuantityAndAdd({ data }: Props) {
       </div>
       <Button variant="primary" className="flex max-w-60 flex-1 items-center justify-between" onClick={handleAdd}>
         <span>{TEXT.add}</span>
-        <span>${data.price * quantity}</span>
+        <span>{TEXT.currency}{data.price * quantity}</span>
       </Button>
     </div>
   );

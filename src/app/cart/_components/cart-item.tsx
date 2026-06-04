@@ -1,6 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
+import { TEXT } from '@/constants/text';
 import { CartItem as CartItemType, useCart } from '@/providers/cart-provider';
 import { Minus, Plus, Trash2 } from 'lucide-react';
 
@@ -20,7 +21,7 @@ export function CartItem({ item }: Props) {
       <div className="flex flex-1 flex-col justify-between">
         <div>
           <h2 className="font-semibold">{item.name}</h2>
-          <p className="text-sm text-neutral-500">${item.price * item.quantity}</p>
+          <p className="text-sm text-neutral-500">{TEXT.currency}{item.price * item.quantity}</p>
         </div>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">

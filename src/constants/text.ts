@@ -1,4 +1,6 @@
 export const TEXT = {
+  languageCountryISO: 'en-US',
+  currency: '$',
   menuTitle: 'Menu',
   menuSubtitle: 'Fresh food made to order',
   add: 'Add',
