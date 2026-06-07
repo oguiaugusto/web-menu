@@ -1,0 +1,9 @@
+export enum ErrorCode {
+  REQUIRED,
+  INVALID_FIELD,
+  INVALID_TYPE,
+  INVALID_VALUE,
+  INVALID_FORMAT,
+  TOO_BIG,
+  TOO_SMALL,
+}
