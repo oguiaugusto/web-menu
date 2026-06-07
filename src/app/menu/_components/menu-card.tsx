@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import { MenuItem } from '@/data/menu-items';
 import { TEXT } from '@/constants/text';
+import { MenuItem } from '@/db/menu-item';
 
 type Props = {
   item: MenuItem;
@@ -22,7 +22,10 @@ export function MenuCard({ item }: Props) {
             </p>
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-lg font-semibold">{TEXT.currency}{item.price}</span>
+            <span className="text-lg font-semibold">
+              {TEXT.currency}
+              {item.price}
+            </span>
           </div>
         </div>
       </div>

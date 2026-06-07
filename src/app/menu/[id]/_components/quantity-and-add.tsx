@@ -6,9 +6,9 @@ import { toast } from 'sonner';
 import { Minus, Plus } from 'lucide-react';
 import { TEXT } from '@/constants/text';
 import { useCart } from '@/providers/cart-provider';
-import { MenuItem } from '@/data/menu-items';
 import { Button } from '@/components/ui/button';
 import { inter } from '@/constants/fonts';
+import { MenuItem } from '@/db/menu-item';
 
 type Props = {
   data: MenuItem;
@@ -57,7 +57,10 @@ export function QuantityAndAdd({ data }: Props) {
       </div>
       <Button variant="primary" className="flex max-w-60 flex-1 items-center justify-between" onClick={handleAdd}>
         <span>{TEXT.add}</span>
-        <span>{TEXT.currency}{data.price * quantity}</span>
+        <span>
+          {TEXT.currency}
+          {data.price * quantity}
+        </span>
       </Button>
     </div>
   );

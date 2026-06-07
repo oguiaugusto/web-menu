@@ -1,12 +1,13 @@
 'use client';
 
-import { menuItems } from '@/data/menu-items';
 import { MenuCard } from './_components/menu-card';
 import { TEXT } from '@/constants/text';
 import { Categories } from './_components/categories';
 import { useState } from 'react';
 
 export default function MenuPage() {
+  const menuItems: any[] = [];
+
   const [selectedCategory, setSelectedCategory] = useState('All');
 
   const filteredItems =

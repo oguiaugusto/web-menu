@@ -4,7 +4,7 @@ import { CART_KEY } from '@/constants/localStorage';
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 
 export type CartItem = {
-  id: number;
+  id: string;
   name: string;
   price: number;
   quantity: number;
@@ -13,8 +13,8 @@ export type CartItem = {
 type CartContextType = {
   items: CartItem[];
   addItem: (item: Omit<CartItem, 'quantity'>, quantity: number) => void;
-  removeItem: (id: number) => void;
-  updateQuantity: (id: number, quantity: number) => void;
+  removeItem: (id: string) => void;
+  updateQuantity: (id: string, quantity: number) => void;
   clearCart: () => void;
   itemCount: number;
   total: number;
