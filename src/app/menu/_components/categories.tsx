@@ -1,13 +1,13 @@
 import { TEXT } from '@/constants/text';
-import { categories } from '@/data/menu-items';
 import { cn } from '@/utils/cn';
 import Link from 'next/link';
 
 type Props = Readonly<{
+  categories: string[];
   selected?: string;
 }>;
 
-export function Categories({ selected }: Props) {
+export function Categories({ categories, selected }: Props) {
   const renderLink = (category: string, noCategory?: boolean) => (
     <Link
       key={category}
