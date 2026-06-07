@@ -20,7 +20,7 @@ const DEFAULT_FIELDS = {
 
 export default function CheckoutPage() {
   const router = useRouter();
-  const { items, total } = useCart();
+  const { items, subtotal } = useCart();
 
   const [fields, setFields] = useState<typeof DEFAULT_FIELDS>(DEFAULT_FIELDS);
 
@@ -44,6 +44,10 @@ export default function CheckoutPage() {
     setFields((p) => ({ ...p, changeFor: 0 }));
   }, [fields.payment]);
 
+  /* relace in the future */
+  const deliveryFee = 5;
+  const total = subtotal + deliveryFee;
+
   return (
     <main className="mx-auto max-w-4xl px-4 py-6 lg:pb-16">
       <div className="mb-6">
@@ -66,6 +70,13 @@ export default function CheckoutPage() {
             placeholder={TEXT.yourPhoneNumber}
             onChange={handleChange}
           />
+          <Input
+            name="address"
+            value={fields.address}
+            label={TEXT.address}
+            placeholder={TEXT.yourAddress}
+            onChange={handleChange}
+          />
           <TextArea
             name="notes"
             value={fields.notes}
@@ -73,13 +84,6 @@ export default function CheckoutPage() {
             placeholder={TEXT.extraInstructions}
             onChange={handleChange}
             rows={4}
-          />
-          <Input
-            name="address"
-            value={fields.address}
-            label={TEXT.address}
-            placeholder={TEXT.yourAddress}
-            onChange={handleChange}
           />
           <div className="space-y-1">
             <label className="text-sm font-medium">{TEXT.paymentMethod}</label>
@@ -105,13 +109,16 @@ export default function CheckoutPage() {
         <aside className="space-y-4">
           <div className="rounded-2xl border border-neutral-200 bg-white p-4">
             <h2 className="mb-3 font-semibold">{TEXT.orderSummary}</h2>
-            <div className="space-y-2">
+            <div className="space-y-1">
               {items.map((item) => (
                 <div key={item.id} className="flex justify-between text-sm">
                   <span>
                     {item.quantity}x {item.name}
                   </span>
-                  <span>{TEXT.currency}{(item.price * item.quantity).toFixed(2)}</span>
+                  <span>
+                    {TEXT.currency}
+                    {(item.price * item.quantity).toFixed(2)}
+                  </span>
                 </div>
               ))}
             </div>
@@ -123,9 +130,30 @@ export default function CheckoutPage() {
               {TEXT.editCart}
             </Button>
             <div className="my-4 border-t border-neutral-200" />
-            <div className="flex justify-between font-semibold">
-              <span>{TEXT.total}</span>
-              <span>{TEXT.currency}{total.toFixed(2)}</span>
+            <div className="space-y-2">
+              <div className="text-sm">
+                <div className="flex justify-between">
+                  <span>{TEXT.subtotal}</span>
+                  <span>
+                    {TEXT.currency}
+                    {subtotal.toFixed(2)}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span>{TEXT.deliveryFee}</span>
+                  <span>
+                    {TEXT.currency}
+                    {deliveryFee.toFixed(2)}
+                  </span>
+                </div>
+              </div>
+              <div className="flex justify-between text-base font-semibold">
+                <span>{TEXT.total}</span>
+                <span>
+                  {TEXT.currency}
+                  {total.toFixed(2)}
+                </span>
+              </div>
             </div>
           </div>
           <Button variant="primary" className="w-full">

@@ -17,7 +17,7 @@ type CartContextType = {
   updateQuantity: (id: string, quantity: number) => void;
   clearCart: () => void;
   itemCount: number;
-  total: number;
+  subtotal: number;
 };
 
 const CartContext = createContext<CartContextType | null>(null);
@@ -48,7 +48,7 @@ export function CartProvider({ children }: Readonly<{ children: React.ReactNode 
   const clearCart = () => setItems([]);
 
   const itemCount = useMemo(() => items.reduce((acc, curr) => acc + curr.quantity, 0), [items]);
-  const total = useMemo(() => items.reduce((acc, curr) => acc + curr.price * curr.quantity, 0), [items]);
+  const subtotal = useMemo(() => items.reduce((acc, curr) => acc + curr.price * curr.quantity, 0), [items]);
 
   useEffect(() => {
     const saved = localStorage.getItem(CART_KEY);
@@ -71,7 +71,7 @@ export function CartProvider({ children }: Readonly<{ children: React.ReactNode 
         updateQuantity,
         clearCart,
         itemCount,
-        total,
+        subtotal,
       }}
     >
       {children}

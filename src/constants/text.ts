@@ -12,6 +12,8 @@ export const TEXT = {
   browseMenu: 'Browse menu',
   yourCart: 'Your cart',
   clearCart: 'Clear cart',
+  deliveryFee: 'Delivery Fee',
+  subtotal: 'Subtotal',
   total: 'Total',
   checkout: 'Checkout',
   checkoutSubtitle: 'Confirm your information before placing the order.',
