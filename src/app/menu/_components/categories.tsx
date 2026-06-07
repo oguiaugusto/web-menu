@@ -1,31 +1,32 @@
-'use client';
-
-import { useState } from 'react';
+import { TEXT } from '@/constants/text';
 import { categories } from '@/data/menu-items';
 import { cn } from '@/utils/cn';
+import Link from 'next/link';
 
 type Props = Readonly<{
-  selectedCategory: string;
-  setSelectedCategory: React.Dispatch<React.SetStateAction<string>>;
+  selected?: string;
 }>;
 
-export function Categories({ selectedCategory, setSelectedCategory }: Props) {
+export function Categories({ selected }: Props) {
+  const renderLink = (category: string, noCategory?: boolean) => (
+    <Link
+      key={category}
+      href={noCategory ? '/menu' : `/menu?category=${category}`}
+      className={cn(
+        'cursor-pointer rounded-2xl px-4 py-2 text-sm font-medium whitespace-nowrap transition',
+        selected === category || (!selected && category === TEXT.all)
+          ? 'bg-red-muted text-white'
+          : 'border border-neutral-300 bg-white hover:bg-neutral-100 active:bg-neutral-200/70',
+      )}
+    >
+      {category}
+    </Link>
+  );
+
   return (
     <div className="mb-6 flex gap-2 overflow-x-auto pb-2">
-      {categories.map((category) => (
-        <button
-          key={category}
-          onClick={() => setSelectedCategory(category)}
-          className={cn(
-            'cursor-pointer rounded-2xl px-4 py-2 text-sm font-medium whitespace-nowrap transition',
-            selectedCategory === category
-              ? 'bg-red-muted text-white'
-              : 'border border-neutral-300 bg-white hover:bg-neutral-100 active:bg-neutral-200/70',
-          )}
-        >
-          {category}
-        </button>
-      ))}
+      {renderLink(TEXT.all, true)}
+      {categories.map((category) => renderLink(category))}
     </div>
   );
 }

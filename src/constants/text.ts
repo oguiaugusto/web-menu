@@ -3,6 +3,7 @@ export const TEXT = {
   currency: '$',
   menuTitle: 'Menu',
   menuSubtitle: 'Fresh food made to order',
+  all: 'All',
   add: 'Add',
   addedToCart: 'added to cart',
   browseMoreItems: 'Browse more items',

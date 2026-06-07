@@ -5,8 +5,10 @@ export type MenuItem = Omit<PrismaMenuItem, 'price'> & {
   price: number;
 };
 
-export async function getMenuItems(): Promise<MenuItem[]> {
-  const items = await prisma.menuItem.findMany();
+export async function getMenuItems(category?: string): Promise<MenuItem[]> {
+  const items = await prisma.menuItem.findMany({
+    where: { category },
+  });
 
   return items.map((item) => ({
     ...item,

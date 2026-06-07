@@ -1,17 +1,15 @@
-'use client';
-
 import { MenuCard } from './_components/menu-card';
 import { TEXT } from '@/constants/text';
 import { Categories } from './_components/categories';
-import { useState } from 'react';
+import { getMenuItems } from '@/db/menu-item';
 
-export default function MenuPage() {
-  const menuItems: any[] = [];
+type Props = {
+  searchParams: Promise<{ category?: string }>;
+};
 
-  const [selectedCategory, setSelectedCategory] = useState('All');
-
-  const filteredItems =
-    selectedCategory === 'All' ? menuItems : menuItems.filter((item) => item.category === selectedCategory);
+export default async function MenuPage({ searchParams }: Props) {
+  const { category } = await searchParams;
+  const data = await getMenuItems(category);
 
   return (
     <main className="min-h-screen bg-neutral-50">
@@ -20,9 +18,9 @@ export default function MenuPage() {
           <h1 className="text-3xl font-bold tracking-tight">{TEXT.menuTitle}</h1>
           <p className="mt-1 text-sm text-neutral-500">{TEXT.menuSubtitle}</p>
         </div>
-        <Categories selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
+        <Categories selected={category} />
         <div className="mx-auto grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {filteredItems.map((x) => (
+          {data.map((x) => (
             <MenuCard key={`menu-item-${x.id}`} item={x} />
           ))}
         </div>
