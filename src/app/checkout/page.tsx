@@ -74,6 +74,7 @@ export default function CheckoutPage() {
             name="address"
             value={fields.address}
             label={TEXT.address}
+            addLabel={TEXT.addressAddLabel}
             placeholder={TEXT.yourAddress}
             onChange={handleChange}
           />
