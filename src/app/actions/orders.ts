@@ -7,9 +7,9 @@ import { parseZodErrors } from '@/utils/parseZodErrors';
 import z from 'zod';
 
 const createOrderSchema = z.object({
-  customerName: z.string().nonempty(),
-  customerPhone: z.string().nonempty(),
-  deliveryAddress: z.string().nonempty(),
+  name: z.string().nonempty(),
+  phone: z.string().nonempty(),
+  address: z.string().nonempty(),
   notes: z.string().optional(),
   payment: z.string(),
   changeFor: z.number().min(1).optional(),
@@ -23,7 +23,9 @@ const createOrderSchema = z.object({
 
 type CreateOrderInput = z.infer<typeof createOrderSchema>;
 
-type CreateOrderResult = { success: true } | { success: false; error: ErrorType };
+type ResultSuccess = { success: true; code: string };
+type ResultError = { success: false; error: ErrorType };
+type CreateOrderResult = ResultSuccess | ResultError;
 
 type ItemInput = {
   menuItemId: string;
@@ -34,7 +36,7 @@ type ItemInput = {
 
 type ErrorType = { form?: ErrorCode; fields?: Record<string, ErrorCode> };
 
-function returnError(error: ErrorType) {
+function returnError(error: ErrorType): ResultError {
   return {
     success: false,
     error,
@@ -91,6 +93,10 @@ export async function createOrder(rawData: CreateOrderInput): Promise<CreateOrde
     return returnError({ form: ErrorCode.EMPTY_ORDER });
   }
 
+  /* relace in the future */
+  const deliveryFee = 5;
+  total = total.plus(new Prisma.Decimal(deliveryFee));
+
   if (!['CASH', 'CARD'].includes(data.payment)) {
     return returnError({ fields: { payment: ErrorCode.INVALID_PAYMENT_METHOD } });
   }
@@ -114,9 +120,9 @@ export async function createOrder(rawData: CreateOrderInput): Promise<CreateOrde
   await prisma.order.create({
     data: {
       code,
-      customerName: data.customerName,
-      customerPhone: data.customerPhone,
-      deliveryAddress: data.deliveryAddress,
+      customerName: data.name,
+      customerPhone: data.phone,
+      deliveryAddress: data.address,
       notes: data.notes,
       payment: data.payment as 'CASH' | 'CARD',
       changeFor: data.changeFor,
@@ -125,5 +131,5 @@ export async function createOrder(rawData: CreateOrderInput): Promise<CreateOrde
     },
   });
 
-  return { success: true };
+  return { success: true, code };
 }

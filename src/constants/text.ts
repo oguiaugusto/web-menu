@@ -34,6 +34,7 @@ export const TEXT = {
   orderSummary: 'Order summary',
   editCart: 'Edit cart',
   placeOrder: 'Place order',
+  orderPlaced: 'Order placed successfully',
 };
 
 export const ERROR_MESSAGES: Record<string, string> = {

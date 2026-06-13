@@ -6,8 +6,11 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { TextArea } from '@/components/ui/textarea';
 import { useRouter } from 'next/navigation';
-import { TEXT } from '@/constants/text';
+import { ERROR_MESSAGES, TEXT } from '@/constants/text';
 import { Radio } from '@/components/ui/radio';
+import { createOrder } from '../actions/orders';
+import { FieldErrors } from '@/types/misc';
+import { toastError, toastSuccess } from '@/utils/toast';
 
 const DEFAULT_FIELDS = {
   name: '',
@@ -20,12 +23,18 @@ const DEFAULT_FIELDS = {
 
 export default function CheckoutPage() {
   const router = useRouter();
-  const { items, subtotal } = useCart();
+  const { items, subtotal, clearCart } = useCart();
 
   const [fields, setFields] = useState<typeof DEFAULT_FIELDS>(DEFAULT_FIELDS);
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFields((p) => ({ ...p, [e.target.name]: e.target.value }));
+    setFieldErrors((p) => {
+      const next = { ...p };
+      delete next[e.target.name];
+      return next;
+    });
   };
 
   const formatter = new Intl.NumberFormat(TEXT.languageCountryISO, {
@@ -38,12 +47,45 @@ export default function CheckoutPage() {
     const number = Number(digits) / 100;
 
     setFields((p) => ({ ...p, [e.target.name]: number.toFixed(2) }));
+    setFieldErrors((p) => {
+      const next = { ...p };
+      delete next[e.target.name];
+      return next;
+    });
   };
 
   useEffect(() => {
     setFields((p) => ({ ...p, changeFor: 0 }));
   }, [fields.payment]);
 
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const result = await createOrder({
+      name: fields.name,
+      phone: fields.phone,
+      address: fields.address,
+      notes: fields.notes,
+      payment: fields.payment as any,
+      changeFor: fields.changeFor > 0 ? Number(fields.changeFor) : undefined,
+      items: items.map((x) => ({ id: x.id, quantity: x.quantity })),
+    });
+
+    if (!result.success) {
+      if (result.error.form) {
+        toastError(ERROR_MESSAGES[result.error.form], { position: 'top-center' });
+      } else if (result.error.fields) {
+        setFieldErrors(result.error.fields);
+      }
+
+      return;
+    }
+
+    toastSuccess(TEXT.orderPlaced, { position: 'bottom-center' });
+    clearCart();
+
+    router.push(`/orders/${result.code}`);
+  };
   /* relace in the future */
   const deliveryFee = 5;
   const total = subtotal + deliveryFee;
@@ -54,13 +96,14 @@ export default function CheckoutPage() {
         <h1 className="text-2xl font-bold">{TEXT.checkout}</h1>
         <p className="text-sm text-neutral-500">{TEXT.checkoutSubtitle}</p>
       </div>
-      <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
+      <form className="grid gap-6 lg:grid-cols-[1fr_320px]" onSubmit={handleSubmit}>
         <section className="space-y-4">
           <Input
             name="name"
             value={fields.name}
             label={TEXT.name}
             placeholder={TEXT.yourName}
+            error={fieldErrors.name}
             onChange={handleChange}
           />
           <Input
@@ -68,6 +111,7 @@ export default function CheckoutPage() {
             value={fields.phone}
             label={TEXT.phone}
             placeholder={TEXT.yourPhoneNumber}
+            error={fieldErrors.phone}
             onChange={handleChange}
           />
           <Input
@@ -76,6 +120,7 @@ export default function CheckoutPage() {
             label={TEXT.address}
             addLabel={TEXT.addressAddLabel}
             placeholder={TEXT.yourAddress}
+            error={fieldErrors.address}
             onChange={handleChange}
           />
           <TextArea
@@ -83,26 +128,35 @@ export default function CheckoutPage() {
             value={fields.notes}
             label={TEXT.notes}
             placeholder={TEXT.extraInstructions}
+            error={fieldErrors.notes}
             onChange={handleChange}
             rows={4}
           />
           <div className="space-y-1">
             <label className="text-sm font-medium">{TEXT.paymentMethod}</label>
             <div className="w-fit">
-              <Radio name="payment" label={TEXT.cash} value="cash" checked={fields.payment} onChange={handleChange} />
-              <Radio name="payment" label={TEXT.card} value="card" checked={fields.payment} onChange={handleChange} />
+              <Radio name="payment" label={TEXT.cash} value="CASH" checked={fields.payment} onChange={handleChange} />
+              <Radio name="payment" label={TEXT.card} value="CARD" checked={fields.payment} onChange={handleChange} />
+              {fieldErrors.payment ? (
+                <p className="text-sm text-red-600">{`"${TEXT.paymentMethod}" ${ERROR_MESSAGES[fieldErrors.payment]}`}</p>
+              ) : null}
             </div>
-            {fields.payment === 'cash' ? (
-              <div className="max-w-50">
-                <Input
-                  type="number"
-                  name="changeFor"
-                  prefix={TEXT.currency}
-                  value={formatter.format(fields.changeFor)}
-                  label={TEXT.changeFor}
-                  placeholder={TEXT.startingMoney}
-                  onChange={handleMoneyChange}
-                />
+            {fields.payment === 'CASH' ? (
+              <div className="space-y-1">
+                <div className="max-w-50">
+                  <Input
+                    type="number"
+                    name="changeFor"
+                    prefix={TEXT.currency}
+                    value={formatter.format(fields.changeFor)}
+                    label={TEXT.changeFor}
+                    placeholder={TEXT.startingMoney}
+                    onChange={handleMoneyChange}
+                  />
+                </div>
+                {fieldErrors.changeFor ? (
+                  <p className="text-sm text-red-600">{`"${TEXT.changeFor}" ${ERROR_MESSAGES[fieldErrors.changeFor]}`}</p>
+                ) : null}
               </div>
             ) : null}
           </div>
@@ -157,11 +211,11 @@ export default function CheckoutPage() {
               </div>
             </div>
           </div>
-          <Button variant="primary" className="w-full">
+          <Button variant="primary" type="submit" className="w-full">
             {TEXT.placeOrder}
           </Button>
         </aside>
-      </div>
+      </form>
     </main>
   );
 }
