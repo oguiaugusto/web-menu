@@ -5,22 +5,13 @@ import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { TEXT } from '@/constants/text';
 import { CartItem } from './_components/cart-item';
+import EmptyCart from '@/components/empty-cart';
 
 export default function CartPage() {
   const router = useRouter();
   const { items, subtotal, clearCart } = useCart();
 
-  if (items.length === 0) {
-    return (
-      <main className="mx-auto flex min-h-[calc(100vh-80px)] max-w-3xl flex-col items-center justify-center px-6 text-center">
-        <h1 className="text-2xl font-bold">{TEXT.emptyCart}</h1>
-        <p className="mt-2 text-neutral-500">{TEXT.emptyCartSubtitle}</p>
-        <Button variant="primary-outline" className="mt-6" onClick={() => router.push('/menu')}>
-          {TEXT.browseMenu}
-        </Button>
-      </main>
-    );
-  }
+  if (items.length === 0) return <EmptyCart />;
 
   return (
     <main className="mx-auto max-w-4xl px-4 py-6">

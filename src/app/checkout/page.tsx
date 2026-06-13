@@ -11,6 +11,7 @@ import { Radio } from '@/components/ui/radio';
 import { createOrder } from '../actions/orders';
 import { FieldErrors } from '@/types/misc';
 import { toastError, toastSuccess } from '@/utils/toast';
+import EmptyCart from '@/components/empty-cart';
 
 const DEFAULT_FIELDS = {
   name: '',
@@ -89,6 +90,8 @@ export default function CheckoutPage() {
   /* relace in the future */
   const deliveryFee = 5;
   const total = subtotal + deliveryFee;
+
+  if (items.length === 0) return <EmptyCart />;
 
   return (
     <main className="mx-auto max-w-4xl px-4 py-6 lg:pb-16">
