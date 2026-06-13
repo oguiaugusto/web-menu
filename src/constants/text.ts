@@ -34,3 +34,16 @@ export const TEXT = {
   editCart: 'Edit cart',
   placeOrder: 'Place order',
 };
+
+export const ERROR_MESSAGES: Record<string, string> = {
+  required: 'is required',
+  invalid_field: 'is invalid',
+  invalid_type: 'is invalid',
+  invalid_value: 'is invalid',
+  invalid_format: 'has invalid format',
+  too_big: 'is too large',
+  too_small: 'is too small',
+  invalid_payment_method: 'must be "Cash" or "Card"',
+  change_for_smaller_than_total: 'must be greater than the order total',
+  empty_order: 'Order cannot be empty',
+};

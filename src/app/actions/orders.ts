@@ -23,7 +23,7 @@ const createOrderSchema = z.object({
 
 type CreateOrderInput = z.infer<typeof createOrderSchema>;
 
-type CreateOrderResult = { success: true } | { success: false; errors: ErrorType };
+type CreateOrderResult = { success: true } | { success: false; error: ErrorType };
 
 type ItemInput = {
   menuItemId: string;
@@ -32,14 +32,12 @@ type ItemInput = {
   quantity: number;
 };
 
-type ErrorType = {
-  fieldErrors: Record<string, { code: number }>;
-};
+type ErrorType = { form?: ErrorCode; fields?: Record<string, ErrorCode> };
 
-function returnError(errors: ErrorType) {
+function returnError(error: ErrorType) {
   return {
     success: false,
-    errors,
+    error,
   };
 }
 
@@ -60,7 +58,7 @@ function generateCode() {
 export async function createOrder(rawData: CreateOrderInput): Promise<CreateOrderResult> {
   const parsed = createOrderSchema.safeParse(rawData);
   if (!parsed.success) {
-    return returnError({ fieldErrors: parseZodErrors(parsed.error) });
+    return returnError({ fields: parseZodErrors(parsed.error) });
   }
 
   const { data } = parsed;
@@ -90,17 +88,11 @@ export async function createOrder(rawData: CreateOrderInput): Promise<CreateOrde
   }
 
   if (items.length === 0) {
-    return returnError({
-      fieldErrors: {
-        items: {
-          code: ErrorCode.EMPTY_ORDER,
-        },
-      },
-    });
+    return returnError({ form: ErrorCode.EMPTY_ORDER });
   }
 
   if (!['CASH', 'CARD'].includes(data.payment)) {
-    return returnError({ fieldErrors: { payment: { code: ErrorCode.INVALID_PAYMENT_METHOD } } });
+    return returnError({ fields: { payment: ErrorCode.INVALID_PAYMENT_METHOD } });
   }
 
   if (data.changeFor !== undefined) {
@@ -108,7 +100,7 @@ export async function createOrder(rawData: CreateOrderInput): Promise<CreateOrde
       data.changeFor = undefined;
     } else {
       if (new Prisma.Decimal(data.changeFor).lessThanOrEqualTo(total)) {
-        return returnError({ fieldErrors: { changeFor: { code: ErrorCode.CHANGE_FOR_BIGGER_THAN_TOTAL } } });
+        return returnError({ fields: { changeFor: ErrorCode.CHANGE_FOR_SMALLER_THAN_TOTAL } });
       }
     }
   }
