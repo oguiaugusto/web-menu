@@ -2,13 +2,12 @@
 
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { toast } from 'sonner';
 import { Minus, Plus } from 'lucide-react';
 import { TEXT } from '@/constants/text';
 import { useCart } from '@/providers/cart-provider';
 import { Button } from '@/components/ui/button';
-import { inter } from '@/constants/fonts';
 import { MenuItem } from '@/db/menu-item';
+import { toastSuccess } from '@/utils/toast';
 
 type Props = {
   data: MenuItem;
@@ -24,16 +23,10 @@ export function QuantityAndAdd({ data }: Props) {
     addItem({ id: data.id, name: data.name, price: data.price }, quantity);
     setQuantity(1);
 
-    toast.success(`${quantity}x ${data.name} ${TEXT.addedToCart}`, {
+    toastSuccess(`${quantity}x ${data.name} ${TEXT.addedToCart}`, {
       action: { label: TEXT.browseMoreItems, onClick: () => router.push('/menu') },
-      duration: 4000,
+      style: { marginBottom: '70px' },
       position: 'bottom-center',
-      className: `${inter.className}`,
-      classNames: {
-        success: '!bg-red-muted !text-white',
-        icon: 'text-white',
-        actionButton: '!bg-white !text-red-muted',
-      },
     });
   };
 
