@@ -18,7 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.className} h-full antialiased`}>
       <body className="min-h-full">
-        <Toaster />
+        <Toaster offset={{ top: 70 }} mobileOffset={{ top: 70 }} />
         <ScrollToTop />
         <CartProvider>
           <Header />
