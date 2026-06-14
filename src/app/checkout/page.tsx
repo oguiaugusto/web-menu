@@ -94,7 +94,7 @@ export default function CheckoutPage() {
   if (items.length === 0) return <EmptyCart />;
 
   return (
-    <main className="mx-auto max-w-4xl px-4 py-6 lg:pb-16">
+    <main className="mx-auto max-w-4xl px-4 py-6 lg:px-0 lg:pb-16">
       <div className="mb-6">
         <h1 className="text-2xl font-bold">{TEXT.checkout}</h1>
         <p className="text-sm text-neutral-500">{TEXT.checkoutSubtitle}</p>

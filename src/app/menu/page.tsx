@@ -10,14 +10,11 @@ type Props = {
 export default async function MenuPage({ searchParams }: Props) {
   const { category } = await searchParams;
 
-  const [categories, data] = await Promise.all([
-    getMenuCategories(),
-    getMenuItems(category),
-  ]);
+  const [categories, data] = await Promise.all([getMenuCategories(), getMenuItems(category)]);
 
   return (
     <main className="min-h-screen bg-neutral-50">
-      <div className="mx-auto max-w-235 p-6">
+      <div className="mx-auto max-w-4xl px-4 py-6 lg:px-0">
         <div className="mb-8">
           <h1 className="text-3xl font-bold tracking-tight">{TEXT.menuTitle}</h1>
           <p className="mt-1 text-sm text-neutral-500">{TEXT.menuSubtitle}</p>

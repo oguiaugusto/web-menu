@@ -14,7 +14,7 @@ export default function CartPage() {
   if (items.length === 0) return <EmptyCart />;
 
   return (
-    <main className="mx-auto max-w-4xl px-4 py-6">
+    <main className="mx-auto max-w-4xl px-4 py-6 lg:px-0">
       <div className="mb-6 flex items-end justify-between">
         <h1 className="text-2xl font-bold">{TEXT.yourCart}</h1>
         <Button variant="primary-text" onClick={() => clearCart()}>
@@ -29,7 +29,10 @@ export default function CartPage() {
       <div className="sticky bottom-4 mt-6 rounded-2xl border border-neutral-200 bg-white p-4 shadow-lg">
         <div className="mb-4 flex items-center justify-between">
           <span className="text-neutral-500">{TEXT.total}</span>
-          <span className="text-xl font-bold">{TEXT.currency}{subtotal.toFixed(2)}</span>
+          <span className="text-xl font-bold">
+            {TEXT.currency}
+            {subtotal.toFixed(2)}
+          </span>
         </div>
         <Button variant="primary" className="w-full" onClick={() => router.push('/checkout')}>
           {TEXT.checkout}

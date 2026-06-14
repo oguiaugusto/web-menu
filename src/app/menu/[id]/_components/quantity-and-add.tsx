@@ -31,7 +31,7 @@ export function QuantityAndAdd({ data }: Props) {
   };
 
   return (
-    <div className="mx-auto flex max-w-235 justify-between gap-4">
+    <div className="mx-auto flex max-w-4xl justify-between gap-4">
       <div className="bg-red-muted flex items-center overflow-hidden rounded-lg text-white">
         <button
           className="enabled:hover:bg-red-muted-light h-full p-3 enabled:cursor-pointer enabled:active:brightness-106 disabled:opacity-70"
