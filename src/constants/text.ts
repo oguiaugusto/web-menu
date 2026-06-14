@@ -1,3 +1,5 @@
+import { PaymentMethod } from '@/generated/prisma/enums';
+
 export const TEXT = {
   languageCountryISO: 'en-US',
   currency: '$',
@@ -35,6 +37,23 @@ export const TEXT = {
   editCart: 'Edit cart',
   placeOrder: 'Place order',
   orderPlaced: 'Order placed successfully',
+  order: 'Order',
+  placedOn: 'Placed on',
+  currentStatus: 'Current status',
+  delivery: 'Delivery',
+  payment: 'Payment',
+  statusLabelPending: 'Pending',
+  statusLabelAccepted: 'Accepted',
+  statusLabelPreparing: 'Preparing',
+  statusLabelReady: 'Ready',
+  statusLabelDelivered: 'Delivered',
+  statusLabelCancelled: 'Cancelled',
+  statusDescriptionPending: 'Waiting for restaurant confirmation.',
+  statusDescriptionAccepted: 'Your order has been accepted.',
+  statusDescriptionPreparing: 'Your food is being prepared.',
+  statusDescriptionReady: 'Your order is on its way.',
+  statusDescriptionDelivered: 'Enjoy your meal!',
+  statusDescriptionCancelled: 'This order was cancelled.',
 };
 
 export const ERROR_MESSAGES: Record<string, string> = {
