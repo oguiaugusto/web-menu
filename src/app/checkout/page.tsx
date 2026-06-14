@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { TextArea } from '@/components/ui/textarea';
 import { useRouter } from 'next/navigation';
 import { ERROR_MESSAGES, TEXT } from '@/constants/text';
+import { DELIVERY_FEE } from '@/constants/deliveryFee';
 import { Radio } from '@/components/ui/radio';
 import { createOrder } from '../actions/orders';
 import { FieldErrors } from '@/types/misc';
@@ -87,9 +88,7 @@ export default function CheckoutPage() {
 
     router.push(`/orders/${result.code}`);
   };
-  /* relace in the future */
-  const deliveryFee = 5;
-  const total = subtotal + deliveryFee;
+  const total = subtotal + DELIVERY_FEE;
 
   if (items.length === 0) return <EmptyCart />;
 
@@ -201,7 +200,7 @@ export default function CheckoutPage() {
                   <span>{TEXT.deliveryFee}</span>
                   <span>
                     {TEXT.currency}
-                    {deliveryFee.toFixed(2)}
+                    {DELIVERY_FEE.toFixed(2)}
                   </span>
                 </div>
               </div>

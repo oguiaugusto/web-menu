@@ -1,5 +1,6 @@
 'use server';
 
+import { DELIVERY_FEE } from '@/constants/deliveryFee';
 import { Prisma } from '@/generated/prisma/client';
 import { prisma } from '@/lib/prisma';
 import { ErrorCode } from '@/types/enums';
@@ -93,9 +94,7 @@ export async function createOrder(rawData: CreateOrderInput): Promise<CreateOrde
     return returnError({ form: ErrorCode.EMPTY_ORDER });
   }
 
-  /* relace in the future */
-  const deliveryFee = 5;
-  total = total.plus(new Prisma.Decimal(deliveryFee));
+  total = total.plus(new Prisma.Decimal(DELIVERY_FEE));
 
   if (!['CASH', 'CARD'].includes(data.payment)) {
     return returnError({ fields: { payment: ErrorCode.INVALID_PAYMENT_METHOD } });
