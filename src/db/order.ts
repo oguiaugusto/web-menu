@@ -25,3 +25,13 @@ export async function getOrder(code: string): Promise<Order | null> {
     items: order.items.map((x) => ({ ...x, price: x.price.toNumber() })),
   };
 }
+
+export async function getOrderStatus(code: string): Promise<string | null> {
+  const order = await prisma.order.findUnique({
+    where: { code: code.toUpperCase() },
+    select: { status: true },
+  });
+
+  if (!order) return null;
+  return order.status;
+}

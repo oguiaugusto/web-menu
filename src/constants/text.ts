@@ -67,6 +67,7 @@ export const ERROR_MESSAGES: Record<string, string> = {
   invalid_payment_method: 'must be "Cash" or "Card"',
   change_for_smaller_than_total: 'must be greater than the order total',
   empty_order: 'Order cannot be empty',
+  order_not_found: 'Order not found',
 };
 
 export const PAYMENT_METHODS: Record<PaymentMethod, string> = {
