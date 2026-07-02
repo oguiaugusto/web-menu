@@ -4,7 +4,7 @@ import { DELIVERY_FEE } from '@/constants/deliveryFee';
 import { Prisma } from '@/generated/prisma/client';
 import { prisma } from '@/lib/prisma';
 import { ErrorCode } from '@/types/enums';
-import { parseZodErrors } from '@/utils/parseZodErrors';
+import { parseZodErrors } from '@/utils/parse-zod-errors';
 import z from 'zod';
 
 const createOrderSchema = z.object({
