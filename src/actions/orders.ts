@@ -7,7 +7,7 @@ import { ErrorCode } from '@/types/enums';
 import { parseZodErrors } from '@/utils/parse-zod-errors';
 import z from 'zod';
 
-const createOrderSchema = z.object({
+const CreateOrderSchema = z.object({
   name: z.string().nonempty(),
   phone: z.string().nonempty(),
   address: z.string().nonempty(),
@@ -22,7 +22,7 @@ const createOrderSchema = z.object({
   ),
 });
 
-type CreateOrderInput = z.infer<typeof createOrderSchema>;
+type CreateOrderInput = z.infer<typeof CreateOrderSchema>;
 
 type ResultSuccess = { success: true; code: string };
 type ResultError = { success: false; error: ErrorType };
@@ -59,7 +59,7 @@ function generateCode() {
 }
 
 export async function createOrder(rawData: CreateOrderInput): Promise<CreateOrderResult> {
-  const parsed = createOrderSchema.safeParse(rawData);
+  const parsed = CreateOrderSchema.safeParse(rawData);
   if (!parsed.success) {
     return returnError({ fields: parseZodErrors(parsed.error) });
   }
