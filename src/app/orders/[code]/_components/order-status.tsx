@@ -4,18 +4,10 @@ import { Fragment } from 'react/jsx-runtime';
 import { useEffect, useState } from 'react';
 import { TEXT } from '@/constants/text';
 import { cn } from '@/utils/cn';
+import { STATUS_INFO } from '../../_constants/status';
 import type { OrderStatus as POrderStatus } from '@/generated/prisma/enums';
 
 type Props = { code: string; status: POrderStatus };
-
-const STATUS_INFO: Record<POrderStatus, { label: string; description: string }> = {
-  PENDING: { label: TEXT.statusLabelPending, description: TEXT.statusDescriptionPending },
-  ACCEPTED: { label: TEXT.statusLabelAccepted, description: TEXT.statusDescriptionAccepted },
-  PREPARING: { label: TEXT.statusLabelPreparing, description: TEXT.statusDescriptionPreparing },
-  READY: { label: TEXT.statusLabelReady, description: TEXT.statusDescriptionReady },
-  DELIVERED: { label: TEXT.statusLabelDelivered, description: TEXT.statusDescriptionDelivered },
-  CANCELLED: { label: TEXT.statusLabelCancelled, description: TEXT.statusDescriptionCancelled },
-} as const;
 
 const ORDER_STEPS: POrderStatus[] = ['PENDING', 'ACCEPTED', 'PREPARING', 'READY', 'DELIVERED'] as const;
 
