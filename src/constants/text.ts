@@ -60,6 +60,9 @@ export const TEXT = {
   recentOrders: 'Recent orders',
   noRecentOrders: 'No recent orders',
   noRecentOrdersSubtitle: 'Place your first order and it will appear here for quick access',
+  orderNotFound: 'Order not found',
+  orderNotFoundCheck: 'Check if the code is correct or',
+  orderNotFoundSearch: 'search another order',
 };
 
 export const ERROR_MESSAGES: Record<string, string> = {
