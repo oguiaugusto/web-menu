@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import { QuantityAndAdd } from './_components/quantity-and-add';
 import { TEXT } from '@/constants/text';
 import { getMenuItem } from '@/db/menu-item';
+import Image from 'next/image';
 
 type Props = {
   params: Promise<{
@@ -19,7 +20,7 @@ export default async function MenuItem({ params }: Props) {
     <main className="relative min-h-screen bg-neutral-50 pb-24">
       <div className="mx-auto max-w-4xl">
         <div className="relative h-72 w-full overflow-hidden bg-neutral-700 sm:h-[420px] sm:rounded-b-3xl">
-          <img src="/example-image.png" alt="" className="h-full w-full object-cover" />
+          <Image src={data.imageUrl ?? ''} alt={data.name} className="h-full w-full object-cover" fill />
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle,_transparent_55%,_rgba(0,0,0,0.45)_100%)]" />
         </div>
         <div className="space-y-3 px-4 py-5 sm:px-6">

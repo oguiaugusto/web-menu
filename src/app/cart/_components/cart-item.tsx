@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { TEXT } from '@/constants/text';
 import { CartItem as CartItemType, useCart } from '@/providers/cart-provider';
 import { Minus, Plus, Trash2 } from 'lucide-react';
+import Image from 'next/image';
 
 type Props = {
   item: CartItemType;
@@ -15,7 +16,7 @@ export function CartItem({ item }: Props) {
   return (
     <div key={item.id} className="flex gap-4 rounded-2xl border border-neutral-200 bg-white p-4">
       <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-neutral-200">
-        <img src="/example-image.png" alt="" className="h-full w-full object-cover" />
+        <Image src={item.imageUrl ?? ''} alt={item.name} className="h-full w-full object-cover" fill />
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle,_transparent_55%,_rgba(0,0,0,0.45)_100%)]" />
       </div>
       <div className="flex flex-1 flex-col justify-between">

@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { TEXT } from '@/constants/text';
 import { MenuItem } from '@/db/menu-item';
+import Image from 'next/image';
 
 type Props = {
   item: MenuItem;
@@ -11,7 +12,7 @@ export function MenuCard({ item }: Props) {
     <Link href={`/menu/${item.id}`}>
       <div className="group grid grid-cols-[100px_1fr] overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm transition-all hover:shadow-md sm:grid-cols-none">
         <div className="relative h-full overflow-hidden bg-neutral-700 sm:aspect-square">
-          <img src="/example-image.png" alt="" className="h-full w-full object-cover" />
+          <Image src={item.imageUrl ?? ''} alt={item.name} className="h-full w-full object-cover" fill />
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle,_transparent_55%,_rgba(0,0,0,0.45)_100%)]" />
         </div>
         <div className="flex flex-col justify-between gap-2 p-3">

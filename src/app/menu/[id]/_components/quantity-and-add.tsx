@@ -20,7 +20,7 @@ export function QuantityAndAdd({ data }: Props) {
   const [quantity, setQuantity] = useState(1);
 
   const handleAdd = () => {
-    addItem({ id: data.id, name: data.name, price: data.price }, quantity);
+    addItem({ id: data.id, name: data.name, price: data.price, imageUrl: data.imageUrl }, quantity);
     setQuantity(1);
 
     toastSuccess(`${quantity}x ${data.name} ${TEXT.addedToCart}`, {
