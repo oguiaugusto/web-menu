@@ -3,6 +3,8 @@ import { PaymentMethod } from '@/generated/prisma/enums';
 export const TEXT = {
   languageCountryISO: 'en-US',
   currency: '$',
+  menu: 'Menu',
+  orders: 'Orders',
   menuTitle: 'Menu',
   menuSubtitle: 'Fresh food made to order',
   all: 'All',
