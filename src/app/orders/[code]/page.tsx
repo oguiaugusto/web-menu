@@ -4,6 +4,7 @@ import { CopyCode } from './_components/copy-code';
 import { getOrder } from '@/db/order';
 import { notFound } from 'next/navigation';
 import { OrderStatus } from './_components/order-status';
+import { RememberOrder } from './_components/remember-order';
 
 type Props = {
   params: Promise<{ code: string }>;
@@ -19,6 +20,7 @@ export default async function OrderPage({ params }: Props) {
 
   return (
     <main className="mx-auto max-w-4xl px-4 py-6 lg:px-0">
+      <RememberOrder code={data.code} />
       <div className="space-y-4">
         <section className="flex flex-col gap-4 rounded-2xl border border-neutral-200 bg-white p-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
