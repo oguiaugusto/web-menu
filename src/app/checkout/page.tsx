@@ -13,6 +13,7 @@ import { createOrder } from '../../actions/orders';
 import { FieldErrors } from '@/types/misc';
 import { toastError, toastSuccess } from '@/utils/toast';
 import EmptyCart from '@/components/empty-cart';
+import { saveOrderCode } from '@/utils/localstorage-orders';
 
 const DEFAULT_FIELDS = {
   name: '',
@@ -84,6 +85,7 @@ export default function CheckoutPage() {
     }
 
     toastSuccess(TEXT.orderPlaced, { position: 'bottom-center' });
+    saveOrderCode(result.code);
     clearCart();
 
     router.push(`/orders/${result.code}`);
