@@ -31,6 +31,8 @@ export default function CheckoutPage() {
   const [fields, setFields] = useState<typeof DEFAULT_FIELDS>(DEFAULT_FIELDS);
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFields((p) => ({ ...p, [e.target.name]: e.target.value }));
     setFieldErrors((p) => {
@@ -63,6 +65,7 @@ export default function CheckoutPage() {
 
   const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
     const result = await createOrder({
       name: fields.name,
@@ -75,6 +78,8 @@ export default function CheckoutPage() {
     });
 
     if (!result.success) {
+      setIsSubmitting(false);
+
       if (result.error.form) {
         toastError(ERROR_MESSAGES[result.error.form], { position: 'top-center' });
       } else if (result.error.fields) {
@@ -92,7 +97,7 @@ export default function CheckoutPage() {
   };
   const total = subtotal + DELIVERY_FEE;
 
-  if (items.length === 0) return <EmptyCart />;
+  if (items.length === 0 && !isSubmitting) return <EmptyCart />;
 
   return (
     <main className="mx-auto max-w-4xl px-4 py-6 lg:px-0 lg:pb-16">
@@ -215,7 +220,7 @@ export default function CheckoutPage() {
               </div>
             </div>
           </div>
-          <Button variant="primary" type="submit" className="w-full">
+          <Button variant="primary" type="submit" className="w-full" disabled={isSubmitting}>
             {TEXT.placeOrder}
           </Button>
         </aside>
