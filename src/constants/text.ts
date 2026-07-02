@@ -54,6 +54,12 @@ export const TEXT = {
   statusDescriptionReady: 'Your order is on its way.',
   statusDescriptionDelivered: 'Enjoy your meal!',
   statusDescriptionCancelled: 'This order was cancelled.',
+  ordersTitle: 'My Orders',
+  ordersSubtitle: 'Track an order or reopen a recent one.',
+  search: 'Search',
+  recentOrders: 'Recent orders',
+  noRecentOrders: 'No recent orders',
+  noRecentOrdersSubtitle: 'Place your first order and it will appear here for quick access',
 };
 
 export const ERROR_MESSAGES: Record<string, string> = {
@@ -68,6 +74,7 @@ export const ERROR_MESSAGES: Record<string, string> = {
   change_for_smaller_than_total: 'must be greater than the order total',
   empty_order: 'Order cannot be empty',
   order_not_found: 'Order not found',
+  invalid_code: 'Invalid order code',
 };
 
 export const PAYMENT_METHODS: Record<PaymentMethod, string> = {
