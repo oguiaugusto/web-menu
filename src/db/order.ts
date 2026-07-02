@@ -1,5 +1,5 @@
 import { PAYMENT_METHODS } from '@/constants/text';
-import { OrderItem as PrismaOrderItem, Order as PrismaOrder } from '@/generated/prisma/client';
+import { OrderItem as PrismaOrderItem, Order as PrismaOrder, OrderStatus } from '@/generated/prisma/client';
 import { prisma } from '@/lib/prisma';
 
 export type Order = Omit<PrismaOrder, 'changeFor' | 'total' | 'payment'> & {
@@ -7,6 +7,12 @@ export type Order = Omit<PrismaOrder, 'changeFor' | 'total' | 'payment'> & {
   total: number;
   payment: string;
   items: (Omit<PrismaOrderItem, 'price'> & { price: number })[];
+};
+
+export type OrderSummary = {
+  code: string;
+  status: OrderStatus;
+  createdAt: Date;
 };
 
 export async function getOrder(code: string): Promise<Order | null> {
@@ -34,4 +40,14 @@ export async function getOrderStatus(code: string): Promise<string | null> {
 
   if (!order) return null;
   return order.status;
+}
+
+export async function getOrderSummaries(codes: string[]): Promise<OrderSummary[]> {
+  const orders = await prisma.order.findMany({
+    where: { code: { in: codes } },
+    select: { code: true, status: true, createdAt: true },
+    orderBy: { createdAt: 'desc' },
+  });
+
+  return orders;
 }
