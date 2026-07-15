@@ -16,7 +16,7 @@ export function CartItem({ item }: Props) {
   return (
     <div key={item.id} className="flex gap-4 rounded-2xl border border-neutral-200 bg-white p-4">
       <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-neutral-200">
-        <Image src={item.imageUrl ?? ''} alt={item.name} className="h-full w-full object-cover" fill />
+        <Image src={item.imageUrl ?? ''} alt={item.name} className="h-full w-full object-cover" fill sizes="100%" />
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle,_transparent_55%,_rgba(0,0,0,0.45)_100%)]" />
       </div>
       <div className="flex flex-1 flex-col justify-between">

@@ -9,8 +9,16 @@ export function Header() {
     <header className="bg-red-muted sticky top-0 z-50 border-b border-red-700 text-white">
       <div className="mx-auto flex h-16 max-w-235 items-center justify-between px-4">
         <Link href="/" className="flex items-center">
-          <Image src="/logo-white.png" alt="Web Menu" width={42} height={42} className="block sm:hidden" />
-          <Image src="/logo-wide-white.png" alt="Web Menu" width={180} height={40} className="hidden sm:block" />
+          <Image src="/logo-white.png" alt="Web Menu" width={42} height={42} className="block sm:hidden" sizes="100%" />
+          <Image
+            src="/logo-wide-white.png"
+            alt="Web Menu"
+            width={0}
+            height={0}
+            style={{ width: 180, height: 'auto' }}
+            className="hidden sm:block"
+            sizes="100%"
+          />
         </Link>
         <nav className="flex items-center gap-2 sm:gap-4">
           {[

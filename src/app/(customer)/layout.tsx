@@ -4,7 +4,7 @@ import { ScrollToTop } from '@/components/scroll-to-top';
 import { Header } from '@/components/header';
 import { CartProvider } from '@/providers/cart-provider';
 import { inter } from '@/constants/fonts';
-import './globals.css';
+import '../globals.css';
 
 export const metadata: Metadata = {
   title: 'Web Menu',
