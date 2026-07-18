@@ -39,7 +39,7 @@ export default function Home() {
         <div className="flex flex-1 flex-col items-center justify-center">
           <Image
             src="/logo-stacked-red.png"
-            alt="Web Menu"
+            alt="Web Menu Logo"
             loading="eager"
             className="mb-8"
             sizes="100%"
