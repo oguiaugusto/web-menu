@@ -156,7 +156,7 @@ export default function CheckoutPage() {
                   <Input
                     type="number"
                     name="changeFor"
-                    prefix={TEXT.currency}
+                    prefix={{ value: TEXT.currency }}
                     value={formatter.format(fields.changeFor)}
                     label={TEXT.changeFor}
                     placeholder={TEXT.startingMoney}
