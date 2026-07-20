@@ -34,12 +34,12 @@ export default function RegisterPage() {
   };
 
   const handleNameBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-    const restaurantUrl = slugify(e.target.value, { lower: true });
+    const restaurantUrl = slugify(e.target.value, { lower: true, remove: /['"]/ });
     if (!lockUrlAutofill) {
       setFields((p) => ({ ...p, restaurantUrl }));
       setLastUrlFill(restaurantUrl);
     }
-  };
+  }; 
 
   const handleUrlBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     if (e.target.value === '') {
