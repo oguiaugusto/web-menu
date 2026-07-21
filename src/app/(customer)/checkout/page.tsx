@@ -126,8 +126,8 @@ export default function CheckoutPage() {
           <Input
             name="address"
             value={fields.address}
-            label={TEXT.address}
-            addLabel={TEXT.addressAddLabel}
+            label={TEXT.addressLabel}
+            errorLabel={TEXT.address}
             placeholder={TEXT.yourAddress}
             error={fieldErrors.address}
             onChange={handleChange}

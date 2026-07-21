@@ -24,7 +24,6 @@ const NO_DELAY = 0;
 
 export type SearchInputProps<T> = {
   label: string;
-  addLabel?: string;
   value: T | null;
   onChange(value: T | null): void;
   onSelect?(value: T): void;
@@ -34,6 +33,7 @@ export type SearchInputProps<T> = {
   placeholder?: string;
   suffix?: ReactNode;
   error?: string;
+  errorLabel?: string;
   disabled?: boolean;
   debounce?: number;
   minLength?: number;
@@ -59,7 +59,6 @@ function useDebouncedValue<T>(value: T, delay: number): T {
 function SearchInputInner<T>(
   {
     label,
-    addLabel,
     value,
     onChange,
     onSelect,
@@ -69,6 +68,7 @@ function SearchInputInner<T>(
     placeholder,
     suffix,
     error,
+    errorLabel,
     disabled = false,
     debounce = DEFAULT_DEBOUNCE,
     minLength = DEFAULT_MIN_LENGTH,
@@ -96,7 +96,6 @@ function SearchInputInner<T>(
 
   const canSearch = !disabled && normalizedQuery.length >= minimumLength;
   const shouldShowDropdown = isOpen && canSearch;
-  const fullLabel = addLabel ? `${label} (${addLabel})` : label;
 
   useEffect(() => {
     searchRef.current = search;
@@ -207,7 +206,7 @@ function SearchInputInner<T>(
   return (
     <div className="block space-y-1">
       <span id={`${inputId}-label`} className="text-sm font-medium">
-        {fullLabel}
+        {label}
       </span>
       <Combobox<T | null>
         value={value}
@@ -278,7 +277,7 @@ function SearchInputInner<T>(
       </Combobox>
       {error ? (
         <p id={errorId} className="mt-1 text-sm text-red-600">
-          {`"${label}" ${ERROR_MESSAGES[error]}`}
+          {`"${errorLabel ?? label}" ${ERROR_MESSAGES[error]}`}
         </p>
       ) : null}
     </div>

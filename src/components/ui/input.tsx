@@ -6,7 +6,6 @@ import { useLayoutEffect, useRef, useState } from 'react';
 
 type Props = Readonly<{
   label: string;
-  addLabel?: string;
   type?: HTMLInputElement['type'];
   name?: string;
   placeholder?: string;
@@ -15,10 +14,22 @@ type Props = Readonly<{
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
   error?: string;
+  errorLabel?: string;
   required?: boolean;
 }>;
 
-export function Input({ label, addLabel, name, placeholder, value, prefix, onChange, onBlur, error, required }: Props) {
+export function Input({
+  label,
+  name,
+  placeholder,
+  value,
+  prefix,
+  onChange,
+  onBlur,
+  error,
+  errorLabel,
+  required,
+}: Props) {
   const prefixRef = useRef<HTMLElement>(null);
   const [prefixWidth, setPrefixWidth] = useState<number>(0);
 
@@ -30,11 +41,9 @@ export function Input({ label, addLabel, name, placeholder, value, prefix, onCha
     }
   }, [prefix]);
 
-  const fullLabel = addLabel ? `${label} (${addLabel})` : label;
-
   return (
     <label className="block space-y-1">
-      <span className="text-sm font-medium">{fullLabel}</span>
+      <span className="text-sm font-medium">{label}</span>
       <div className="relative">
         {prefix ? (
           <span className="absolute top-1/2 left-4 -translate-y-1/2" ref={prefixRef}>
@@ -56,7 +65,9 @@ export function Input({ label, addLabel, name, placeholder, value, prefix, onCha
           required={required}
         />
       </div>
-      {error ? <p className="mt-1 text-sm text-red-600">{`"${label}" ${ERROR_MESSAGES[error]}`}</p> : null}
+      {error ? (
+        <p className="mt-1 text-sm text-red-600">{`"${errorLabel ?? label}" ${ERROR_MESSAGES[error]}`}</p>
+      ) : null}
     </label>
   );
 }

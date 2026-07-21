@@ -45,7 +45,7 @@ export const TEXT = {
   notes: 'Notes',
   extraInstructions: 'Extra instructions',
   address: 'Address',
-  addressAddLabel: 'include street, number, and neighbourhood',
+  addressLabel: 'Address (include street, number, and neighbourhood)',
   yourAddress: 'Your address',
   paymentMethod: 'Payment Method',
   cash: 'Cash',
