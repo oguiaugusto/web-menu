@@ -19,7 +19,7 @@ export default function OrdersPage() {
   useEffect(() => {
     const codes = getOrderCodes();
 
-    async function fetchOrders() {
+    const fetchOrders = async () => {
       const query = codes.map((x) => `codes=${x}`).join('&');
       const response = await fetch(`/api/orders/summaries?${query}`);
 

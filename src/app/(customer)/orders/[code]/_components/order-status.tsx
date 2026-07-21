@@ -21,7 +21,7 @@ export function OrderStatus({ code, status }: Props) {
     // eslint-disable-next-line prefer-const
     let interval: NodeJS.Timeout;
 
-    async function refresh() {
+    const refresh = async () => {
       const response = await fetch(`/api/orders/${code}/status`);
 
       if (!response.ok) return;

@@ -185,12 +185,12 @@ function SearchInputInner<T>(
     [onChange],
   );
 
-  function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value);
     setIsOpen(true);
   }
 
-  function handleSelection(item: T | null) {
+  const handleSelection = (item: T | null) => {
     if (item === null) {
       onChange(null);
       setQuery('');
