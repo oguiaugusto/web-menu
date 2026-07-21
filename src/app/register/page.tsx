@@ -7,6 +7,7 @@ import { TEXT } from '@/constants/text';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import slugify from 'slugify';
+import { PasswordInput } from './_components/password-input';
 
 export default function RegisterPage() {
   const [fields, setFields] = useState({
@@ -15,6 +16,7 @@ export default function RegisterPage() {
     email: '',
     password: '',
   });
+  const [isPasswordValid, setIsPasswordValid] = useState(false);
 
   const [lastUrlFill, setLastUrlFill] = useState(fields.restaurantUrl);
   const [lockUrlAutofill, setLockUrlAutofill] = useState(false);
@@ -39,7 +41,7 @@ export default function RegisterPage() {
       setFields((p) => ({ ...p, restaurantUrl }));
       setLastUrlFill(restaurantUrl);
     }
-  }; 
+  };
 
   const handleUrlBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     if (e.target.value === '') {
@@ -83,15 +85,7 @@ export default function RegisterPage() {
               onChange={handleChange}
               required
             />
-            <Input
-              name="password"
-              label={TEXT.password}
-              placeholder="••••••••"
-              type="password"
-              value={fields.password}
-              onChange={handleChange}
-              required
-            />
+            <PasswordInput value={fields.password} onChange={handleChange} setIsValid={setIsPasswordValid} />
             <Button type="submit" variant="primary" className="w-full">
               {TEXT.signUp}
             </Button>
