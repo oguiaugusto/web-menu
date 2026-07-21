@@ -1,7 +1,7 @@
 'use client';
 
 import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions } from '@headlessui/react';
-import { Check, Loader2 } from 'lucide-react';
+import { Check, CircleQuestionMark, Loader2 } from 'lucide-react';
 import {
   forwardRef,
   useEffect,
@@ -17,6 +17,7 @@ import {
 } from 'react';
 import { ERROR_MESSAGES } from '@/constants/text';
 import { cn } from '@/utils/cn';
+import { Tooltip } from 'react-tooltip';
 
 const DEFAULT_DEBOUNCE = 300;
 const DEFAULT_MIN_LENGTH = 2;
@@ -30,6 +31,7 @@ export type SearchInputProps<T> = {
   search(query: string, signal: AbortSignal): Promise<T[]>;
   getKey(item: T): string;
   getLabel(item: T): string;
+  tooltip?: React.ReactNode;
   placeholder?: string;
   suffix?: ReactNode;
   error?: string;
@@ -65,6 +67,7 @@ function SearchInputInner<T>(
     search,
     getKey,
     getLabel,
+    tooltip,
     placeholder,
     suffix,
     error,
@@ -205,8 +208,24 @@ function SearchInputInner<T>(
 
   return (
     <div className="block space-y-1">
-      <span id={`${inputId}-label`} className="text-sm font-medium">
+      <span id={`${inputId}-label`} className="text-sm font-medium flex items-center gap-2">
         {label}
+        {tooltip ? (
+          <>
+            <span data-tooltip-id="tooltip" data-tooltip-place="right">
+              <CircleQuestionMark size={14} />
+            </span>
+            <Tooltip
+              id="tooltip"
+              style={{
+                backgroundColor: 'var(--color-neutral-700)',
+                zIndex: '1000',
+              }}
+            >
+              {tooltip}
+            </Tooltip>
+          </>
+        ) : null}
       </span>
       <Combobox<T | null>
         value={value}

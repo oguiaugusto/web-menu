@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Toaster } from 'sonner';
 import { inter } from '@/constants/fonts';
 import { ScrollToTop } from '@/components/scroll-to-top';
+import 'react-tooltip/dist/react-tooltip.css'
 import './globals.css';
 
 export const metadata: Metadata = {

@@ -2,7 +2,9 @@
 
 import { ERROR_MESSAGES } from '@/constants/text';
 import { cn } from '@/utils/cn';
+import { CircleQuestionMark } from 'lucide-react';
 import { useLayoutEffect, useRef, useState } from 'react';
+import { Tooltip } from 'react-tooltip';
 
 type Props = Readonly<{
   label: string;
@@ -11,6 +13,7 @@ type Props = Readonly<{
   placeholder?: string;
   value?: string;
   prefix?: { value: string; noPadding?: boolean };
+  tooltip?: React.ReactNode;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
   error?: string;
@@ -24,6 +27,7 @@ export function Input({
   placeholder,
   value,
   prefix,
+  tooltip,
   onChange,
   onBlur,
   error,
@@ -43,7 +47,25 @@ export function Input({
 
   return (
     <label className="block space-y-1">
-      <span className="text-sm font-medium">{label}</span>
+      <span className="text-sm font-medium flex items-center gap-2">
+        {label}
+        {tooltip ? (
+          <>
+            <span data-tooltip-id="tooltip" data-tooltip-place="right">
+              <CircleQuestionMark size={14} />
+            </span>
+            <Tooltip
+              id="tooltip"
+              style={{
+                backgroundColor: 'var(--color-neutral-700)',
+                zIndex: '1000',
+              }}
+            >
+              {tooltip}
+            </Tooltip>
+          </>
+        ) : null}
+      </span>
       <div className="relative">
         {prefix ? (
           <span className="absolute top-1/2 left-4 -translate-y-1/2" ref={prefixRef}>
