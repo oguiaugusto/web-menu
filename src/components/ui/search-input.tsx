@@ -188,7 +188,7 @@ function SearchInputInner<T>(
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value);
     setIsOpen(true);
-  }
+  };
 
   const handleSelection = (item: T | null) => {
     if (item === null) {
@@ -204,11 +204,11 @@ function SearchInputInner<T>(
     setQuery(getLabelRef.current(item));
     setOptions([]);
     setIsOpen(false);
-  }
+  };
 
   return (
     <div className="block space-y-1">
-      <span id={`${inputId}-label`} className="text-sm font-medium flex items-center gap-2">
+      <span id={`${inputId}-label`} className="flex items-center gap-2 text-sm font-medium">
         {label}
         {tooltip ? (
           <>
