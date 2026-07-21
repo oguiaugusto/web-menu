@@ -53,6 +53,8 @@ export default function RegisterPage() {
     if (e.target.value !== lastUrlFill) setLockUrlAutofill(true);
   };
 
+  const inputProps: React.ComponentProps<'input'> = { 'aria-autocomplete': 'none', autoComplete: 'new-password' };
+
   return (
     <main className="min-h-screen bg-neutral-50">
       <div className="mx-auto flex min-h-screen max-w-4xl items-center justify-center px-4 py-8 lg:px-0">
@@ -65,6 +67,7 @@ export default function RegisterPage() {
               value={fields.restaurantName}
               onChange={handleChange}
               onBlur={handleNameBlur}
+              additionalInputProps={inputProps}
               required
             />
             <Input
@@ -74,6 +77,7 @@ export default function RegisterPage() {
               value={fields.restaurantUrl}
               onChange={handleChange}
               onBlur={handleUrlBlur}
+              additionalInputProps={inputProps}
               required
             />
             <Input
@@ -83,6 +87,7 @@ export default function RegisterPage() {
               type="email"
               value={fields.email}
               onChange={handleChange}
+              additionalInputProps={inputProps}
               required
             />
             <PasswordInput value={fields.password} onChange={handleChange} setIsValid={setIsPasswordValid} />

@@ -5,6 +5,7 @@ import { TEXT } from '@/constants/text';
 import { useEffect, useState } from 'react';
 import { checkPasswordStrength } from '../_helpers/checkPasswordStrength';
 import { cn } from '@/utils/cn';
+import { Eye, EyeOff } from 'lucide-react';
 
 type Props = Readonly<{
   value: string;
@@ -14,6 +15,7 @@ type Props = Readonly<{
 }>;
 
 export function PasswordInput({ value, error, onChange, setIsValid }: Props) {
+  const [show, setShow] = useState(false);
   const [score, setScore] = useState(0);
 
   const getStrengthColor = (score: number) => {
@@ -21,6 +23,16 @@ export function PasswordInput({ value, error, onChange, setIsValid }: Props) {
     if (score < 5) return 'bg-amber-500';
     return 'bg-green-600';
   };
+
+  const renderEye = () => (
+    <button
+      type="button"
+      className="flex cursor-pointer items-center justify-center outline-none"
+      onClick={() => setShow((p) => !p)}
+    >
+      {show ? <EyeOff size={20} /> : <Eye size={20} />}
+    </button>
+  );
 
   useEffect(() => {
     const [isValid, score] = checkPasswordStrength(value);
@@ -35,10 +47,12 @@ export function PasswordInput({ value, error, onChange, setIsValid }: Props) {
         name="password"
         label={TEXT.password}
         placeholder="••••••••"
-        type="password"
+        type={show ? 'text' : 'password'}
         value={value}
         error={error}
         onChange={onChange}
+        suffix={{ value: renderEye() }}
+        additionalInputProps={{ 'aria-autocomplete': 'none', autoComplete: 'new-password' }}
         tooltip={
           <div>
             <p className="font-bold">{TEXT.passwordMust}</p>
