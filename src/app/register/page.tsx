@@ -6,8 +6,8 @@ import { Input } from '@/components/ui/input';
 import { TEXT } from '@/constants/text';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import slugify from 'slugify';
 import { PasswordInput } from './_components/password-input';
+import { generateSlug } from '@/constants/generate-slug';
 
 export default function RegisterPage() {
   const [fields, setFields] = useState({
@@ -23,7 +23,7 @@ export default function RegisterPage() {
 
   const [url, setUrl] = useState('');
   useEffect(() => {
-    if (window) setUrl(window.location.host + '/r/');
+    setUrl(window.location.host + '/r/');
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,10 +35,10 @@ export default function RegisterPage() {
     // });
   };
 
-  const handleNameBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-    const restaurantUrl = slugify(e.target.value, { lower: true, remove: /['"]/ });
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const restaurantUrl = generateSlug(e.target.value);
     if (!lockUrlAutofill) {
-      setFields((p) => ({ ...p, restaurantUrl }));
+      setFields((p) => ({ ...p, restaurantName: e.target.value, restaurantUrl }));
       setLastUrlFill(restaurantUrl);
     }
   };
@@ -65,8 +65,7 @@ export default function RegisterPage() {
               label={TEXT.restaurantName}
               placeholder={TEXT.restaurantPlaceholder}
               value={fields.restaurantName}
-              onChange={handleChange}
-              onBlur={handleNameBlur}
+              onChange={handleNameChange}
               additionalInputProps={inputProps}
               required
             />
