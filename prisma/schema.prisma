@@ -21,6 +21,48 @@ enum PaymentMethod {
   CARD
 }
 
+model User {
+  id           String @id @default(cuid())
+  email        String @unique
+  passwordHash String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  restaurant    Restaurant?
+  refreshTokens RefreshToken[]
+}
+
+model RefreshToken {
+  id        String   @id @default(cuid())
+  userId    String
+  tokenHash String   @unique @db.VarChar(64)
+  expiresAt DateTime @db.Timestamptz()
+  createdAt DateTime @default(now()) @db.Timestamptz()
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Restaurant {
+  id   String @id @default(cuid())
+  name String
+  slug String @unique
+
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id])
+
+  deliveryFee  Decimal? @db.Decimal(10, 2)
+  openingHours String?
+  contact      String?
+
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 model MenuItem {
   id          String  @id @default(cuid())
   name        String
