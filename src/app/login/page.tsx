@@ -29,24 +29,26 @@ export default function LoginPage() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    const result = await login({
-      email: fields.email,
-      password: fields.password,
-    });
+    try {
+      const result = await login({
+        email: fields.email,
+        password: fields.password,
+      });
 
-    if (!result.success) {
-      setIsSubmitting(false);
+      if (!result.success) {
+        if (result.error.form) {
+          toastError(ERROR_MESSAGES[result.error.form], { position: 'top-center' });
+        } else if (result.error.fields) {
+          setFieldErrors(result.error.fields);
+        }
 
-      if (result.error.form) {
-        toastError(ERROR_MESSAGES[result.error.form], { position: 'top-center' });
-      } else if (result.error.fields) {
-        setFieldErrors(result.error.fields);
+        return;
       }
 
-      return;
+      router.replace('/admin');
+    } finally {
+      setIsSubmitting(false);
     }
-
-    router.replace('/admin');
   };
 
   const disableSubmit = fields.email.length < 1 || fields.password.length < 1 || isSubmitting;

@@ -61,33 +61,35 @@ export default function CheckoutPage() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    const result = await createOrder({
-      name: fields.name,
-      phone: fields.phone,
-      address: fields.address,
-      notes: fields.notes,
-      payment: fields.payment as any,
-      changeFor: fields.changeFor > 0 ? Number(fields.changeFor) : undefined,
-      items: items.map((x) => ({ id: x.id, quantity: x.quantity })),
-    });
+    try {
+      const result = await createOrder({
+        name: fields.name,
+        phone: fields.phone,
+        address: fields.address,
+        notes: fields.notes,
+        payment: fields.payment as any,
+        changeFor: fields.changeFor > 0 ? Number(fields.changeFor) : undefined,
+        items: items.map((x) => ({ id: x.id, quantity: x.quantity })),
+      });
 
-    if (!result.success) {
-      setIsSubmitting(false);
+      if (!result.success) {
+        if (result.error.form) {
+          toastError(ERROR_MESSAGES[result.error.form], { position: 'top-center' });
+        } else if (result.error.fields) {
+          setFieldErrors(result.error.fields);
+        }
 
-      if (result.error.form) {
-        toastError(ERROR_MESSAGES[result.error.form], { position: 'top-center' });
-      } else if (result.error.fields) {
-        setFieldErrors(result.error.fields);
+        return;
       }
 
-      return;
+      toastSuccess(TEXT.orderPlaced, { position: 'bottom-center' });
+      saveOrderCode(result.code);
+      clearCart();
+
+      router.push(`/orders/${result.code}`);
+    } finally {
+      setIsSubmitting(false);
     }
-
-    toastSuccess(TEXT.orderPlaced, { position: 'bottom-center' });
-    saveOrderCode(result.code);
-    clearCart();
-
-    router.push(`/orders/${result.code}`);
   };
   const total = subtotal + DELIVERY_FEE;
 

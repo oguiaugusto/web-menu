@@ -61,26 +61,28 @@ export default function RegisterPage() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    const result = await register({
-      email: fields.email,
-      password: fields.password,
-      restaurantName: fields.restaurantName,
-      restaurantUrl: fields.restaurantUrl,
-    });
+    try {
+      const result = await register({
+        email: fields.email,
+        password: fields.password,
+        restaurantName: fields.restaurantName,
+        restaurantUrl: fields.restaurantUrl,
+      });
 
-    if (!result.success) {
-      setIsSubmitting(false);
+      if (!result.success) {
+        if (result.error.form) {
+          toastError(ERROR_MESSAGES[result.error.form], { position: 'top-center' });
+        } else if (result.error.fields) {
+          setFieldErrors(result.error.fields);
+        }
 
-      if (result.error.form) {
-        toastError(ERROR_MESSAGES[result.error.form], { position: 'top-center' });
-      } else if (result.error.fields) {
-        setFieldErrors(result.error.fields);
+        return;
       }
 
-      return;
+      router.replace('/admin');
+    } finally {
+      setIsSubmitting(false);
     }
-
-    router.replace('/admin');
   };
 
   const inputProps: React.ComponentProps<'input'> = { 'aria-autocomplete': 'none', autoComplete: 'new-password' };
