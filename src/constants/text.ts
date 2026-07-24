@@ -104,6 +104,9 @@ export const ERROR_MESSAGES: Record<string, string> = {
   empty_order: 'Order cannot be empty',
   order_not_found: 'Order not found',
   invalid_code: 'Invalid order code',
+  weak_password: 'must be 8 characters long and include letters and numbers',
+  already_registered: 'is already registered',
+  already_in_use: 'is already in use',
 };
 
 export const PAYMENT_METHODS: Record<PaymentMethod, string> = {

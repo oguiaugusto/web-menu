@@ -3,7 +3,7 @@
 import { Input } from '@/components/ui/input';
 import { TEXT } from '@/constants/text';
 import { useEffect, useState } from 'react';
-import { checkPasswordStrength } from '../_helpers/checkPasswordStrength';
+import { checkPasswordStrength } from '../../../utils/check-password-strength';
 import { cn } from '@/utils/cn';
 import { Eye, EyeOff } from 'lucide-react';
 
@@ -35,7 +35,7 @@ export function PasswordInput({ value, error, onChange, setIsValid }: Props) {
   );
 
   useEffect(() => {
-    const [isValid, score] = checkPasswordStrength(value);
+    const { isValid, score } = checkPasswordStrength(value);
 
     setScore(score);
     setIsValid(isValid);

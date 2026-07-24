@@ -9,5 +9,8 @@ export enum ErrorCode {
   EMPTY_ORDER = 'empty_order',
   INVALID_PAYMENT_METHOD = 'invalid_payment_method',
   CHANGE_FOR_SMALLER_THAN_TOTAL = 'change_for_smaller_than_total',
-  ORDER_NOT_FOUND = 'order_not_found'
+  ORDER_NOT_FOUND = 'order_not_found',
+  WEAK_PASSWORD = 'weak_password',
+  ALREADY_REGISTERED = 'already_registered',
+  ALREADY_IN_USE = 'already_in_use',
 }

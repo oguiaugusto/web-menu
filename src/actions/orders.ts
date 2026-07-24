@@ -4,7 +4,9 @@ import { DELIVERY_FEE } from '@/constants/deliveryFee';
 import { Prisma } from '@/generated/prisma/client';
 import { prisma } from '@/lib/prisma';
 import { ErrorCode } from '@/types/enums';
+import { ResultError } from '@/types/misc';
 import { parseZodErrors } from '@/utils/parse-zod-errors';
+import { returnError } from '@/utils/return-error';
 import z from 'zod';
 
 const CreateOrderSchema = z.object({
@@ -25,7 +27,6 @@ const CreateOrderSchema = z.object({
 type CreateOrderInput = z.infer<typeof CreateOrderSchema>;
 
 type ResultSuccess = { success: true; code: string };
-type ResultError = { success: false; error: ErrorType };
 type CreateOrderResult = ResultSuccess | ResultError;
 
 type ItemInput = {
@@ -34,15 +35,6 @@ type ItemInput = {
   price: Prisma.Decimal;
   quantity: number;
 };
-
-type ErrorType = { form?: ErrorCode; fields?: Record<string, ErrorCode> };
-
-function returnError(error: ErrorType): ResultError {
-  return {
-    success: false,
-    error,
-  };
-}
 
 function generateCode() {
   const alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';

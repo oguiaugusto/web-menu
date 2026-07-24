@@ -16,5 +16,5 @@ export function checkPasswordStrength(str: string) {
   if (isValid && hasUpperAndLower) score++;
   if (isValid && hasSpecial) score++;
 
-  return [isValid, score] as [boolean, number];
+  return { isValid, score };
 }
