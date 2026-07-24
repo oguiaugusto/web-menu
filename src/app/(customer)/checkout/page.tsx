@@ -14,6 +14,7 @@ import { FieldErrors } from '@/types/misc';
 import { toastError, toastSuccess } from '@/utils/toast';
 import { saveOrderCode } from '@/utils/localstorage-orders';
 import EmptyCart from '@/components/empty-cart';
+import { getHandleChange } from '@/utils/getHandleChange';
 
 const DEFAULT_FIELDS = {
   name: '',
@@ -33,14 +34,7 @@ export default function CheckoutPage() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFields((p) => ({ ...p, [e.target.name]: e.target.value }));
-    setFieldErrors((p) => {
-      const next = { ...p };
-      delete next[e.target.name];
-      return next;
-    });
-  };
+  const handleChange = getHandleChange(setFields, setFieldErrors);
 
   const formatter = new Intl.NumberFormat(TEXT.languageCountryISO, {
     minimumFractionDigits: 2,

@@ -12,6 +12,7 @@ import { FieldErrors } from '@/types/misc';
 import { register } from '@/actions/auth/register';
 import { toastError } from '@/utils/toast';
 import { useRouter } from 'next/navigation';
+import { getHandleChange } from '@/utils/getHandleChange';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -36,14 +37,7 @@ export default function RegisterPage() {
     setUrl(window.location.host + '/r/');
   }, []);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFields((p) => ({ ...p, [e.target.name]: e.target.value }));
-    setFieldErrors((p) => {
-      const next = { ...p };
-      delete next[e.target.name];
-      return next;
-    });
-  };
+  const handleChange = getHandleChange(setFields, setFieldErrors);
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const restaurantUrl = generateSlug(e.target.value);
@@ -106,39 +100,39 @@ export default function RegisterPage() {
               name="restaurantName"
               label={TEXT.restaurantName}
               placeholder={TEXT.restaurantPlaceholder}
+              error={fieldErrors.restaurantName}
               value={fields.restaurantName}
               onChange={handleNameChange}
               additionalInputProps={inputProps}
-              error={fieldErrors.restaurantName}
               required
             />
             <Input
               name="restaurantUrl"
-              label={TEXT.restaurantUrl}
               prefix={{ value: url, noPadding: true }}
+              label={TEXT.restaurantUrl}
               value={fields.restaurantUrl}
+              error={fieldErrors.restaurantUrl}
               onChange={handleChange}
               onBlur={handleUrlBlur}
               additionalInputProps={inputProps}
-              error={fieldErrors.restaurantUrl}
               required
             />
             <Input
+              type="email"
               name="email"
               label={TEXT.email}
               placeholder={TEXT.emailPlaceholder}
-              type="email"
               value={fields.email}
+              error={fieldErrors.email}
               onChange={handleChange}
               additionalInputProps={inputProps}
-              error={fieldErrors.email}
               required
             />
             <PasswordInput
               value={fields.password}
+              error={fieldErrors.password}
               onChange={handleChange}
               setIsValid={setIsPasswordValid}
-              error={fieldErrors.password}
             />
             <Button type="submit" variant="primary" className="w-full" disabled={disableSubmit}>
               {TEXT.signUp}
