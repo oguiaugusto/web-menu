@@ -147,7 +147,7 @@ export default function CheckoutPage() {
               <Radio name="payment" label={TEXT.cash} value="CASH" checked={fields.payment} onChange={handleChange} />
               <Radio name="payment" label={TEXT.card} value="CARD" checked={fields.payment} onChange={handleChange} />
               {fieldErrors.payment ? (
-                <p className="text-sm text-red-600">{`"${TEXT.paymentMethod}" ${ERROR_MESSAGES[fieldErrors.payment]}`}</p>
+                <p className="text-sm text-red-600">{`${TEXT.paymentMethod} ${ERROR_MESSAGES[fieldErrors.payment]}`}</p>
               ) : null}
             </div>
             {fields.payment === 'CASH' ? (
@@ -164,7 +164,7 @@ export default function CheckoutPage() {
                   />
                 </div>
                 {fieldErrors.changeFor ? (
-                  <p className="text-sm text-red-600">{`"${TEXT.changeFor}" ${ERROR_MESSAGES[fieldErrors.changeFor]}`}</p>
+                  <p className="text-sm text-red-600">{`${TEXT.changeFor} ${ERROR_MESSAGES[fieldErrors.changeFor]}`}</p>
                 ) : null}
               </div>
             ) : null}

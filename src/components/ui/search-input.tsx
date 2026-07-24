@@ -296,7 +296,7 @@ function SearchInputInner<T>(
       </Combobox>
       {error ? (
         <p id={errorId} className="mt-1 text-sm text-red-600">
-          {`"${errorLabel ?? label}" ${ERROR_MESSAGES[error]}`}
+          {`${errorLabel ?? label} ${ERROR_MESSAGES[error]}`}
         </p>
       ) : null}
     </div>

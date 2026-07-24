@@ -28,7 +28,7 @@ export function TextArea({ label, addLabel, name, placeholder, value, rows, cols
         value={value}
         onChange={onChange}
       />
-      {error ? <p className="mt-1 text-sm text-red-600">{`"${label}" ${ERROR_MESSAGES[error]}`}</p> : null}
+      {error ? <p className="mt-1 text-sm text-red-600">{`${label} ${ERROR_MESSAGES[error]}`}</p> : null}
     </label>
   );
 }

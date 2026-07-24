@@ -108,7 +108,7 @@ export function Input({
         ) : null}
       </div>
       {error ? (
-        <p className="mt-1 text-sm text-red-600">{`"${errorLabel ?? label}" ${ERROR_MESSAGES[error]}`}</p>
+        <p className="mt-1 text-sm text-red-600">{`${errorLabel ?? label} ${ERROR_MESSAGES[error]}`}</p>
       ) : null}
     </label>
   );
