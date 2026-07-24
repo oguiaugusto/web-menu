@@ -13,4 +13,5 @@ export enum ErrorCode {
   WEAK_PASSWORD = 'weak_password',
   ALREADY_REGISTERED = 'already_registered',
   ALREADY_IN_USE = 'already_in_use',
+  WRONG_CREDENTIALS = 'wrong_credentials',
 }

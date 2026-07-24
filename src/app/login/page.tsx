@@ -1,16 +1,71 @@
+'use client';
+
+import { login } from '@/actions/auth/login';
 import { AuthCard } from '@/components/auth-card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { TEXT } from '@/constants/text';
+import { ERROR_MESSAGES, TEXT } from '@/constants/text';
+import { FieldErrors } from '@/types/misc';
+import { getHandleChange } from '@/utils/getHandleChange';
+import { toastError } from '@/utils/toast';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 export default function LoginPage() {
+  const router = useRouter();
+
+  const [fields, setFields] = useState({
+    email: '',
+    password: '',
+  });
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleChange = getHandleChange(setFields, setFieldErrors);
+
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    const result = await login({
+      email: fields.email,
+      password: fields.password,
+    });
+
+    if (!result.success) {
+      setIsSubmitting(false);
+
+      if (result.error.form) {
+        toastError(ERROR_MESSAGES[result.error.form], { position: 'top-center' });
+      } else if (result.error.fields) {
+        setFieldErrors(result.error.fields);
+      }
+
+      return;
+    }
+
+    router.replace('/admin');
+  };
+
+  const disableSubmit = fields.email.length < 1 || fields.password.length < 1 || isSubmitting;
+
   return (
     <main className="min-h-screen bg-neutral-50">
       <div className="mx-auto flex min-h-screen max-w-4xl items-center justify-center px-4 py-8 lg:px-0">
         <AuthCard title={TEXT.signInTitle}>
-          <form className="space-y-5">
-            <Input label={TEXT.email} placeholder={TEXT.emailPlaceholder} type="email" />
+          <form className="space-y-5" onSubmit={handleSubmit}>
+            <Input
+              type="email"
+              name="email"
+              label={TEXT.email}
+              placeholder={TEXT.emailPlaceholder}
+              value={fields.email}
+              error={fieldErrors.email}
+              onChange={handleChange}
+              required
+            />
             <label className="block">
               <div className="mb-1 flex items-center justify-between">
                 <span className="text-sm font-medium text-neutral-900">{TEXT.password}</span>
@@ -21,9 +76,18 @@ export default function LoginPage() {
                   {TEXT.forgotPassword}
                 </Link>
               </div>
-              <Input label="" placeholder="••••••••" type="password" />
+              <Input
+                type="password"
+                name="password"
+                label=""
+                placeholder="••••••••"
+                value={fields.password}
+                error={fieldErrors.password}
+                onChange={handleChange}
+                required
+              />
             </label>
-            <Button type="submit" variant="primary" className="w-full">
+            <Button type="submit" variant="primary" className="w-full" disabled={disableSubmit}>
               {TEXT.signIn}
             </Button>
           </form>

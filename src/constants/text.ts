@@ -107,6 +107,7 @@ export const ERROR_MESSAGES: Record<string, string> = {
   weak_password: 'must be 8 characters long and include letters and numbers',
   already_registered: 'is already registered',
   already_in_use: 'is already in use',
+  wrong_credentials: 'Email or password is incorrect',
 };
 
 export const PAYMENT_METHODS: Record<PaymentMethod, string> = {
