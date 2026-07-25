@@ -1,18 +1,27 @@
 import Link from 'next/link';
 import { ShoppingCart } from 'lucide-react';
-import { CartAmountBubble } from './cart-amount-bubble';
+import { CartAmountBubble } from '../../../../../components/cart-amount-bubble';
 import { TEXT } from '@/constants/text';
 import Image from 'next/image';
 
-export function Header() {
+export function Header({ slug }: Readonly<{ slug: string }>) {
   return (
     <header className="bg-red-muted sticky top-0 z-50 border-b border-red-700 text-white">
       <div className="mx-auto flex h-16 max-w-235 items-center justify-between px-4">
-        <Link href="/" className="flex items-center">
-          <Image src="/logo-white.png" alt="Web Menu" width={42} height={42} className="block sm:hidden" sizes="100%" />
+        <Link href={`/r/${slug}`} className="flex items-center">
+          <Image
+            src="/logo-white.png"
+            alt="Web Menu"
+            loading="eager"
+            width={42}
+            height={42}
+            className="block sm:hidden"
+            sizes="100%"
+          />
           <Image
             src="/logo-wide-white.png"
             alt="Web Menu"
+            loading="eager"
             width={0}
             height={0}
             style={{ width: 180, height: 'auto' }}
@@ -27,14 +36,14 @@ export function Header() {
           ].map((x) => (
             <Link
               key={`link-${x.link}`}
-              href={`/${x.link}`}
+              href={`/r/${slug}/${x.link}`}
               className="relative py-1 text-sm font-medium transition-colors after:bottom-0 after:left-0 after:h-[.5px] after:w-full after:bg-white hover:after:absolute focus-visible:outline-0 active:after:absolute"
             >
               {x.label}
             </Link>
           ))}
           <Link
-            href="/cart"
+            href={`/r/${slug}/cart`}
             aria-label="Cart"
             className="relative mb-[1px] cursor-pointer rounded-full p-2 transition-opacity hover:drop-shadow-[0px_1px_1px_rgba(255,255,255,0.4)]"
           >
