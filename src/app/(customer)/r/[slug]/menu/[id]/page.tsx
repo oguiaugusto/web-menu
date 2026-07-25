@@ -3,17 +3,17 @@ import { QuantityAndAdd } from './_components/quantity-and-add';
 import { TEXT } from '@/constants/text';
 import { getMenuItem } from '@/db/menu-item';
 import Image from 'next/image';
+import { getRestaurant } from '@/lib/restaurant';
 
 type Props = {
-  params: Promise<{
-    id: string;
-  }>;
+  params: Promise<{ slug: string; id: string }>;
 };
 
 export default async function MenuItem({ params }: Props) {
-  const { id } = await params;
+  const { slug, id } = await params;
+  const restaurant = await getRestaurant(slug);
 
-  const data = await getMenuItem(id);
+  const data = await getMenuItem(restaurant.id, id);
   if (!data) notFound();
 
   return (

@@ -2,15 +2,22 @@ import { MenuCard } from './_components/menu-card';
 import { TEXT } from '@/constants/text';
 import { Categories } from './_components/categories';
 import { getMenuCategories, getMenuItems } from '@/db/menu-item';
+import { getRestaurant } from '@/lib/restaurant';
 
 type Props = {
+  params: Promise<{ slug: string }>;
   searchParams: Promise<{ category?: string }>;
 };
 
-export default async function MenuPage({ searchParams }: Props) {
+export default async function MenuPage({ params, searchParams }: Props) {
+  const { slug } = await params;
   const { category } = await searchParams;
 
-  const [categories, data] = await Promise.all([getMenuCategories(), getMenuItems(category)]);
+  const restaurant = await getRestaurant(slug);
+  const [categories, data] = await Promise.all([
+    getMenuCategories(restaurant.id),
+    getMenuItems(restaurant.id, category),
+  ]);
 
   return (
     <main className="min-h-screen bg-neutral-50">

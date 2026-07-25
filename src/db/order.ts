@@ -15,9 +15,9 @@ export type OrderSummary = {
   createdAt: Date;
 };
 
-export async function getOrder(code: string): Promise<Order | null> {
+export async function getOrder(restaurantId: string, code: string): Promise<Order | null> {
   const order = await prisma.order.findUnique({
-    where: { code: code.toUpperCase() },
+    where: { restaurantId, code: code.toUpperCase() },
     include: { items: true },
   });
 
@@ -32,9 +32,9 @@ export async function getOrder(code: string): Promise<Order | null> {
   };
 }
 
-export async function getOrderStatus(code: string): Promise<string | null> {
+export async function getOrderStatus(restaurantId: string, code: string): Promise<string | null> {
   const order = await prisma.order.findUnique({
-    where: { code: code.toUpperCase() },
+    where: { restaurantId, code: code.toUpperCase() },
     select: { status: true },
   });
 
@@ -42,9 +42,9 @@ export async function getOrderStatus(code: string): Promise<string | null> {
   return order.status;
 }
 
-export async function getOrderSummaries(codes: string[]): Promise<OrderSummary[]> {
+export async function getOrderSummaries(restaurantId: string, codes: string[]): Promise<OrderSummary[]> {
   const orders = await prisma.order.findMany({
-    where: { code: { in: codes } },
+    where: { restaurantId, code: { in: codes } },
     select: { code: true, status: true, createdAt: true },
     orderBy: { createdAt: 'desc' },
   });

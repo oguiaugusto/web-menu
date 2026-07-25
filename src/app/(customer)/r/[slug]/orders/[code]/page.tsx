@@ -5,15 +5,17 @@ import { getOrder } from '@/db/order';
 import { notFound } from 'next/navigation';
 import { OrderStatus } from './_components/order-status';
 import { RememberOrder } from './_components/remember-order';
+import { getRestaurant } from '@/lib/restaurant';
 
 type Props = {
-  params: Promise<{ code: string }>;
+  params: Promise<{ slug: string; code: string }>;
 };
 
 export default async function OrderPage({ params }: Props) {
-  const { code } = await params;
+  const { slug, code } = await params;
 
-  const data = await getOrder(code);
+  const restaurant = await getRestaurant(slug);
+  const data = await getOrder(restaurant.id, code);
   if (!data) notFound();
 
   const date = new Date(data.createdAt).toLocaleString();

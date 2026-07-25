@@ -5,8 +5,9 @@ export type MenuItem = Omit<PrismaMenuItem, 'price'> & {
   price: number;
 };
 
-export async function getMenuCategories() {
+export async function getMenuCategories(restaurantId: string) {
   const items = await prisma.menuItem.findMany({
+    where: { restaurantId },
     distinct: ['category'],
     select: { category: true },
     orderBy: { category: 'asc' },
@@ -15,9 +16,9 @@ export async function getMenuCategories() {
   return items.map((x) => x.category);
 }
 
-export async function getMenuItems(category?: string): Promise<MenuItem[]> {
+export async function getMenuItems(restaurantId: string, category?: string): Promise<MenuItem[]> {
   const items = await prisma.menuItem.findMany({
-    where: { category },
+    where: { restaurantId, category },
     orderBy: { name: 'asc' },
   });
 
@@ -27,9 +28,9 @@ export async function getMenuItems(category?: string): Promise<MenuItem[]> {
   }));
 }
 
-export async function getMenuItem(id: string): Promise<MenuItem | null> {
+export async function getMenuItem(restaurantId: string, id: string): Promise<MenuItem | null> {
   const item = await prisma.menuItem.findUnique({
-    where: { id },
+    where: { restaurantId, id },
   });
 
   if (!item) return null;

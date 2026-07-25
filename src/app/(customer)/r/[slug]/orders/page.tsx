@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { use, useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ERROR_MESSAGES, TEXT } from '@/constants/text';
@@ -10,7 +10,13 @@ import { OrderCard } from './_components/order-card';
 import { useRouter } from 'next/navigation';
 import { toastError } from '@/utils/toast';
 
-export default function OrdersPage() {
+type Props = {
+  params: Promise<{ slug: string }>;
+};
+
+export default function OrdersPage({ params }: Props) {
+  const { slug } = use(params);
+
   const router = useRouter();
 
   const [code, setCode] = useState('');
@@ -21,7 +27,7 @@ export default function OrdersPage() {
 
     const fetchOrders = async () => {
       const query = codes.map((x) => `codes=${x}`).join('&');
-      const response = await fetch(`/api/orders/summaries?${query}`);
+      const response = await fetch(`/api/r/${slug}/orders/summaries?${query}`);
 
       if (!response.ok) {
         setOrders([]);
@@ -30,10 +36,10 @@ export default function OrdersPage() {
 
       const data = (await response.json()) as OrderSummary[];
       setOrders(data);
-    }
+    };
 
     fetchOrders();
-  }, []);
+  }, [slug]);
 
   const handleSearch = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
