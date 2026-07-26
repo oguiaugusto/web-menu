@@ -14,8 +14,9 @@ export function Header({ slug }: Readonly<{ slug: string }>) {
             src="/logo-white.png"
             alt="Web Menu"
             loading="eager"
-            width={42}
-            height={42}
+            width={0}
+            height={0}
+            style={{ width: 42, height: 'auto' }}
             className="block sm:hidden"
             sizes="100%"
           />
