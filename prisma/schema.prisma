@@ -95,7 +95,8 @@ model Order {
   payment   PaymentMethod
   changeFor Decimal?      @db.Decimal(10, 2)
 
-  total Decimal @db.Decimal(10, 2)
+  deliveryFee Decimal? @db.Decimal(10, 2)
+  total       Decimal  @db.Decimal(10, 2)
 
   status OrderStatus @default(PENDING)
 
