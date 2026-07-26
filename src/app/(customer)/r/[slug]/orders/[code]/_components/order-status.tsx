@@ -7,11 +7,11 @@ import { cn } from '@/utils/cn';
 import { STATUS_INFO } from '../../_constants/status';
 import type { OrderStatus as POrderStatus } from '@/generated/prisma/enums';
 
-type Props = { code: string; status: POrderStatus };
+type Props = { slug: string; code: string; status: POrderStatus };
 
 const ORDER_STEPS: POrderStatus[] = ['PENDING', 'ACCEPTED', 'PREPARING', 'READY', 'DELIVERED'] as const;
 
-export function OrderStatus({ code, status }: Props) {
+export function OrderStatus({ slug, code, status }: Props) {
   const [currentStatus, setCurrentStatus] = useState(status);
 
   const statusInfo = STATUS_INFO[currentStatus];
@@ -22,7 +22,7 @@ export function OrderStatus({ code, status }: Props) {
     let interval: NodeJS.Timeout;
 
     const refresh = async () => {
-      const response = await fetch(`/api/orders/${code}/status`);
+      const response = await fetch(`/api/r/${slug}/orders/${code}/status`);
 
       if (!response.ok) return;
 
@@ -33,14 +33,14 @@ export function OrderStatus({ code, status }: Props) {
       if (['DELIVERED', 'CANCELLED'].includes(data.status)) {
         clearInterval(interval);
       }
-    }
+    };
 
     refresh();
 
     interval = setInterval(refresh, 15000);
 
     return () => clearInterval(interval);
-  }, [code]);
+  }, [code, slug]);
 
   const renderSteps = () => {
     return (

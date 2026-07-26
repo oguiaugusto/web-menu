@@ -31,7 +31,7 @@ export default async function OrderPage({ params }: Props) {
           </div>
           <CopyCode code={data.code} />
         </section>
-        <OrderStatus code={code} status={data.status} />
+        <OrderStatus slug={slug} code={code} status={data.status} />
         <div className="flex flex-col gap-4 md:flex-row">
           <section className="flex-1 rounded-2xl border border-neutral-200 bg-white p-6">
             <h2 className="mb-4 font-semibold">{TEXT.orderSummary}</h2>
