@@ -1,6 +1,7 @@
 import { Header } from '@/app/(customer)/r/[slug]/_components/header';
 import { getRestaurant } from '@/lib/restaurant';
 import { CartProvider } from '@/providers/cart-provider';
+import { RestaurantProvider } from '@/providers/restaurant-provider';
 import { Metadata, ResolvingMetadata } from 'next';
 
 type Props = Readonly<{
@@ -19,12 +20,14 @@ export async function generateMetadata({ params }: Props, _: ResolvingMetadata):
 
 export default async function RestaurantLayout({ children, params }: Props) {
   const { slug } = await params;
-  await getRestaurant(slug);
+  const restaurant = await getRestaurant(slug);
 
   return (
-    <CartProvider slug={slug}>
-      <Header slug={slug} />
-      {children}
-    </CartProvider>
+    <RestaurantProvider restaurant={restaurant}>
+      <CartProvider slug={slug}>
+        <Header slug={slug} />
+        {children}
+      </CartProvider>
+    </RestaurantProvider>
   );
 }
