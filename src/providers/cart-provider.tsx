@@ -1,6 +1,6 @@
 'use client';
 
-import { CART_KEY } from '@/constants/localStorage';
+import { CART_KEY } from '@/constants/local-storage';
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 
 export type CartItem = {
@@ -23,7 +23,12 @@ type CartContextType = {
 
 const CartContext = createContext<CartContextType | null>(null);
 
-export function CartProvider({ children }: Readonly<{ children: React.ReactNode }>) {
+type Props = Readonly<{
+  children: React.ReactNode;
+  slug: string;
+}>;
+
+export function CartProvider({ children, slug }: Props) {
   const [items, setItems] = useState<CartItem[]>([]);
 
   const addItem: CartContextType['addItem'] = (item, quantity) => {
@@ -52,16 +57,16 @@ export function CartProvider({ children }: Readonly<{ children: React.ReactNode 
   const subtotal = useMemo(() => items.reduce((acc, curr) => acc + curr.price * curr.quantity, 0), [items]);
 
   useEffect(() => {
-    const saved = localStorage.getItem(CART_KEY);
+    const saved = localStorage.getItem(`${CART_KEY}:${slug}`);
 
     if (!saved) return;
 
     setItems(JSON.parse(saved));
-  }, []);
+  }, [slug]);
 
   useEffect(() => {
-    localStorage.setItem(CART_KEY, JSON.stringify(items));
-  }, [items]);
+    localStorage.setItem(`${CART_KEY}:${slug}`, JSON.stringify(items));
+  }, [items, slug]);
 
   return (
     <CartContext.Provider

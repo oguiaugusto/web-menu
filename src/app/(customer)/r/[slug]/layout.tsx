@@ -22,7 +22,7 @@ export default async function RestaurantLayout({ children, params }: Props) {
   await getRestaurant(slug);
 
   return (
-    <CartProvider>
+    <CartProvider slug={slug}>
       <Header slug={slug} />
       {children}
     </CartProvider>

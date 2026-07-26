@@ -1,4 +1,4 @@
-import { ORDER_CODES_KEY } from '@/constants/localStorage';
+import { ORDER_CODES_KEY } from '@/constants/local-storage';
 
 export function getOrderCodes(): string[] {
   const stored = JSON.parse(localStorage.getItem(ORDER_CODES_KEY) || '[]');
