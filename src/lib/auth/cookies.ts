@@ -21,3 +21,15 @@ export async function setAuthCookies({ refreshToken, accessToken }: AuthCookiesP
     maxAge: 15 * 60,
   });
 }
+
+export async function getCookie(name: string) {
+  const cookieStore = await cookies();
+  return cookieStore.get(name);
+}
+
+export async function clearAuthCookies() {
+  const cookieStore = await cookies();
+
+  cookieStore.delete('refresh_token');
+  cookieStore.delete('access_token');
+}
