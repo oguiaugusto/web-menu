@@ -6,12 +6,20 @@ import { useRouter } from 'next/navigation';
 import { TEXT } from '@/constants/text';
 import { CartItem } from './_components/cart-item';
 import EmptyCart from '@/components/empty-cart';
+import { use } from 'react';
+import { rSlug } from '@/utils/r-slug';
 
-export default function CartPage() {
+type Props = {
+  params: Promise<{ slug: string }>;
+};
+
+export default function CartPage({ params }: Props) {
+  const { slug } = use(params);
+
   const router = useRouter();
   const { items, subtotal, clearCart } = useCart();
 
-  if (items.length === 0) return <EmptyCart />;
+  if (items.length === 0) return <EmptyCart slug={slug} />;
 
   return (
     <main className="mx-auto max-w-4xl px-4 py-6 lg:px-0">
@@ -34,7 +42,7 @@ export default function CartPage() {
             {subtotal.toFixed(2)}
           </span>
         </div>
-        <Button variant="primary" className="w-full" onClick={() => router.push('/checkout')}>
+        <Button variant="primary" className="w-full" onClick={() => router.push(rSlug(slug, '/checkout'))}>
           {TEXT.checkout}
         </Button>
       </div>

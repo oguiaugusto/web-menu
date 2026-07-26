@@ -8,12 +8,14 @@ import { useCart } from '@/providers/cart-provider';
 import { Button } from '@/components/ui/button';
 import { MenuItem } from '@/db/menu-item';
 import { toastSuccess } from '@/utils/toast';
+import { rSlug } from '@/utils/r-slug';
 
 type Props = {
+  slug: string;
   data: MenuItem;
 };
 
-export function QuantityAndAdd({ data }: Props) {
+export function QuantityAndAdd({ slug, data }: Props) {
   const router = useRouter();
 
   const { addItem } = useCart();
@@ -24,7 +26,7 @@ export function QuantityAndAdd({ data }: Props) {
     setQuantity(1);
 
     toastSuccess(`${quantity}x ${data.name} ${TEXT.addedToCart}`, {
-      action: { label: TEXT.browseMoreItems, onClick: () => router.push('/menu') },
+      action: { label: TEXT.browseMoreItems, onClick: () => router.push(rSlug(slug, '/menu')) },
       style: { marginBottom: '70px' },
       position: 'bottom-center',
     });

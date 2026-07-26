@@ -9,6 +9,7 @@ import { getOrderCodes } from '@/utils/localstorage-orders';
 import { OrderCard } from './_components/order-card';
 import { useRouter } from 'next/navigation';
 import { toastError } from '@/utils/toast';
+import { rSlug } from '@/utils/r-slug';
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -47,7 +48,7 @@ export default function OrdersPage({ params }: Props) {
     if (!code.toUpperCase().startsWith('WM-') || code.length !== 9) {
       toastError(ERROR_MESSAGES.invalid_code, { position: 'top-center' });
     } else {
-      router.push(`/orders/${code.toUpperCase()}`);
+      router.push(rSlug(slug, `/orders/${code.toUpperCase()}`));
     }
   };
 
@@ -74,7 +75,7 @@ export default function OrdersPage({ params }: Props) {
           <h2 className="mb-4 text-lg font-semibold">{TEXT.recentOrders}</h2>
           <div className="space-y-3">
             {orders?.map((x) => (
-              <OrderCard key={x.code} order={x} />
+              <OrderCard key={x.code} slug={slug} order={x} />
             ))}
           </div>
         </section>

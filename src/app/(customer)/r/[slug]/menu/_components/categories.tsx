@@ -1,17 +1,19 @@
 import { TEXT } from '@/constants/text';
 import { cn } from '@/utils/cn';
+import { rSlug } from '@/utils/r-slug';
 import Link from 'next/link';
 
 type Props = Readonly<{
+  slug: string
   categories: string[];
   selected?: string;
 }>;
 
-export function Categories({ categories, selected }: Props) {
+export async function Categories({ slug, categories, selected }: Props) {
   const renderLink = (category: string, noCategory?: boolean) => (
     <Link
       key={category}
-      href={noCategory ? '/menu' : `/menu?category=${category}`}
+      href={rSlug(slug, noCategory ? '/menu' : `/menu?category=${category}`)}
       className={cn(
         'cursor-pointer rounded-2xl px-4 py-2 text-sm font-medium whitespace-nowrap transition',
         selected === category || (!selected && category === TEXT.all)

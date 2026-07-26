@@ -7,6 +7,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { TEXT } from '@/constants/text';
+import { rSlug } from '@/utils/r-slug';
 
 type Restaurant = {
   id: string;
@@ -57,7 +58,7 @@ export default function Home() {
               label=""
               value={restaurant}
               onChange={setRestaurant}
-              onSelect={(x) => router.push(`/r/${x.slug}`)}
+              onSelect={(x) => router.push(rSlug(x.slug))}
               search={searchRestaurants}
               getKey={(item) => item.id}
               getLabel={(item) => item.name}

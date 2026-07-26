@@ -2,14 +2,16 @@ import Link from 'next/link';
 import { TEXT } from '@/constants/text';
 import { MenuItem } from '@/db/menu-item';
 import Image from 'next/image';
+import { rSlug } from '@/utils/r-slug';
 
 type Props = {
+  slug: string;
   item: MenuItem;
 };
 
-export function MenuCard({ item }: Props) {
+export function MenuCard({ slug, item }: Props) {
   return (
-    <Link href={`/menu/${item.id}`}>
+    <Link href={rSlug(slug, `/menu/${item.id}`)}>
       <div className="group grid grid-cols-[100px_1fr] overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm transition-all hover:shadow-md sm:grid-cols-none">
         <div className="relative h-full overflow-hidden bg-neutral-700 sm:aspect-square">
           <Image src={item.imageUrl ?? ''} alt={item.name} className="h-full w-full object-cover" fill sizes="100%" />

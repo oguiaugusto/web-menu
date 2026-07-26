@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { use, useEffect, useState } from 'react';
 import { useCart } from '@/providers/cart-provider';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -15,6 +15,11 @@ import { toastError, toastSuccess } from '@/utils/toast';
 import { saveOrderCode } from '@/utils/localstorage-orders';
 import EmptyCart from '@/components/empty-cart';
 import { getHandleChange } from '@/utils/getHandleChange';
+import { rSlug } from '@/utils/r-slug';
+
+type Props = {
+  params: Promise<{ slug: string }>;
+};
 
 const DEFAULT_FIELDS = {
   name: '',
@@ -25,7 +30,9 @@ const DEFAULT_FIELDS = {
   changeFor: 0,
 };
 
-export default function CheckoutPage() {
+export default function CheckoutPage({ params }: Props) {
+  const { slug } = use(params);
+
   const router = useRouter();
   const { items, subtotal, clearCart } = useCart();
 
@@ -86,14 +93,14 @@ export default function CheckoutPage() {
       saveOrderCode(result.code);
       clearCart();
 
-      router.push(`/orders/${result.code}`);
+      router.push(rSlug(slug, `/orders/${result.code}`));
     } finally {
       setIsSubmitting(false);
     }
   };
   const total = subtotal + DELIVERY_FEE;
 
-  if (items.length === 0 && !isSubmitting) return <EmptyCart />;
+  if (items.length === 0 && !isSubmitting) return <EmptyCart slug={slug} />;
 
   return (
     <main className="mx-auto max-w-4xl px-4 py-6 lg:px-0 lg:pb-16">
@@ -185,7 +192,7 @@ export default function CheckoutPage() {
             <Button
               variant="primary-text"
               className="mt-2 w-full text-end text-sm"
-              onClick={() => router.push('/cart')}
+              onClick={() => router.push(rSlug(slug, '/cart'))}
             >
               {TEXT.editCart}
             </Button>

@@ -37,7 +37,7 @@ export default async function MenuItem({ params }: Props) {
         </div>
       </div>
       <div className="fixed right-0 bottom-0 left-0 border-t border-neutral-200 bg-white/95 p-4 backdrop-blur">
-        <QuantityAndAdd data={data} />
+        <QuantityAndAdd slug={slug} data={data} />
       </div>
     </main>
   );

@@ -3,17 +3,19 @@ import Link from 'next/link';
 import { STATUS_INFO } from '../_constants/status';
 import { ChevronRight } from 'lucide-react';
 import { cn } from '@/utils/cn';
+import { rSlug } from '@/utils/r-slug';
 
 type Props = {
+  slug: string;
   order: OrderSummary;
 };
 
-export function OrderCard({ order }: Props) {
+export function OrderCard({ slug, order }: Props) {
   const date = new Date(order.createdAt).toLocaleString();
 
   return (
     <Link
-      href={`/orders/${order.code}`}
+      href={rSlug(slug, `/orders/${order.code}`)}
       className="hover:border-red-muted hover:shadow-red-muted/30 flex items-center justify-between rounded-xl border border-neutral-200 bg-white p-4 transition hover:shadow-xs"
     >
       <div>
