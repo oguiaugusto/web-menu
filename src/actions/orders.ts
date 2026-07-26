@@ -1,12 +1,12 @@
 'use server';
 
-import { DELIVERY_FEE } from '@/constants/deliveryFee';
 import { Prisma } from '@/generated/prisma/client';
 import { prisma } from '@/lib/prisma';
 import { ErrorCode } from '@/types/enums';
 import { ResultError } from '@/types/misc';
 import { parseZodErrors } from '@/utils/parse-zod-errors';
 import { returnError } from '@/utils/return-error';
+import { notFound } from 'next/navigation';
 import z from 'zod';
 
 const CreateOrderSchema = z.object({
@@ -34,6 +34,7 @@ type ItemInput = {
   name: string;
   price: Prisma.Decimal;
   quantity: number;
+  restaurantId: string;
 };
 
 function generateCode() {
@@ -50,7 +51,10 @@ function generateCode() {
   return code;
 }
 
-export async function createOrder(rawData: CreateOrderInput): Promise<CreateOrderResult> {
+export async function createOrder(restaurantId: string, rawData: CreateOrderInput): Promise<CreateOrderResult> {
+  const restaurant = await prisma.restaurant.findUnique({ where: { id: restaurantId } });
+  if (!restaurant) notFound();
+
   const parsed = CreateOrderSchema.safeParse(rawData);
   if (!parsed.success) {
     return returnError({ fields: parseZodErrors(parsed.error) });
@@ -59,7 +63,7 @@ export async function createOrder(rawData: CreateOrderInput): Promise<CreateOrde
   const { data } = parsed;
 
   const menuItems = await prisma.menuItem.findMany({
-    where: { id: { in: data.items.map((x) => x.id) } },
+    where: { restaurantId: restaurant.id, id: { in: data.items.map((x) => x.id) } },
     select: { id: true, name: true, price: true },
   });
   const menuItemMap = new Map(menuItems.map((x) => [x.id, x]));
@@ -75,6 +79,7 @@ export async function createOrder(rawData: CreateOrderInput): Promise<CreateOrde
     total = total.plus(exItem.price.mul(curr.quantity));
 
     items.push({
+      restaurantId: restaurant.id,
       menuItemId: curr.id,
       name: exItem.name,
       price: exItem.price,
@@ -86,7 +91,7 @@ export async function createOrder(rawData: CreateOrderInput): Promise<CreateOrde
     return returnError({ form: ErrorCode.EMPTY_ORDER });
   }
 
-  total = total.plus(new Prisma.Decimal(DELIVERY_FEE));
+  if (restaurant.deliveryFee) total = total.plus(restaurant.deliveryFee);
 
   if (!['CASH', 'CARD'].includes(data.payment)) {
     return returnError({ fields: { payment: ErrorCode.INVALID_PAYMENT_METHOD } });
@@ -110,6 +115,7 @@ export async function createOrder(rawData: CreateOrderInput): Promise<CreateOrde
 
   await prisma.order.create({
     data: {
+      restaurantId: restaurant.id,
       code,
       customerName: data.name,
       customerPhone: data.phone,
@@ -117,6 +123,7 @@ export async function createOrder(rawData: CreateOrderInput): Promise<CreateOrde
       notes: data.notes,
       payment: data.payment as 'CASH' | 'CARD',
       changeFor: data.changeFor,
+      deliveryFee: restaurant.deliveryFee,
       total: total,
       items: { createMany: { data: items } },
     },

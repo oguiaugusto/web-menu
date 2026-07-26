@@ -70,7 +70,7 @@ export default function CheckoutPage({ params }: Props) {
     setIsSubmitting(true);
 
     try {
-      const result = await createOrder({
+      const result = await createOrder(restaurant.id, {
         name: fields.name,
         phone: fields.phone,
         address: fields.address,
