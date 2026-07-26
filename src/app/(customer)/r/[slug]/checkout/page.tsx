@@ -7,7 +7,6 @@ import { Input } from '@/components/ui/input';
 import { TextArea } from '@/components/ui/textarea';
 import { useRouter } from 'next/navigation';
 import { ERROR_MESSAGES, TEXT } from '@/constants/text';
-import { DELIVERY_FEE } from '@/constants/deliveryFee';
 import { Radio } from '@/components/ui/radio';
 import { createOrder } from '@/actions/orders';
 import { FieldErrors } from '@/types/misc';
@@ -16,6 +15,7 @@ import { saveOrderCode } from '@/utils/localstorage-orders';
 import EmptyCart from '@/components/empty-cart';
 import { getHandleChange } from '@/utils/getHandleChange';
 import { rSlug } from '@/utils/r-slug';
+import { useRestaurant } from '@/providers/restaurant-provider';
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -34,6 +34,7 @@ export default function CheckoutPage({ params }: Props) {
   const { slug } = use(params);
 
   const router = useRouter();
+  const restaurant = useRestaurant();
   const { items, subtotal, clearCart } = useCart();
 
   const [fields, setFields] = useState<typeof DEFAULT_FIELDS>(DEFAULT_FIELDS);
@@ -98,7 +99,6 @@ export default function CheckoutPage({ params }: Props) {
       setIsSubmitting(false);
     }
   };
-  const total = subtotal + DELIVERY_FEE;
 
   if (items.length === 0 && !isSubmitting) return <EmptyCart slug={slug} />;
 
@@ -210,7 +210,7 @@ export default function CheckoutPage({ params }: Props) {
                   <span>{TEXT.deliveryFee}</span>
                   <span>
                     {TEXT.currency}
-                    {DELIVERY_FEE.toFixed(2)}
+                    {(restaurant.deliveryFee ?? 0).toFixed(2)}
                   </span>
                 </div>
               </div>
@@ -218,7 +218,7 @@ export default function CheckoutPage({ params }: Props) {
                 <span>{TEXT.total}</span>
                 <span>
                   {TEXT.currency}
-                  {total.toFixed(2)}
+                  {(subtotal + (restaurant.deliveryFee ?? 0)).toFixed(2)}
                 </span>
               </div>
             </div>

@@ -1,5 +1,4 @@
 import { TEXT } from '@/constants/text';
-import { DELIVERY_FEE } from '@/constants/deliveryFee';
 import { CopyCode } from './_components/copy-code';
 import { getOrder } from '@/db/order';
 import { notFound } from 'next/navigation';
@@ -52,8 +51,7 @@ export default async function OrderPage({ params }: Props) {
             <div className="mb-2 flex justify-between text-sm">
               <span>{TEXT.deliveryFee}</span>
               <span>
-                {TEXT.currency}
-                {DELIVERY_FEE.toFixed(2)}
+                {`${TEXT.currency}${(data.deliveryFee ?? 0).toFixed(2)}`}
               </span>
             </div>
             <div className="flex justify-between font-semibold">
@@ -73,7 +71,7 @@ export default async function OrderPage({ params }: Props) {
               <h2 className="font-semibold">{TEXT.payment}</h2>
               <p className="mt-2 text-sm text-neutral-500">
                 {data.payment}
-                {data.changeFor ? ` (change for ${TEXT.currency}${data.changeFor})` : ''}
+                {data.changeFor ? ` (change for ${TEXT.currency}${data.changeFor.toFixed(2)})` : ''}
               </p>
             </div>
           </section>
