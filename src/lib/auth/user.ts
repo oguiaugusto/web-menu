@@ -21,7 +21,13 @@ export async function getCurrentUser() {
   });
   if (!user || !user.restaurant) return null;
 
-  return { ...user, restaurant: user.restaurant };
+  return {
+    ...user,
+    restaurant: {
+      ...user.restaurant,
+      deliveryFee: user.restaurant.deliveryFee?.toNumber() ?? null,
+    },
+  };
 }
 
 export async function requireUser() {
@@ -50,5 +56,11 @@ export async function requireUser() {
   if (dayjsUtc.isAfter(refreshToken.expiresAt)) redirect('/login');
 
   await createSession(refreshToken.user.id);
-  return { ...refreshToken.user, restaurant: refreshToken.user.restaurant };
+  return {
+    ...refreshToken.user,
+    restaurant: {
+      ...refreshToken.user.restaurant,
+      deliveryFee: refreshToken.user.restaurant.deliveryFee?.toNumber() ?? null,
+    },
+  };
 }

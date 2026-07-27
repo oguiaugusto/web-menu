@@ -1,11 +1,12 @@
 import { requireUser } from '@/lib/auth/user';
 import { Metadata } from 'next';
+import { Header } from './_components/header';
 
 export async function generateMetadata(): Promise<Metadata> {
   const user = await requireUser();
 
   if (!user) return { title: 'Web Menu' };
-  return { title: user.restaurant.name }
+  return { title: user.restaurant.name };
 }
 
 export default async function AdminLayout({
@@ -13,7 +14,12 @@ export default async function AdminLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  await requireUser();
+  const user = await requireUser();
 
-  return <>{children}</>;
+  return (
+    <>
+      <Header restaurant={user.restaurant} />
+      {children}
+    </>
+  );
 }
