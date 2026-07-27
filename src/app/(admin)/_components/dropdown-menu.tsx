@@ -6,6 +6,7 @@ import { ExternalLink, LogOut, Menu as MenuIcon, Settings } from 'lucide-react';
 import { rSlug } from '@/utils/r-slug';
 import { cn } from '@/utils/cn';
 import { TEXT } from '@/constants/text';
+import { logout } from '@/actions/auth/logout';
 
 export function DropdownMenu({
   slug,
@@ -44,13 +45,15 @@ export function DropdownMenu({
         <div className="my-1 border-t border-neutral-200" />
         <div className="px-3 py-2 text-xs font-semibold tracking-wide text-neutral-400 uppercase">{TEXT.account}</div>
         <MenuItem>
-          <button
-            type="button"
-            className={cn(itemLinkClass, 'text-red-muted w-full cursor-pointer data-[focus]:bg-red-50')}
-          >
-            <LogOut size={18} />
-            {TEXT.logOut}
-          </button>
+          <form action={logout}>
+            <button
+              type="submit"
+              className={cn(itemLinkClass, 'text-red-muted w-full cursor-pointer data-[focus]:bg-red-50')}
+            >
+              <LogOut size={18} />
+              {TEXT.logOut}
+            </button>
+          </form>
         </MenuItem>
       </MenuItems>
     </Menu>

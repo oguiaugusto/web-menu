@@ -36,7 +36,7 @@ export async function refreshSession() {
   if (!refreshToken || !refreshToken.user || !refreshToken.user.restaurant) return false;
 
   // Refresh tokens are single-use
-  await prisma.refreshToken.delete({ where: { id: refreshToken.id } });
+  await prisma.refreshToken.deleteMany({ where: { id: refreshToken.id } });
 
   if (dayjsUtc.isAfter(refreshToken.expiresAt)) return false;
 
