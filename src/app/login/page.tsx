@@ -9,11 +9,12 @@ import { FieldErrors } from '@/types/misc';
 import { getHandleChange } from '@/utils/getHandleChange';
 import { toastError } from '@/utils/toast';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 
 export default function LoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const [fields, setFields] = useState({
     email: '',
@@ -45,7 +46,7 @@ export default function LoginPage() {
         return;
       }
 
-      router.replace('/admin');
+      router.replace(searchParams.get('next') ?? '/admin');
     } finally {
       setIsSubmitting(false);
     }
