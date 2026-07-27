@@ -1,5 +1,6 @@
 import { jwtVerify, SignJWT } from 'jose';
-import crypto from 'node:crypto';
+import { bytesToHex } from '@noble/hashes/utils.js'
+import { sha256 } from '@noble/hashes/sha2.js'
 
 const secret = new TextEncoder().encode(process.env.JWT_SECRET);
 
@@ -22,9 +23,11 @@ export async function verifyAccessToken(token: string) {
 }
 
 export function generateToken() {
-  return crypto.randomBytes(48).toString('hex');
+  const bytes = crypto.getRandomValues(new Uint8Array(48));
+  return bytesToHex(bytes);
 }
 
 export function hashToken(token: string) {
-  return crypto.createHash('sha256').update(token).digest('hex');
+  const tokenBytes = new TextEncoder().encode(token);
+  return bytesToHex(sha256(tokenBytes));
 }
