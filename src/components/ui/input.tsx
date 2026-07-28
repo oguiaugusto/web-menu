@@ -59,25 +59,27 @@ export function Input({
 
   return (
     <label className="block space-y-1">
-      <span className="flex items-center gap-2 text-sm font-medium">
-        {label}
-        {tooltip ? (
-          <>
-            <span data-tooltip-id="tooltip" data-tooltip-place="right">
-              <CircleQuestionMark size={14} />
-            </span>
-            <Tooltip
-              id="tooltip"
-              style={{
-                backgroundColor: 'var(--color-neutral-700)',
-                zIndex: '1000',
-              }}
-            >
-              {tooltip}
-            </Tooltip>
-          </>
-        ) : null}
-      </span>
+      {label ? (
+        <span className="flex items-center gap-2 text-sm font-medium">
+          {label}
+          {tooltip ? (
+            <>
+              <span data-tooltip-id="tooltip" data-tooltip-place="right">
+                <CircleQuestionMark size={14} />
+              </span>
+              <Tooltip
+                id="tooltip"
+                style={{
+                  backgroundColor: 'var(--color-neutral-700)',
+                  zIndex: '1000',
+                }}
+              >
+                {tooltip}
+              </Tooltip>
+            </>
+          ) : null}
+        </span>
+      ) : null}
       <div className="relative">
         {prefix ? (
           <span className="absolute top-1/2 left-4 -translate-y-1/2" ref={prefixRef}>
@@ -90,7 +92,7 @@ export function Input({
             paddingInlineEnd: suffix ? `${suffixPadding + suffixWidth}px` : undefined,
           }}
           className={cn(
-            'focus:border-red-muted shadow-red-muted/40 w-full rounded-lg border border-neutral-200 bg-white px-4 py-3 transition outline-none focus:shadow-xs',
+            'focus:border-red-muted shadow-red-muted/40 h-12 w-full rounded-lg border border-neutral-200 bg-white px-4 py-3 transition outline-none focus:shadow-xs',
           )}
           name={name}
           type={type}
@@ -107,9 +109,7 @@ export function Input({
           </span>
         ) : null}
       </div>
-      {error ? (
-        <p className="mt-1 text-sm text-red-600">{`${errorLabel ?? label} ${ERROR_MESSAGES[error]}`}</p>
-      ) : null}
+      {error ? <p className="mt-1 text-sm text-red-600">{`${errorLabel ?? label} ${ERROR_MESSAGES[error]}`}</p> : null}
     </label>
   );
 }

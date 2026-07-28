@@ -20,32 +20,34 @@ type Props = {
 export function Select({ label, options, name, value, tooltip, onChange, error, errorLabel, required }: Props) {
   return (
     <label className="block space-y-1">
-      <span className="flex items-center gap-2 text-sm font-medium">
-        {label}
-        {tooltip ? (
-          <>
-            <span data-tooltip-id="tooltip" data-tooltip-place="right">
-              <CircleQuestionMark size={14} />
-            </span>
-            <Tooltip
-              id="tooltip"
-              style={{
-                backgroundColor: 'var(--color-neutral-700)',
-                zIndex: '1000',
-              }}
-            >
-              {tooltip}
-            </Tooltip>
-          </>
-        ) : null}
-      </span>
+      {label ? (
+        <span className="flex items-center gap-2 text-sm font-medium">
+          {label}
+          {tooltip ? (
+            <>
+              <span data-tooltip-id="tooltip" data-tooltip-place="right">
+                <CircleQuestionMark size={14} />
+              </span>
+              <Tooltip
+                id="tooltip"
+                style={{
+                  backgroundColor: 'var(--color-neutral-700)',
+                  zIndex: '1000',
+                }}
+              >
+                {tooltip}
+              </Tooltip>
+            </>
+          ) : null}
+        </span>
+      ) : null}
       <div className="relative">
         <HSelect
           name={name}
           value={value}
           onChange={onChange}
           required={required}
-          className="focus:border-red-muted shadow-red-muted/40 w-full appearance-none rounded-lg border border-neutral-200 bg-white px-4 py-3 transition outline-none focus:shadow-xs"
+          className="focus:border-red-muted shadow-red-muted/40 h-12 w-full appearance-none rounded-lg border border-neutral-200 bg-white px-4 py-3 transition outline-none focus:shadow-xs"
         >
           {options.map((x) => (
             <option key={`option-${x.value}`} value={x.value}>

@@ -13,6 +13,7 @@ type Props = Readonly<{
   type?: React.ButtonHTMLAttributes<HTMLButtonElement>['type'];
   className?: string;
   disabled?: boolean;
+  title?: string;
   onClick?: VoidFunction;
 }>;
 
@@ -24,7 +25,7 @@ export function Button(p: Props) {
   );
 
   return (
-    <button className={className} type={p.type} onClick={p.onClick} disabled={p.disabled}>
+    <button className={className} type={p.type} onClick={p.onClick} disabled={p.disabled} title={p.title}>
       {p.children}
     </button>
   );

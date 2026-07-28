@@ -208,25 +208,27 @@ function SearchInputInner<T>(
 
   return (
     <div className="block space-y-1">
-      <span id={`${inputId}-label`} className="flex items-center gap-2 text-sm font-medium">
-        {label}
-        {tooltip ? (
-          <>
-            <span data-tooltip-id="tooltip" data-tooltip-place="right">
-              <CircleQuestionMark size={14} />
-            </span>
-            <Tooltip
-              id="tooltip"
-              style={{
-                backgroundColor: 'var(--color-neutral-700)',
-                zIndex: '1000',
-              }}
-            >
-              {tooltip}
-            </Tooltip>
-          </>
-        ) : null}
-      </span>
+      {label ? (
+        <span id={`${inputId}-label`} className="flex items-center gap-2 text-sm font-medium">
+          {label}
+          {tooltip ? (
+            <>
+              <span data-tooltip-id="tooltip" data-tooltip-place="right">
+                <CircleQuestionMark size={14} />
+              </span>
+              <Tooltip
+                id="tooltip"
+                style={{
+                  backgroundColor: 'var(--color-neutral-700)',
+                  zIndex: '1000',
+                }}
+              >
+                {tooltip}
+              </Tooltip>
+            </>
+          ) : null}
+        </span>
+      ) : null}
       <Combobox<T | null>
         value={value}
         onChange={handleSelection}
@@ -253,7 +255,7 @@ function SearchInputInner<T>(
             aria-describedby={error ? errorId : undefined}
             aria-invalid={Boolean(error)}
             className={cn(
-              'focus:border-red-muted shadow-red-muted/40 w-full rounded-lg border border-neutral-200 bg-white px-4 py-3 transition outline-none focus:shadow-xs',
+              'focus:border-red-muted shadow-red-muted/40 h-12 w-full rounded-lg border border-neutral-200 bg-white px-4 py-3 transition outline-none focus:shadow-xs',
               suffix || isLoading ? 'pr-12' : undefined,
               error ? 'border-red-500' : undefined,
               disabled ? 'cursor-not-allowed bg-neutral-100 text-neutral-500' : undefined,
