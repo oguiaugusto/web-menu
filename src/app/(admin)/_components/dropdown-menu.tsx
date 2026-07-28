@@ -44,8 +44,8 @@ export function DropdownMenu({
         </MenuItem>
         <div className="my-1 border-t border-neutral-200" />
         <div className="px-3 py-2 text-xs font-semibold tracking-wide text-neutral-400 uppercase">{TEXT.account}</div>
-        <MenuItem>
-          <form action={logout}>
+        <form action={logout}>
+          <MenuItem>
             <button
               type="submit"
               className={cn(itemLinkClass, 'text-red-muted w-full cursor-pointer data-[focus]:bg-red-50')}
@@ -53,8 +53,8 @@ export function DropdownMenu({
               <LogOut size={18} />
               {TEXT.logOut}
             </button>
-          </form>
-        </MenuItem>
+          </MenuItem>
+        </form>
       </MenuItems>
     </Menu>
   );
