@@ -95,6 +95,16 @@ export const TEXT = {
   orderNotFound: 'Order not found',
   orderNotFoundCheck: 'Check if the code is correct or',
   orderNotFoundSearch: 'search another order',
+  menuItems: 'Menu Items',
+  searchMenuItems: 'Search menu items...',
+  category: 'Category',
+  price: 'Price',
+  newItem: 'New item',
+  noMenuItems: 'No menu items yet',
+  noMenuItemsSubtitle: 'Create your first menu item to start building your restaurant menu.',
+  createMenuItem: 'Create menu item',
+  actions: 'Actions',
+  available: 'Available',
 };
 
 export const ERROR_MESSAGES: Record<string, string> = {
