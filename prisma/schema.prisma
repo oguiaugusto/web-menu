@@ -74,6 +74,7 @@ model MenuItem {
   price       Decimal @db.Decimal(10, 2)
   category    String
   imageUrl    String?
+  available   Boolean @default(true)
 
   restaurantId String
   restaurant   Restaurant @relation(fields: [restaurantId], references: [id])

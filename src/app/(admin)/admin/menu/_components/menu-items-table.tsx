@@ -1,16 +1,7 @@
 import { TEXT } from '@/constants/text';
+import { MenuItem } from '@/db/menu-item';
 import { cn } from '@/utils/cn';
 import { SquarePen, Trash2 } from 'lucide-react';
-
-// Temporary type
-// Add "available" to MenuItem schema
-export type MenuItem = {
-  id: string;
-  name: string;
-  category: string;
-  price: string;
-  available: boolean;
-};
 
 export function MenuItemsTable({ items }: Readonly<{ items: MenuItem[] }>) {
   const actionButtonClass = cn(
