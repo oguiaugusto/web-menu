@@ -45,7 +45,7 @@ export function MenuItemsTable({ items }: Readonly<{ items: MenuItem[] }>) {
                 {item.name}
               </th>
               <td className="px-5 py-4 text-sm text-neutral-600">{item.category}</td>
-              <td className="px-5 py-4 text-sm font-medium text-neutral-900">{item.price}</td>
+              <td className="px-5 py-4 text-sm font-medium text-neutral-900">{TEXT.currency}{item.price.toFixed(2)}</td>
               <td className="px-5 py-4">
                 <div className="mt-[-6px] flex justify-center">
                   <label className="inline-flex cursor-pointer items-center">

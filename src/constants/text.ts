@@ -105,6 +105,7 @@ export const TEXT = {
   createMenuItem: 'Create menu item',
   actions: 'Actions',
   available: 'Available',
+  reverse: 'Reverse',
 };
 
 export const ERROR_MESSAGES: Record<string, string> = {
