@@ -18,6 +18,7 @@ import {
 import { ERROR_MESSAGES } from '@/constants/text';
 import { cn } from '@/utils/cn';
 import { Tooltip } from 'react-tooltip';
+import { useDebouncedValue } from '@/hooks/use-debounced-value';
 
 const DEFAULT_DEBOUNCE = 300;
 const DEFAULT_MIN_LENGTH = 2;
@@ -45,18 +46,6 @@ export type SearchInputRef = {
   focus(): void;
   clear(): void;
 };
-
-function useDebouncedValue<T>(value: T, delay: number): T {
-  const [debouncedValue, setDebouncedValue] = useState(value);
-
-  useEffect(() => {
-    const timeoutId = window.setTimeout(() => setDebouncedValue(value), delay);
-
-    return () => window.clearTimeout(timeoutId);
-  }, [delay, value]);
-
-  return debouncedValue;
-}
 
 function SearchInputInner<T>(
   {
@@ -135,7 +124,7 @@ function SearchInputInner<T>(
     const requestId = requestIdRef.current;
     abortControllerRef.current = controller;
 
-    void searchRef
+    searchRef
       .current(trimmedQuery, controller.signal)
       .then((results) => {
         if (controller.signal.aborted || requestId !== requestIdRef.current) {
