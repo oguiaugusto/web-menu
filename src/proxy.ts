@@ -12,7 +12,7 @@ function clearAndRedirect(request: NextRequest) {
   return response;
 }
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const accessToken = request.cookies.get('access_token');
   if (accessToken) {
     const payload = await verifyAccessToken(accessToken.value);
