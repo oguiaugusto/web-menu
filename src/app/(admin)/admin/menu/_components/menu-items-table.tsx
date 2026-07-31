@@ -1,3 +1,4 @@
+import { Switch } from '@/components/ui/switch';
 import { TEXT } from '@/constants/text';
 import { MenuItem } from '@/db/menu-item';
 import { cn } from '@/utils/cn';
@@ -45,13 +46,13 @@ export function MenuItemsTable({ items }: Readonly<{ items: MenuItem[] }>) {
                 {item.name}
               </th>
               <td className="px-5 py-4 text-sm text-neutral-600">{item.category}</td>
-              <td className="px-5 py-4 text-sm font-medium text-neutral-900">{TEXT.currency}{item.price.toFixed(2)}</td>
+              <td className="px-5 py-4 text-sm font-medium text-neutral-900">
+                {TEXT.currency}
+                {item.price.toFixed(2)}
+              </td>
               <td className="px-5 py-4">
                 <div className="mt-[-6px] flex justify-center">
-                  <label className="inline-flex cursor-pointer items-center">
-                    <input type="checkbox" className="peer sr-only" defaultChecked={item.available} />
-                    <span className="peer-checked:bg-red-muted peer-focus-visible:ring-red-muted relative h-6 w-11 rounded-full bg-neutral-200 transition-colors peer-focus-visible:ring-2 peer-focus-visible:ring-offset-2 after:absolute after:top-0.5 after:left-0.5 after:size-5 after:rounded-full after:bg-white after:shadow-sm after:transition-transform peer-checked:after:translate-x-5" />
-                  </label>
+                  <Switch checked={item.available} />
                 </div>
               </td>
             </tr>
