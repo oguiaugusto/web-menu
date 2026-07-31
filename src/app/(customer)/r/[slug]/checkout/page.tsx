@@ -16,6 +16,7 @@ import EmptyCart from '@/components/empty-cart';
 import { getHandleChange } from '@/utils/getHandleChange';
 import { rSlug } from '@/utils/r-slug';
 import { useRestaurant } from '@/providers/restaurant-provider';
+import { formatMoney, moneyFormatter } from '@/utils/money';
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -43,17 +44,8 @@ export default function CheckoutPage({ params }: Props) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = getHandleChange(setFields, setFieldErrors);
-
-  const formatter = new Intl.NumberFormat(TEXT.languageCountryISO, {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
-
   const handleMoneyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const digits = e.target.value.replace(/\D/g, '');
-    const number = Number(digits) / 100;
-
-    setFields((p) => ({ ...p, [e.target.name]: number.toFixed(2) }));
+    setFields((p) => ({ ...p, [e.target.name]: formatMoney(e.target.value) }));
     setFieldErrors((p) => {
       const next = { ...p };
       delete next[e.target.name];
@@ -76,7 +68,7 @@ export default function CheckoutPage({ params }: Props) {
         address: fields.address,
         notes: fields.notes,
         payment: fields.payment as any,
-        changeFor: fields.changeFor > 0 ? Number(fields.changeFor) : undefined,
+        changeFor: Number(fields.changeFor) > 0 ? Number(fields.changeFor) : undefined,
         items: items.map((x) => ({ id: x.id, quantity: x.quantity })),
       });
 
@@ -157,10 +149,10 @@ export default function CheckoutPage({ params }: Props) {
               <div className="space-y-1">
                 <div className="max-w-50">
                   <Input
-                    type="number"
+                    type="text"
                     name="changeFor"
                     prefix={{ value: TEXT.currency }}
-                    value={formatter.format(fields.changeFor)}
+                    value={moneyFormatter.format(fields.changeFor)}
                     label={TEXT.changeFor}
                     placeholder={TEXT.startingMoney}
                     onChange={handleMoneyChange}
