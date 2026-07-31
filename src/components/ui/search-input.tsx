@@ -15,7 +15,7 @@ import {
   type ReactNode,
   type RefAttributes,
 } from 'react';
-import { ERROR_MESSAGES } from '@/constants/text';
+import { ERROR_MESSAGES, TEXT } from '@/constants/text';
 import { cn } from '@/utils/cn';
 import { Tooltip } from 'react-tooltip';
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
@@ -258,6 +258,7 @@ function SearchInputInner<T>(
           <ComboboxOptions
             static
             aria-hidden={!shouldShowDropdown}
+            modal={false}
             className={cn(
               'absolute z-50 mt-2 max-h-64 w-full overflow-auto rounded-lg border border-neutral-200 bg-white shadow-lg transition duration-150 ease-out',
               shouldShowDropdown
@@ -265,9 +266,9 @@ function SearchInputInner<T>(
                 : 'pointer-events-none invisible -translate-y-1 opacity-0',
             )}
           >
-            {isLoading ? <div className="px-4 py-3 text-sm text-neutral-500">Searching...</div> : null}
+            {isLoading ? <div className="px-4 py-3 text-sm text-neutral-500">{TEXT.searching}</div> : null}
             {!isLoading && options.length === 0 ? (
-              <div className="px-4 py-3 text-sm text-neutral-500">No results found.</div>
+              <div className="px-4 py-3 text-sm text-neutral-500">{TEXT.noResultsFound}</div>
             ) : null}
             {!isLoading
               ? options.map((option) => (

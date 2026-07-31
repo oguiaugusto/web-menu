@@ -5,6 +5,8 @@ export const TEXT = {
   currency: '$',
   homeTitle: 'Find a restaurant',
   homeSubtitle: 'Search by restaurant name or access it directly through its shared link.',
+  searching: 'Searching...',
+  noResultsFound: 'No results found.',
   dashboard: 'Dashboard',
   signIn: 'Sign in',
   signUp: 'Sign up',
@@ -106,6 +108,7 @@ export const TEXT = {
   actions: 'Actions',
   available: 'Available',
   reverse: 'Reverse',
+  description: 'Description',
   menuItemFormTitleNew: 'New Menu Item',
   menuItemFormSubtitleNew: 'Create a new item that will appear on your restaurant menu.',
   menuItemFormTitleEdit: 'Edit Menu Item',
@@ -114,6 +117,7 @@ export const TEXT = {
   menuItemNamePlaceholder: 'e.g. Margherita Pizza',
   menuItemDescriptionPlaceholder: 'Describe the menu item, ingredients, or anything customers should know.',
   menuItemAvailableHelper: "Unavailable items won't be visible to customers.",
+  availableToCustomers: 'Available to customers',
   image: 'Image',
   menuItemImageSubtitle: 'Choose one of the provided images or use a public image URL.',
   menuItemImageNoImage: 'No image selected',
@@ -122,6 +126,8 @@ export const TEXT = {
   menuItemImageImageUrl: 'Image URL',
   menuItemImageUrlHelper: 'The image must be publicly accessible.',
   cancel: 'Cancel',
+  create: 'Create',
+  selectOrCreateCategory: 'Select or create a category',
 };
 
 export const ERROR_MESSAGES: Record<string, string> = {

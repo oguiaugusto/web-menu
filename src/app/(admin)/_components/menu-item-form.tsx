@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Radio } from '@/components/ui/radio';
 import { Switch } from '@/components/ui/switch';
 import { TextArea } from '@/components/ui/textarea';
+import { CategoryInput } from './category-input';
 import { TEXT } from '@/constants/text';
 import { MenuItem } from '@/db/menu-item';
 import { FieldErrors } from '@/types/misc';
@@ -14,10 +15,10 @@ import { ImageIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
-type Props = Readonly<{ mode: 'create' | 'edit'; item?: MenuItem }>;
+type Props = Readonly<{ mode: 'create' | 'edit'; item?: MenuItem; categories: string[] }>;
 type ImageSource = 'example' | 'url';
 
-export function MenuItemForm({ mode, item }: Props) {
+export function MenuItemForm({ mode, item, categories }: Props) {
   const router = useRouter();
 
   const editMode = mode === 'edit';
@@ -44,6 +45,14 @@ export function MenuItemForm({ mode, item }: Props) {
       return next;
     });
   };
+  const handleCategoryChange = (category: string) => {
+    setFields((p) => ({ ...p, category }));
+    setFieldErrors((p) => {
+      const next = { ...p };
+      delete next.category;
+      return next;
+    });
+  };
 
   return (
     <main className="min-h-screen bg-neutral-50">
@@ -63,15 +72,16 @@ export function MenuItemForm({ mode, item }: Props) {
             </h2>
             <div className="grid gap-3 sm:grid-cols-2">
               <Input
-                label="Name"
+                label={TEXT.name}
                 name="name"
                 placeholder={TEXT.menuItemNamePlaceholder}
                 value={fields.name}
                 onChange={handleChange}
+                additionalInputProps={{ autoComplete: 'off' }}
               />
               <Input
                 type="text"
-                label="Price"
+                label={TEXT.price}
                 name="price"
                 prefix={{ value: '$' }}
                 value={moneyFormatter.format(fields.price)}
@@ -79,7 +89,7 @@ export function MenuItemForm({ mode, item }: Props) {
               />
             </div>
             <TextArea
-              label="Description"
+              label={TEXT.description}
               name="description"
               rows={4}
               placeholder={TEXT.menuItemDescriptionPlaceholder}
@@ -87,20 +97,19 @@ export function MenuItemForm({ mode, item }: Props) {
               onChange={handleChange}
             />
             <div className="grid gap-3 sm:grid-cols-2 sm:items-start">
-              <div className="space-y-1">
-                <p className="text-sm font-medium text-neutral-900">{TEXT.category}</p>
-                <div
-                  aria-disabled="true"
-                  className="flex h-12 items-center rounded-lg border border-neutral-200 bg-neutral-100 px-4 text-sm text-neutral-500"
-                >
-                  Category selector (coming next)
-                </div>
-              </div>
+              <CategoryInput
+                label={TEXT.category}
+                value={fields.category}
+                onChange={handleCategoryChange}
+                categories={categories}
+                placeholder={TEXT.selectOrCreateCategory}
+                error={fieldErrors.category}
+              />
               <div className="space-y-2">
                 <span className="text-sm font-medium text-neutral-900">{TEXT.available}</span>
                 <Switch
                   name="available"
-                  rightLabel="Available to customers"
+                  rightLabel={TEXT.availableToCustomers}
                   checked={fields.available}
                   onChange={handleChange}
                 />
@@ -158,7 +167,7 @@ export function MenuItemForm({ mode, item }: Props) {
               {TEXT.cancel}
             </Button>
             <Button type="button" variant="primary" className="w-full sm:w-auto">
-              Create Menu Item
+              {TEXT.createMenuItem}
             </Button>
           </div>
         </form>
