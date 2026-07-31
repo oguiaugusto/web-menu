@@ -106,6 +106,22 @@ export const TEXT = {
   actions: 'Actions',
   available: 'Available',
   reverse: 'Reverse',
+  menuItemFormTitleNew: 'New Menu Item',
+  menuItemFormSubtitleNew: 'Create a new item that will appear on your restaurant menu.',
+  menuItemFormTitleEdit: 'Edit Menu Item',
+  menuItemFormSubtitleEdit: 'Update how the item appears on your restaurant menu.',
+  generalInformation: 'General information',
+  menuItemNamePlaceholder: 'e.g. Margherita Pizza',
+  menuItemDescriptionPlaceholder: 'Describe the menu item, ingredients, or anything customers should know.',
+  menuItemAvailableHelper: "Unavailable items won't be visible to customers.",
+  image: 'Image',
+  menuItemImageSubtitle: 'Choose one of the provided images or use a public image URL.',
+  menuItemImageNoImage: 'No image selected',
+  menuItemImageImageSort: 'Image source',
+  menuItemImageExampleImage: 'Example image',
+  menuItemImageImageUrl: 'Image URL',
+  menuItemImageUrlHelper: 'The image must be publicly accessible.',
+  cancel: 'Cancel',
 };
 
 export const ERROR_MESSAGES: Record<string, string> = {
