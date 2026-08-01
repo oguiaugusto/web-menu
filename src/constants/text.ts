@@ -128,6 +128,7 @@ export const TEXT = {
   cancel: 'Cancel',
   create: 'Create',
   selectOrCreateCategory: 'Select or create a category',
+  selectedMenuItemImage: 'Selected menu item image',
 };
 
 export const ERROR_MESSAGES: Record<string, string> = {

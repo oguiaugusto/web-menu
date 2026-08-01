@@ -2,21 +2,19 @@
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Radio } from '@/components/ui/radio';
 import { Switch } from '@/components/ui/switch';
 import { TextArea } from '@/components/ui/textarea';
 import { CategoryInput } from './category-input';
+import { ImageSelector } from './image-selector';
 import { TEXT } from '@/constants/text';
 import { MenuItem } from '@/db/menu-item';
 import { FieldErrors } from '@/types/misc';
 import { getHandleChange } from '@/utils/getHandleChange';
 import { formatMoney, moneyFormatter } from '@/utils/money';
-import { ImageIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 type Props = Readonly<{ mode: 'create' | 'edit'; item?: MenuItem; categories: string[] }>;
-type ImageSource = 'example' | 'url';
 
 export function MenuItemForm({ mode, item, categories }: Props) {
   const router = useRouter();
@@ -34,8 +32,6 @@ export function MenuItemForm({ mode, item, categories }: Props) {
   });
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
 
-  const [imageSource, setImageSource] = useState<ImageSource>('example');
-
   const handleChange = getHandleChange(setFields, setFieldErrors);
   const handleMoneyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFields((p) => ({ ...p, [e.target.name]: formatMoney(e.target.value) }));
@@ -52,6 +48,9 @@ export function MenuItemForm({ mode, item, categories }: Props) {
       delete next.category;
       return next;
     });
+  };
+  const handleImageChange = (imageUrl: string | undefined) => {
+    setFields((p) => ({ ...p, imageUrl: imageUrl ?? '' }));
   };
 
   return (
@@ -124,43 +123,7 @@ export function MenuItemForm({ mode, item, categories }: Props) {
               </h2>
               <p className="mt-1 text-sm text-neutral-500">{TEXT.menuItemImageSubtitle}</p>
             </div>
-            <div className="grid gap-8 md:grid-cols-[260px_minmax(0,1fr)] md:items-start">
-              <div className="mx-auto flex aspect-square w-full max-w-[260px] items-center justify-center rounded-xl border border-neutral-200 bg-neutral-100 text-center md:mx-0 md:w-[260px]">
-                <div className="flex flex-col items-center gap-3 text-neutral-500">
-                  <ImageIcon aria-hidden="true" size={32} strokeWidth={1.5} />
-                  <span className="text-sm">{TEXT.menuItemImageNoImage}</span>
-                </div>
-              </div>
-              <fieldset className="min-w-0 space-y-5">
-                <legend className="text-sm font-medium text-neutral-900">{TEXT.menuItemImageSubtitle}</legend>
-                <div className="flex flex-wrap gap-x-6 gap-y-3">
-                  <Radio
-                    label={TEXT.menuItemImageExampleImage}
-                    name="image-source"
-                    value="example"
-                    checked={imageSource}
-                    onChange={() => setImageSource('example')}
-                  />
-                  <Radio
-                    label={TEXT.menuItemImageImageUrl}
-                    name="image-source"
-                    value="url"
-                    checked={imageSource}
-                    onChange={() => setImageSource('url')}
-                  />
-                </div>
-                {imageSource === 'example' ? (
-                  <div className="flex min-h-28 items-center justify-center rounded-lg border border-dashed border-neutral-300 bg-white px-4 text-center text-sm text-neutral-500">
-                    Example image selector
-                  </div>
-                ) : (
-                  <div className="space-y-2">
-                    <Input label="" name="image-url" type="url" placeholder="https://example.com/image.jpg" />
-                    <p className="text-sm text-neutral-500">{TEXT.menuItemImageUrlHelper}</p>
-                  </div>
-                )}
-              </fieldset>
-            </div>
+            <ImageSelector value={fields.imageUrl || undefined} onChange={handleImageChange} />
           </section>
           <div className="flex flex-col-reverse gap-3 border-t border-neutral-200 pt-6 sm:flex-row sm:justify-end">
             <Button type="button" variant="primary-outline" className="w-full sm:w-auto">
