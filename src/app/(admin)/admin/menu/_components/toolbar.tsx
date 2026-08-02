@@ -14,6 +14,7 @@ const SORT_BY_FIELDS = [
   { value: 'category', label: TEXT.category },
   { value: 'name', label: TEXT.name },
   { value: 'price', label: TEXT.price },
+  { value: 'updatedAt', label: TEXT.lastUpdated },
 ];
 
 const MIN_LENGTH = 2;
@@ -37,8 +38,9 @@ export function Toolbar() {
     const next: Record<string, string> = { [name]: value };
 
     if (name === 'sortBy') {
-      if (value !== sortBy && ['category', 'name'].includes(value)) {
-        next.order = 'asc';
+      if (value !== sortBy) {
+        if (['category', 'name'].includes(value)) next.order = 'asc';
+        if (value === 'updatedAt') next.order = 'desc';
       }
     }
 

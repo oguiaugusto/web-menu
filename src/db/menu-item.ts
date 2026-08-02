@@ -45,7 +45,9 @@ export async function getMenuItemsList({
   const orderDir = order === 'desc' ? 'desc' : 'asc';
   let orderBy: Prisma.MenuItemOrderByWithRelationInput[] = [];
 
-  if (sortBy === 'name') {
+  if (sortBy === 'updatedAt') {
+    orderBy = [{ updatedAt: orderDir }, { category: 'asc' }, { price: 'desc' }, { name: 'asc' }];
+  } else if (sortBy === 'name') {
     orderBy = [{ name: orderDir }, { category: 'asc' }, { price: 'asc' }];
   } else if (sortBy === 'price') {
     orderBy = [{ price: orderDir }, { category: 'asc' }, { name: 'asc' }];

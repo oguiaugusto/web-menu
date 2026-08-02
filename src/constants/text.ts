@@ -132,6 +132,7 @@ export const TEXT = {
   menuItemCreated: 'Menu item created successfully',
   menuItemUpdated: 'Menu item updated successfully',
   save: 'Save',
+  lastUpdated: 'Last updated',
 };
 
 export const ERROR_MESSAGES: Record<string, string> = {
