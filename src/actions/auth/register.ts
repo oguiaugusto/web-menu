@@ -11,12 +11,13 @@ import { returnError } from '@/utils/return-error';
 import z from 'zod';
 
 const RegisterSchema = z.object({
-  restaurantName: z.string().nonempty().max(100),
+  restaurantName: z.string().trim().nonempty().max(100),
   restaurantUrl: z
     .string()
+    .trim()
     .lowercase()
     .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
-  email: z.email(),
+  email: z.email().transform((x) => x.trim()),
   password: z.string().nonempty(),
 });
 

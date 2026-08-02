@@ -10,15 +10,15 @@ import { notFound } from 'next/navigation';
 import z from 'zod';
 
 const CreateOrderSchema = z.object({
-  name: z.string().nonempty(),
-  phone: z.string().nonempty(),
-  address: z.string().nonempty(),
-  notes: z.string().optional(),
-  payment: z.string(),
+  name: z.string().trim().nonempty(),
+  phone: z.string().trim().nonempty(),
+  address: z.string().trim().nonempty(),
+  notes: z.string().trim().optional(),
+  payment: z.string().trim(),
   changeFor: z.number().min(1).optional(),
   items: z.array(
     z.object({
-      id: z.string(),
+      id: z.string().trim(),
       quantity: z.number().int().positive(),
     }),
   ),
