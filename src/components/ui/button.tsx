@@ -1,32 +1,37 @@
 import { cn } from '@/utils/cn';
+import { ComponentPropsWithoutRef, ElementType, ReactNode } from 'react';
 
 const VARIANTS = {
-  primary: 'bg-red-muted enabled:hover:bg-red-muted-light text-white',
+  primary: 'bg-red-muted hover:bg-red-muted-light disabled:hover:bg-red-muted text-white',
   'primary-outline':
-    'ring-red-muted text-red-muted enabled:hover:bg-red-muted ring-1 ring-inset enabled:hover:text-white transition',
-  'primary-text': 'text-red-muted hover:text-red-muted-light rounded-none px-0 py-0 font-semibold',
+    'ring-red-muted text-red-muted hover:bg-red-muted disabled:hover:text-red-muted ring-1 ring-inset hover:text-white disabled:hover:bg-transparent',
+  'primary-text':
+    'text-red-muted hover:text-red-muted-light disabled:hover:text-red-muted rounded-none px-0 py-0 font-semibold',
+  clean: '',
 };
-
-type Props = Readonly<{
-  children: React.ReactNode;
+type OwnProps<T extends ElementType> = Readonly<{
+  as?: T;
   variant: keyof typeof VARIANTS;
-  type?: React.ButtonHTMLAttributes<HTMLButtonElement>['type'];
-  className?: string;
-  disabled?: boolean;
-  title?: string;
-  onClick?: VoidFunction;
+  children: ReactNode;
 }>;
 
-export function Button(p: Props) {
-  const className = cn(
-    'rounded-lg px-5 py-3 font-medium enabled:cursor-pointer enabled:active:brightness-106 disabled:opacity-80',
-    VARIANTS[p.variant],
-    p.className ?? '',
+type Props<T extends ElementType> = OwnProps<T> & Omit<ComponentPropsWithoutRef<T>, keyof OwnProps<T>>;
+
+export function Button<T extends ElementType = 'button'>({ as, variant, children, className, ...props }: Props<T>) {
+  const Component = as || 'button';
+
+  const mergedClass = cn(
+    'focus-visible:outline-red-muted block cursor-pointer text-center focus-visible:outline-1 focus-visible:outline-offset-2 disabled:cursor-not-allowed',
+    variant !== 'clean'
+      ? 'rounded-lg px-5 py-3 font-medium active:brightness-106 disabled:opacity-80 disabled:active:brightness-100'
+      : '',
+    VARIANTS[variant],
+    className ?? '',
   );
 
   return (
-    <button className={className} type={p.type} onClick={p.onClick} disabled={p.disabled} title={p.title}>
-      {p.children}
-    </button>
+    <Component className={mergedClass} {...props}>
+      {children}
+    </Component>
   );
 }
