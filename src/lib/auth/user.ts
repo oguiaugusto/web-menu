@@ -2,6 +2,7 @@ import { UserPublic } from '@/db/user';
 import { getCookie } from './cookies';
 import { verifyAccessToken } from './token';
 import { prisma } from '../prisma';
+import { redirect } from 'next/navigation';
 
 export async function getCurrentUser(): Promise<UserPublic | null> {
   const accessToken = await getCookie('access_token');
@@ -25,4 +26,10 @@ export async function getCurrentUser(): Promise<UserPublic | null> {
       deliveryFee: user.restaurant.deliveryFee?.toNumber() ?? null,
     },
   };
+}
+
+export async function requireCurrentUser(): Promise<UserPublic> {
+  const user = await getCurrentUser();
+  if (!user) redirect('/login');
+  return user;
 }

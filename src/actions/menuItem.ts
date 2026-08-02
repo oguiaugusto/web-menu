@@ -1,11 +1,10 @@
 'use server';
 
-import { getCurrentUser } from '@/lib/auth/user';
+import { requireCurrentUser } from '@/lib/auth/user';
 import { prisma } from '@/lib/prisma';
 import { ResultError } from '@/types/misc';
 import { parseZodErrors } from '@/utils/parse-zod-errors';
 import { returnError } from '@/utils/return-error';
-import { redirect } from 'next/navigation';
 import z from 'zod';
 
 const MenuItemSchema = z.object({
@@ -23,9 +22,7 @@ type ResultSuccess = { success: true };
 export type MenuItemResult = ResultSuccess | ResultError;
 
 export async function createMenuItem(rawData: MenuItemInput): Promise<MenuItemResult> {
-  // It should always successfully get the user
-  const user = await getCurrentUser();
-  if (!user) redirect('/login');
+  const user = await requireCurrentUser();
 
   const parsed = MenuItemSchema.safeParse(rawData);
   if (!parsed.success) {
@@ -50,9 +47,7 @@ export async function createMenuItem(rawData: MenuItemInput): Promise<MenuItemRe
 }
 
 export async function updateMenuItem(id: string, rawData: MenuItemInput): Promise<MenuItemResult> {
-  // It should always successfully get the user
-  const user = await getCurrentUser();
-  if (!user) redirect('/login');
+  const user = await requireCurrentUser();
 
   const parsed = MenuItemSchema.safeParse(rawData);
   if (!parsed.success) {

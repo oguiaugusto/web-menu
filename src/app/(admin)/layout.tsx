@@ -1,7 +1,6 @@
 import { Metadata } from 'next';
 import { Header } from './_components/header';
-import { getCurrentUser } from '@/lib/auth/user';
-import { redirect } from 'next/navigation';
+import { getCurrentUser, requireCurrentUser } from '@/lib/auth/user';
 
 export async function generateMetadata(): Promise<Metadata> {
   const user = await getCurrentUser();
@@ -15,8 +14,7 @@ export default async function AdminLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const user = await getCurrentUser();
-  if (!user) redirect('/login');
+  const user = await requireCurrentUser();
 
   return (
     <>

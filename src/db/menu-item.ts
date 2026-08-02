@@ -1,6 +1,6 @@
 import { prisma } from '@/lib/prisma';
 import type { Prisma, MenuItem as PrismaMenuItem } from '@/generated/prisma/client';
-import { getCurrentUser } from '@/lib/auth/user';
+import { requireCurrentUser } from '@/lib/auth/user';
 
 export type MenuItem = Omit<PrismaMenuItem, 'price'> & {
   price: number;
@@ -40,9 +40,7 @@ export async function getMenuItemsList({
   sortBy = 'category',
   order = 'asc',
 }: SearchMenuItemsProps): Promise<MenuItem[]> {
-  // It should always successfully get the user
-  const user = await getCurrentUser();
-  if (!user) return [];
+  const user = await requireCurrentUser();
 
   const orderDir = order === 'desc' ? 'desc' : 'asc';
   let orderBy: Prisma.MenuItemOrderByWithRelationInput[] = [];

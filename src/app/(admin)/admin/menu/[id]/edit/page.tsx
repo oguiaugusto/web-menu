@@ -1,7 +1,7 @@
 import { MenuItemForm } from '@/app/(admin)/_components/menu-item-form';
 import { getMenuCategories, getMenuItem } from '@/db/menu-item';
-import { getCurrentUser } from '@/lib/auth/user';
-import { notFound, redirect } from 'next/navigation';
+import { requireCurrentUser } from '@/lib/auth/user';
+import { notFound } from 'next/navigation';
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -10,8 +10,7 @@ type Props = {
 export default async function MenuItemEditPage({ params }: Props) {
   const { id } = await params;
 
-  const user = await getCurrentUser();
-  if (!user) redirect('/login');
+  const user = await requireCurrentUser();
 
   const categories = await getMenuCategories(user.restaurant.id);
 
