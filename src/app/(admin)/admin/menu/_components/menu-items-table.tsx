@@ -1,12 +1,14 @@
+import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { TEXT } from '@/constants/text';
 import { MenuItem } from '@/db/menu-item';
 import { cn } from '@/utils/cn';
 import { SquarePen, Trash2 } from 'lucide-react';
+import Link from 'next/link';
 
 export function MenuItemsTable({ items }: Readonly<{ items: MenuItem[] }>) {
   const actionButtonClass = cn(
-    'focus-visible:ring-red-muted rounded-md p-2 text-neutral-500 transition-colors hover:bg-neutral-100 focus-visible:ring-1 focus-visible:ring-offset-1 focus-visible:outline-none cursor-pointer',
+    'cursor-pointer rounded-md p-2 text-neutral-500 transition-colors hover:bg-neutral-200/50',
   );
 
   return (
@@ -35,9 +37,9 @@ export function MenuItemsTable({ items }: Readonly<{ items: MenuItem[] }>) {
           {items.map((item) => (
             <tr key={item.id} className="transition-colors hover:bg-neutral-50">
               <td className="flex items-center justify-center gap-2 px-5 py-4">
-                <button type="button" className={actionButtonClass}>
+                <Button variant="clean" as={Link} href={`/admin/menu/${item.id}/edit`} className={actionButtonClass}>
                   <SquarePen size={18} />
-                </button>
+                </Button>
                 <button type="button" className={actionButtonClass}>
                   <Trash2 size={18} />
                 </button>
