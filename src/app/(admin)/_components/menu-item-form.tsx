@@ -13,6 +13,9 @@ import { getHandleChange } from '@/utils/getHandleChange';
 import { formatMoney, moneyFormatter } from '@/utils/money';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { createMenuItem, MenuItemResult } from '@/actions/menuItem';
+import { handleSubmitError } from '@/utils/handle-submit-error';
+import { toastSuccess } from '@/utils/toast';
 
 type Props = Readonly<{ mode: 'create' | 'edit'; item?: MenuItem; categories: string[] }>;
 
@@ -31,6 +34,8 @@ export function MenuItemForm({ mode, item, categories }: Props) {
     imageUrl: item ? item.imageUrl : '',
   });
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = getHandleChange(setFields, setFieldErrors);
   const handleMoneyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,6 +58,38 @@ export function MenuItemForm({ mode, item, categories }: Props) {
     setFields((p) => ({ ...p, imageUrl: imageUrl ?? '' }));
   };
 
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      let result: MenuItemResult;
+
+      if (mode === 'create') {
+        result = await createMenuItem({ ...fields, price: Number(fields.price) });
+      } else {
+        // Placeholder
+        result = await createMenuItem({ ...fields, price: Number(fields.price) });
+      }
+
+      if (!result.success) return handleSubmitError(result, setFieldErrors);
+
+      const successMessage = mode === 'create' ? TEXT.menuItemCreated : TEXT.menuItemUpdated;
+      toastSuccess(successMessage, { position: 'bottom-center' });
+
+      router.push('/admin/menu?sortBy=updatedAt&order=desc');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const disableSubmit =
+    fields.name.length < 1 ||
+    fields.category.length < 1 ||
+    !fields.imageUrl ||
+    fields.imageUrl.length < 1 ||
+    isSubmitting;
+
   return (
     <main className="min-h-screen bg-neutral-50">
       <div className="mx-auto max-w-4xl px-4 py-6 lg:px-0">
@@ -64,7 +101,7 @@ export function MenuItemForm({ mode, item, categories }: Props) {
             {!editMode ? TEXT.menuItemFormSubtitleNew : TEXT.menuItemFormSubtitleEdit}
           </p>
         </div>
-        <form className="space-y-12">
+        <form className="space-y-12" onSubmit={handleSubmit}>
           <section className="space-y-6">
             <h2 id="general-information-heading" className="text-lg font-semibold text-neutral-900">
               {TEXT.generalInformation}
@@ -75,8 +112,10 @@ export function MenuItemForm({ mode, item, categories }: Props) {
                 name="name"
                 placeholder={TEXT.menuItemNamePlaceholder}
                 value={fields.name}
+                error={fieldErrors.name}
                 onChange={handleChange}
                 additionalInputProps={{ autoComplete: 'off' }}
+                required
               />
               <Input
                 type="text"
@@ -84,7 +123,9 @@ export function MenuItemForm({ mode, item, categories }: Props) {
                 name="price"
                 prefix={{ value: '$' }}
                 value={moneyFormatter.format(fields.price)}
+                error={fieldErrors.price}
                 onChange={handleMoneyChange}
+                required
               />
             </div>
             <TextArea
@@ -93,6 +134,7 @@ export function MenuItemForm({ mode, item, categories }: Props) {
               rows={4}
               placeholder={TEXT.menuItemDescriptionPlaceholder}
               value={fields.description}
+              error={fieldErrors.description}
               onChange={handleChange}
             />
             <div className="grid gap-3 sm:grid-cols-2 sm:items-start">
@@ -126,10 +168,10 @@ export function MenuItemForm({ mode, item, categories }: Props) {
             <ImageSelector value={fields.imageUrl || undefined} onChange={handleImageChange} />
           </section>
           <div className="flex flex-col-reverse gap-3 border-t border-neutral-200 pt-6 sm:flex-row sm:justify-end">
-            <Button type="button" variant="primary-outline" className="w-full sm:w-auto">
+            <Button type="button" variant="primary-outline" className="w-full sm:w-auto" onClick={() => router.back()}>
               {TEXT.cancel}
             </Button>
-            <Button type="button" variant="primary" className="w-full sm:w-auto">
+            <Button type="submit" variant="primary" className="w-full sm:w-auto" disabled={disableSubmit}>
               {TEXT.createMenuItem}
             </Button>
           </div>

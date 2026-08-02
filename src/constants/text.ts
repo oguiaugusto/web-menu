@@ -129,6 +129,8 @@ export const TEXT = {
   create: 'Create',
   selectOrCreateCategory: 'Select or create a category',
   selectedMenuItemImage: 'Selected menu item image',
+  menuItemCreated: 'Menu item created successfully',
+  menuItemUpdated: 'Menu item updated successfully',
 };
 
 export const ERROR_MESSAGES: Record<string, string> = {
