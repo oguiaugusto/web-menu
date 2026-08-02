@@ -6,6 +6,7 @@ import { Select } from '@/components/ui/select';
 import { TEXT } from '@/constants/text';
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
 import { ArrowDownUp, Plus, Search } from 'lucide-react';
+import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -103,9 +104,10 @@ export function Toolbar() {
         </div>
       </div>
       <Button
+        as={Link}
         variant="primary"
+        href="/admin/menu/new"
         className="flex items-center justify-center gap-2 whitespace-nowrap"
-        onClick={() => router.push('/admin/menu/new')}
       >
         <Plus size={18} />
         {TEXT.newItem}

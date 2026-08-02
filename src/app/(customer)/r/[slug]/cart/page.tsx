@@ -2,12 +2,12 @@
 
 import { useCart } from '@/providers/cart-provider';
 import { Button } from '@/components/ui/button';
-import { useRouter } from 'next/navigation';
 import { TEXT } from '@/constants/text';
 import { CartItem } from './_components/cart-item';
 import EmptyCart from '@/components/empty-cart';
 import { use } from 'react';
 import { rSlug } from '@/utils/r-slug';
+import Link from 'next/link';
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -15,8 +15,6 @@ type Props = {
 
 export default function CartPage({ params }: Props) {
   const { slug } = use(params);
-
-  const router = useRouter();
   const { items, subtotal, clearCart } = useCart();
 
   if (items.length === 0) return <EmptyCart slug={slug} />;
@@ -42,7 +40,7 @@ export default function CartPage({ params }: Props) {
             {subtotal.toFixed(2)}
           </span>
         </div>
-        <Button variant="primary" className="w-full" onClick={() => router.push(rSlug(slug, '/checkout'))}>
+        <Button as={Link} variant="primary" href={rSlug(slug, '/checkout')} className="w-full">
           {TEXT.checkout}
         </Button>
       </div>

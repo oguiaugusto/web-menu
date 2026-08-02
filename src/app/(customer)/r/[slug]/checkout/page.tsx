@@ -177,7 +177,7 @@ export default function CheckoutPage({ params }: Props) {
             <Button
               variant="primary-text"
               className="mt-2 w-full text-end text-sm"
-              onClick={() => router.push(rSlug(slug, '/cart'))}
+              onClick={() => router.replace(rSlug(slug, '/cart'))}
             >
               {TEXT.editCart}
             </Button>

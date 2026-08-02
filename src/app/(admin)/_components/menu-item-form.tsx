@@ -16,6 +16,7 @@ import { useState } from 'react';
 import { createMenuItem, MenuItemResult, updateMenuItem } from '@/actions/menuItem';
 import { handleSubmitError } from '@/utils/handle-submit-error';
 import { toastSuccess } from '@/utils/toast';
+import Link from 'next/link';
 
 type Props = Readonly<{ mode: 'create' | 'edit'; item?: MenuItem; categories: string[] }>;
 
@@ -171,12 +172,7 @@ export function MenuItemForm({ mode, item, categories }: Props) {
             <ImageSelector value={fields.imageUrl || undefined} onChange={handleImageChange} />
           </section>
           <div className="flex flex-col-reverse gap-3 border-t border-neutral-200 pt-6 sm:flex-row sm:justify-end">
-            <Button
-              type="button"
-              variant="primary-outline"
-              className="w-full sm:w-auto"
-              onClick={() => router.push('/admin/menu')}
-            >
+            <Button as={Link} variant="primary-outline" href="/admin/menu" className="w-full sm:w-auto">
               {TEXT.cancel}
             </Button>
             <Button type="submit" variant="primary" className="w-full sm:w-auto" disabled={disableSubmit}>
