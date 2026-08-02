@@ -48,3 +48,30 @@ export async function createMenuItem(rawData: MenuItemInput): Promise<MenuItemRe
 
   return { success: true };
 }
+
+export async function updateMenuItem(id: string, rawData: MenuItemInput): Promise<MenuItemResult> {
+  // It should always successfully get the user
+  const user = await getCurrentUser();
+  if (!user) redirect('/login');
+
+  const parsed = MenuItemSchema.safeParse(rawData);
+  if (!parsed.success) {
+    return returnError({ fields: parseZodErrors(parsed.error) });
+  }
+
+  const { data } = parsed;
+
+  await prisma.menuItem.update({
+    where: { restaurantId: user.restaurant.id, id },
+    data: {
+      name: data.name,
+      price: data.price,
+      description: data.description?.trim() || null,
+      category: data.category,
+      available: data.available,
+      imageUrl: data.imageUrl,
+    },
+  });
+
+  return { success: true };
+}

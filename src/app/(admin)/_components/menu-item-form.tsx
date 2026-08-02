@@ -13,7 +13,7 @@ import { getHandleChange } from '@/utils/getHandleChange';
 import { formatMoney, moneyFormatter } from '@/utils/money';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { createMenuItem, MenuItemResult } from '@/actions/menuItem';
+import { createMenuItem, MenuItemResult, updateMenuItem } from '@/actions/menuItem';
 import { handleSubmitError } from '@/utils/handle-submit-error';
 import { toastSuccess } from '@/utils/toast';
 
@@ -64,12 +64,15 @@ export function MenuItemForm({ mode, item, categories }: Props) {
 
     try {
       let result: MenuItemResult;
+      const data = {
+        ...fields,
+        price: Number(fields.price),
+      };
 
-      if (mode === 'create') {
-        result = await createMenuItem({ ...fields, price: Number(fields.price) });
+      if (mode === 'edit' && item?.id) {
+        result = await updateMenuItem(item.id, data);
       } else {
-        // Placeholder
-        result = await createMenuItem({ ...fields, price: Number(fields.price) });
+        result = await createMenuItem(data);
       }
 
       if (!result.success) return handleSubmitError(result, setFieldErrors);
@@ -168,11 +171,16 @@ export function MenuItemForm({ mode, item, categories }: Props) {
             <ImageSelector value={fields.imageUrl || undefined} onChange={handleImageChange} />
           </section>
           <div className="flex flex-col-reverse gap-3 border-t border-neutral-200 pt-6 sm:flex-row sm:justify-end">
-            <Button type="button" variant="primary-outline" className="w-full sm:w-auto" onClick={() => router.back()}>
+            <Button
+              type="button"
+              variant="primary-outline"
+              className="w-full sm:w-auto"
+              onClick={() => router.push('/admin/menu')}
+            >
               {TEXT.cancel}
             </Button>
             <Button type="submit" variant="primary" className="w-full sm:w-auto" disabled={disableSubmit}>
-              {TEXT.createMenuItem}
+              {mode === 'create' ? TEXT.createMenuItem : TEXT.save}
             </Button>
           </div>
         </form>
