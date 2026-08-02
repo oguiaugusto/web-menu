@@ -39,7 +39,11 @@ export function CartItem({ item }: Props) {
             <Button
               variant="primary-outline"
               className="flex h-8 w-8 items-center justify-center px-0 py-0"
-              onClick={() => updateQuantity(item.id, item.quantity - 1)}
+              disabled={item.quantity < 1}
+              onClick={() => {
+                if (item.quantity - 1 === 0) removeItem(item.id);
+                else updateQuantity(item.id, item.quantity - 1);
+              }}
             >
               <Minus size={16} />
             </Button>
