@@ -4,10 +4,10 @@ import { login } from '@/actions/auth/login';
 import { AuthCard } from '@/components/auth-card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { ERROR_MESSAGES, TEXT } from '@/constants/text';
+import { TEXT } from '@/constants/text';
 import { FieldErrors } from '@/types/misc';
 import { getHandleChange } from '@/utils/getHandleChange';
-import { toastError } from '@/utils/toast';
+import { handleSubmitError } from '@/utils/handle-submit-error';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
@@ -36,15 +36,7 @@ export default function LoginPage() {
         password: fields.password,
       });
 
-      if (!result.success) {
-        if (result.error.form) {
-          toastError(ERROR_MESSAGES[result.error.form], { position: 'top-center' });
-        } else if (result.error.fields) {
-          setFieldErrors(result.error.fields);
-        }
-
-        return;
-      }
+      if (!result.success) return handleSubmitError(result, setFieldErrors);
 
       router.replace(searchParams.get('next') ?? '/admin');
     } finally {

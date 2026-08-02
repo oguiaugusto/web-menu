@@ -3,16 +3,16 @@
 import { AuthCard } from '@/components/auth-card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { ERROR_MESSAGES, TEXT } from '@/constants/text';
+import { TEXT } from '@/constants/text';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { PasswordInput } from './_components/password-input';
 import { generateSlug } from '@/constants/generate-slug';
 import { FieldErrors } from '@/types/misc';
 import { register } from '@/actions/auth/register';
-import { toastError } from '@/utils/toast';
 import { useRouter } from 'next/navigation';
 import { getHandleChange } from '@/utils/getHandleChange';
+import { handleSubmitError } from '@/utils/handle-submit-error';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -69,15 +69,7 @@ export default function RegisterPage() {
         restaurantUrl: fields.restaurantUrl,
       });
 
-      if (!result.success) {
-        if (result.error.form) {
-          toastError(ERROR_MESSAGES[result.error.form], { position: 'top-center' });
-        } else if (result.error.fields) {
-          setFieldErrors(result.error.fields);
-        }
-
-        return;
-      }
+      if (!result.success) return handleSubmitError(result, setFieldErrors);
 
       router.replace('/admin');
     } finally {

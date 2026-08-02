@@ -10,13 +10,14 @@ import { ERROR_MESSAGES, TEXT } from '@/constants/text';
 import { Radio } from '@/components/ui/radio';
 import { createOrder } from '@/actions/orders';
 import { FieldErrors } from '@/types/misc';
-import { toastError, toastSuccess } from '@/utils/toast';
+import { toastSuccess } from '@/utils/toast';
 import { saveOrderCode } from '@/utils/localstorage-orders';
 import EmptyCart from '@/components/empty-cart';
 import { getHandleChange } from '@/utils/getHandleChange';
 import { rSlug } from '@/utils/r-slug';
 import { useRestaurant } from '@/providers/restaurant-provider';
 import { formatMoney, moneyFormatter } from '@/utils/money';
+import { handleSubmitError } from '@/utils/handle-submit-error';
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -72,21 +73,13 @@ export default function CheckoutPage({ params }: Props) {
         items: items.map((x) => ({ id: x.id, quantity: x.quantity })),
       });
 
-      if (!result.success) {
-        if (result.error.form) {
-          toastError(ERROR_MESSAGES[result.error.form], { position: 'top-center' });
-        } else if (result.error.fields) {
-          setFieldErrors(result.error.fields);
-        }
-
-        return;
-      }
+      if (!result.success) return handleSubmitError(result, setFieldErrors);
 
       toastSuccess(TEXT.orderPlaced, { position: 'bottom-center' });
       saveOrderCode(result.code);
       clearCart();
 
-      router.push(rSlug(slug, `/orders/${result.code}`));
+      router.replace(rSlug(slug, `/orders/${result.code}`));
     } finally {
       setIsSubmitting(false);
     }
