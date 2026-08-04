@@ -109,6 +109,7 @@ export const TEXT = {
   available: 'Available',
   reverse: 'Reverse',
   description: 'Description',
+  noItemsFound: 'No items found',
   menuItemFormTitleNew: 'New Menu Item',
   menuItemFormSubtitleNew: 'Create a new item that will appear on your restaurant menu.',
   menuItemFormTitleEdit: 'Edit Menu Item',

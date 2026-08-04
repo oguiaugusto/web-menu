@@ -12,6 +12,14 @@ export function MenuItemsTable({ items }: Readonly<{ items: MenuItem[] }>) {
     'cursor-pointer rounded-md p-2 text-neutral-500 transition-colors hover:bg-neutral-200/50',
   );
 
+  const renderEmpty = () => (
+    <tr>
+      <td colSpan={5} className="px-5 py-4 text-center text-sm font-medium text-neutral-600">
+        {TEXT.noItemsFound}
+      </td>
+    </tr>
+  );
+
   return (
     <div className="relative overflow-x-auto rounded-xl border border-neutral-200 bg-white shadow-sm">
       <table className="w-full min-w-165 border-collapse text-left">
@@ -58,6 +66,7 @@ export function MenuItemsTable({ items }: Readonly<{ items: MenuItem[] }>) {
               </td>
             </tr>
           ))}
+          {items.length === 0 ? renderEmpty() : null}
         </tbody>
       </table>
     </div>
