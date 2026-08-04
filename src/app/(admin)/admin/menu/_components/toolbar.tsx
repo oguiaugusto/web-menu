@@ -40,7 +40,7 @@ export function Toolbar() {
     if (name === 'sortBy') {
       if (value !== sortBy) {
         if (['category', 'name'].includes(value)) next.order = 'asc';
-        if (value === 'updatedAt') next.order = 'desc';
+        if (['price', 'updatedAt'].includes(value)) next.order = 'desc';
       }
     }
 
