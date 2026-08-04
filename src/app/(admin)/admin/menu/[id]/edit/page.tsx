@@ -1,4 +1,4 @@
-import { MenuItemForm } from '@/app/(admin)/_components/menu-item-form';
+import { MenuItemForm } from '../../_components/menu-item-form';
 import { getMenuCategories, getMenuItem } from '@/db/menu-item';
 import { requireCurrentUser } from '@/lib/auth/user';
 import { notFound } from 'next/navigation';
