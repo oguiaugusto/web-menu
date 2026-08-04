@@ -63,13 +63,15 @@ export function Toolbar() {
 
     setQuery(pQuery ?? '');
     setSortBy(SORT_BY_FIELDS.some((x) => x.value === pSortBy) ? pSortBy! : 'category');
-  }, [searchParams]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const trimmed = debouncedQuery.trim();
     if (debouncedQuery !== query) return;
 
     updateQuery('query', trimmed.length >= MIN_LENGTH ? trimmed : '');
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedQuery, query]);
 
