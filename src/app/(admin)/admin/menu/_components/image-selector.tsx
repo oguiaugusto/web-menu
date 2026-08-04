@@ -105,7 +105,7 @@ export function ImageSelector({ value, onChange }: ImageSelectorProps) {
   const previewSource = hasPreviewError ? undefined : (selectedExample ?? url);
 
   return (
-    <div className="grid gap-8 md:grid-cols-[260px_minmax(0,1fr)] md:items-start">
+    <div className="grid gap-8 pb-6 md:grid-cols-[260px_minmax(0,1fr)] md:items-start">
       <div className="relative mx-auto aspect-square w-full max-w-[260px] overflow-hidden rounded-xl border border-neutral-200 bg-neutral-100 shadow-sm md:mx-0 md:w-[260px]">
         {previewSource ? (
           <>
@@ -129,7 +129,7 @@ export function ImageSelector({ value, onChange }: ImageSelectorProps) {
           </div>
         )}
       </div>
-      <div className="h-[260px] min-w-0 space-y-4 md:flex md:flex-col">
+      <div className="flex h-[260px] min-w-0 flex-col space-y-4">
         <SegmentedButtonGroup
           className="w-full"
           ariaLabel={TEXT.menuItemImageImageSort}
@@ -141,8 +141,8 @@ export function ImageSelector({ value, onChange }: ImageSelectorProps) {
           ]}
         />
         {source === 'examples' ? (
-          <div className="max-h-[260px] overflow-y-auto rounded-lg border border-neutral-200 bg-white p-3 shadow-xs">
-            <div className="grid grid-cols-4 justify-start gap-3">
+          <div className="min-h-0 overflow-y-auto rounded-lg border border-neutral-200 bg-white p-3 shadow-xs">
+            <div className="grid grid-cols-3 justify-start gap-3 sm:grid-cols-4">
               {EXAMPLE_IMAGES.map((image) => {
                 const isSelected = image === selectedExample;
 

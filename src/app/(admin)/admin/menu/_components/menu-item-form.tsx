@@ -105,8 +105,8 @@ export function MenuItemForm({ mode, item, categories }: Props) {
             {!editMode ? TEXT.menuItemFormSubtitleNew : TEXT.menuItemFormSubtitleEdit}
           </p>
         </div>
-        <form className="space-y-12" onSubmit={handleSubmit}>
-          <section className="space-y-6">
+        <form onSubmit={handleSubmit}>
+          <section className="mb-12 space-y-6">
             <h2 id="general-information-heading" className="text-lg font-semibold text-neutral-900">
               {TEXT.generalInformation}
             </h2>
