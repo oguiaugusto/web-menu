@@ -1,5 +1,5 @@
 import { TEXT } from '@/constants/text';
-import { EmptyState } from './_components/empty-state';
+import { EmptyTable } from './_components/empty-table';
 import { MenuItemsTable } from './_components/menu-items-table';
 import { Toolbar } from './_components/toolbar';
 import { getMenuItemsList } from '@/db/menu-item';
@@ -28,7 +28,7 @@ export default async function MenuPage({ searchParams }: Props) {
           <h1 className="text-2xl font-semibold tracking-tight text-neutral-900 sm:text-3xl">{TEXT.menuItems}</h1>
         </div>
         <Toolbar />
-        <div className="mt-6">{items.length ? <MenuItemsTable items={items} /> : <EmptyState />}</div>
+        <div className="mt-6">{items.length ? <MenuItemsTable items={items} /> : <EmptyTable />}</div>
       </div>
     </main>
   );
