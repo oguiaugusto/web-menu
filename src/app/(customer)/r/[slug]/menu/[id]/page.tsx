@@ -34,7 +34,7 @@ export default async function MenuItem({ params }: Props) {
           <div className="flex items-start justify-between gap-4">
             <div>
               <h1 className="text-2xl font-bold tracking-tight">{data.name}</h1>
-              <p className="mt-2 text-sm leading-relaxed text-neutral-500">{data.description}</p>
+              <p className="mt-2 text-sm leading-relaxed text-neutral-500 whitespace-pre">{data.description}</p>
             </div>
             <span className="shrink-0 text-lg font-semibold">
               {TEXT.currency}
