@@ -2,6 +2,7 @@
 
 import { requireCurrentUser } from '@/lib/auth/user';
 import { prisma } from '@/lib/prisma';
+import { ErrorCode } from '@/types/enums';
 import { ResultError } from '@/types/misc';
 import { parseZodErrors } from '@/utils/parse-zod-errors';
 import { returnError } from '@/utils/return-error';
@@ -67,6 +68,20 @@ export async function updateMenuItem(id: string, rawData: MenuItemInput): Promis
       imageUrl: data.imageUrl,
     },
   });
+
+  return { success: true };
+}
+
+export async function deleteMenuItem(id: string): Promise<MenuItemResult> {
+  const user = await requireCurrentUser();
+
+  try {
+    await prisma.menuItem.delete({
+      where: { restaurantId: user.restaurant.id, id },
+    });
+  } catch {
+    return returnError({ form: ErrorCode.ITEM_NOT_DELETED });
+  }
 
   return { success: true };
 }

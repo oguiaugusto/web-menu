@@ -131,8 +131,14 @@ export const TEXT = {
   selectedMenuItemImage: 'Selected menu item image',
   menuItemCreated: 'Menu item created successfully',
   menuItemUpdated: 'Menu item updated successfully',
+  menuItemDeleted: 'Menu item deleted successfully',
   save: 'Save',
   lastUpdated: 'Last updated',
+  deleteItem: 'Delete item',
+  deleteItemAreYouSure: 'Are you sure you want to delete this item?',
+  deleteItemCannotBeUndone: 'This action cannot be undone',
+  delete: 'Delete',
+  deleting: 'Deleting...',
 };
 
 export const ERROR_MESSAGES: Record<string, string> = {
@@ -152,6 +158,7 @@ export const ERROR_MESSAGES: Record<string, string> = {
   already_registered: 'is already registered',
   already_in_use: 'is already in use',
   wrong_credentials: 'Email or password is incorrect',
+  item_not_deleted: 'Item not found or already deleted',
 };
 
 export const PAYMENT_METHODS: Record<PaymentMethod, string> = {

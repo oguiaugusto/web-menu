@@ -14,4 +14,5 @@ export enum ErrorCode {
   ALREADY_REGISTERED = 'already_registered',
   ALREADY_IN_USE = 'already_in_use',
   WRONG_CREDENTIALS = 'wrong_credentials',
+  ITEM_NOT_DELETED = 'item_not_deleted',
 }

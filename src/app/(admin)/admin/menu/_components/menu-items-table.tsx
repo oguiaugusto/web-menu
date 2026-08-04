@@ -3,8 +3,9 @@ import { Switch } from '@/components/ui/switch';
 import { TEXT } from '@/constants/text';
 import { MenuItem } from '@/db/menu-item';
 import { cn } from '@/utils/cn';
-import { SquarePen, Trash2 } from 'lucide-react';
+import { SquarePen } from 'lucide-react';
 import Link from 'next/link';
+import { DeleteDialog } from './delete-dialog';
 
 export function MenuItemsTable({ items }: Readonly<{ items: MenuItem[] }>) {
   const actionButtonClass = cn(
@@ -40,9 +41,7 @@ export function MenuItemsTable({ items }: Readonly<{ items: MenuItem[] }>) {
                 <Button variant="clean" as={Link} href={`/admin/menu/${item.id}/edit`} className={actionButtonClass}>
                   <SquarePen size={18} />
                 </Button>
-                <button type="button" className={actionButtonClass}>
-                  <Trash2 size={18} />
-                </button>
+                <DeleteDialog itemId={item.id} buttonClass={actionButtonClass} />
               </td>
               <th scope="row" className="px-5 py-4 text-sm font-medium text-neutral-900">
                 {item.name}
