@@ -15,7 +15,7 @@ export default async function MenuPage({ params, searchParams }: Props) {
 
   const restaurant = await getRestaurant(slug);
   const [categories, data] = await Promise.all([
-    getMenuCategories(restaurant.id),
+    getMenuCategories(restaurant.id, true),
     getMenuItems(restaurant.id, category),
   ]);
 

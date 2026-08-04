@@ -12,9 +12,9 @@ type SearchMenuItemsProps = {
   order?: string;
 };
 
-export async function getMenuCategories(restaurantId: string) {
+export async function getMenuCategories(restaurantId: string, onlyAvailable?: boolean) {
   const items = await prisma.menuItem.findMany({
-    where: { restaurantId },
+    where: { restaurantId, available: onlyAvailable ? true : undefined },
     distinct: ['category'],
     select: { category: true },
     orderBy: { category: 'asc' },
@@ -25,7 +25,7 @@ export async function getMenuCategories(restaurantId: string) {
 
 export async function getMenuItems(restaurantId: string, category?: string): Promise<MenuItem[]> {
   const items = await prisma.menuItem.findMany({
-    where: { restaurantId, category },
+    where: { restaurantId, category, available: true },
     orderBy: { name: 'asc' },
   });
 
@@ -71,7 +71,7 @@ export async function getMenuItemsList({
 
 export async function getMenuItem(restaurantId: string, id: string): Promise<MenuItem | null> {
   const item = await prisma.menuItem.findUnique({
-    where: { restaurantId, id },
+    where: { restaurantId, id, available: true },
   });
 
   if (!item) return null;
