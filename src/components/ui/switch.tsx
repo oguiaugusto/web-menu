@@ -5,7 +5,6 @@ type Props = Readonly<{
   checked?: boolean;
   rightLabel?: string;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
-  onClick?: () => void;
 }>;
 
 export function Switch({ name, checked, rightLabel, onChange }: Props) {

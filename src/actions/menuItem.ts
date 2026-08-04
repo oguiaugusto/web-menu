@@ -85,3 +85,12 @@ export async function deleteMenuItem(id: string): Promise<MenuItemResult> {
 
   return { success: true };
 }
+
+export async function updateMenuItemAvailability(id: string, available: boolean): Promise<void> {
+  const user = await requireCurrentUser();
+
+  await prisma.menuItem.updateMany({
+    where: { restaurantId: user.restaurant.id, id },
+    data: { available },
+  });
+}

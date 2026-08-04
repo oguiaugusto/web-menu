@@ -1,11 +1,11 @@
 import { Button } from '@/components/ui/button';
-import { Switch } from '@/components/ui/switch';
 import { TEXT } from '@/constants/text';
 import { MenuItem } from '@/db/menu-item';
 import { cn } from '@/utils/cn';
 import { SquarePen } from 'lucide-react';
 import Link from 'next/link';
 import { DeleteDialog } from './delete-dialog';
+import { AvailableSwitch } from './available-switch';
 
 export function MenuItemsTable({ items }: Readonly<{ items: MenuItem[] }>) {
   const actionButtonClass = cn(
@@ -53,7 +53,7 @@ export function MenuItemsTable({ items }: Readonly<{ items: MenuItem[] }>) {
               </td>
               <td className="px-5 py-4">
                 <div className="mt-[-6px] flex justify-center">
-                  <Switch checked={item.available} />
+                  <AvailableSwitch itemId={item.id} available={item.available} />
                 </div>
               </td>
             </tr>
