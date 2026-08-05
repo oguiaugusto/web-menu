@@ -137,9 +137,21 @@ export const TEXT = {
   lastUpdated: 'Last updated',
   deleteItem: 'Delete item',
   deleteItemAreYouSure: 'Are you sure you want to delete this item?',
-  deleteItemCannotBeUndone: 'This action cannot be undone',
+  thisActionCannotBeUndone: 'This action cannot be undone.',
   delete: 'Delete',
   deleting: 'Deleting...',
+  ordersPageTitle: 'Orders',
+  searchOrdersPlaceholder: 'Search by customer name or order code...',
+  activeOrders: 'Active Orders',
+  completedOrders: 'Completed Orders',
+  noOrdersFound: 'No orders found',
+  customer: 'Customer',
+  orderItems: 'Items',
+  pressAndHoldToAdvanceTo: 'Press & hold to advance to',
+  cancelOrder: 'Cancel order',
+  keepOrder: 'Keep order',
+  cancelOrderAreYouSure: 'Are you sure you want to cancel this order?',
+  close: 'Close',
 };
 
 export const ERROR_MESSAGES: Record<string, string> = {

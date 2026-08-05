@@ -4,7 +4,7 @@ import { Fragment } from 'react/jsx-runtime';
 import { useEffect, useState } from 'react';
 import { TEXT } from '@/constants/text';
 import { cn } from '@/utils/cn';
-import { STATUS_INFO } from '../../_constants/status';
+import { STATUS_INFO } from '../../../../../../../constants/status';
 import type { OrderStatus as POrderStatus } from '@/generated/prisma/enums';
 
 type Props = { slug: string; code: string; status: POrderStatus };

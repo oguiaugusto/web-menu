@@ -1,9 +1,8 @@
 import { OrderSummary } from '@/db/order';
 import Link from 'next/link';
-import { STATUS_INFO } from '../_constants/status';
 import { ChevronRight } from 'lucide-react';
-import { cn } from '@/utils/cn';
 import { rSlug } from '@/utils/r-slug';
+import { OrderStatusBadge } from '@/components/order-status-badge';
 
 type Props = {
   slug: string;
@@ -23,16 +22,7 @@ export function OrderCard({ slug, order }: Props) {
         <p className="mt-1 text-sm text-neutral-500">{date}</p>
       </div>
       <div className="flex items-center gap-1">
-        <p
-          className={cn(
-            'rounded-full px-3 py-1 text-xs font-medium',
-            order.status === 'DELIVERED' && 'bg-green-100 text-green-700',
-            order.status === 'CANCELLED' && 'bg-red-100 text-red-700',
-            order.status !== 'DELIVERED' && order.status !== 'CANCELLED' && 'bg-amber-100 text-amber-700',
-          )}
-        >
-          {STATUS_INFO[order.status]?.label}
-        </p>
+        <OrderStatusBadge status={order.status} hideDot />
         <ChevronRight size={18} />
       </div>
     </Link>

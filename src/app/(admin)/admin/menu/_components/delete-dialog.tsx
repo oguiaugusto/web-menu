@@ -64,7 +64,7 @@ export function DeleteDialog({ itemId, buttonClass }: Props) {
               </div>
               <div className="mt-2 flex flex-col items-center text-sm text-neutral-500">
                 <p>{TEXT.deleteItemAreYouSure}</p>
-                <p>{TEXT.deleteItemCannotBeUndone}</p>
+                <p>{TEXT.thisActionCannotBeUndone}</p>
               </div>
               <div className="mt-6 flex justify-center gap-2">
                 <Button

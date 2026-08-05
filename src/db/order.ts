@@ -1,13 +1,14 @@
 import { PAYMENT_METHODS } from '@/constants/text';
-import { OrderItem as PrismaOrderItem, Order as PrismaOrder, OrderStatus } from '@/generated/prisma/client';
+import { Order as PrismaOrder, OrderStatus } from '@/generated/prisma/client';
 import { prisma } from '@/lib/prisma';
+import { OrderItem } from './orderItem';
 
 export type Order = Omit<PrismaOrder, 'changeFor' | 'deliveryFee' | 'total' | 'payment'> & {
   changeFor: number | null;
   deliveryFee: number | null;
   total: number;
   payment: string;
-  items: (Omit<PrismaOrderItem, 'price'> & { price: number })[];
+  items: OrderItem[];
 };
 
 export type OrderSummary = {
