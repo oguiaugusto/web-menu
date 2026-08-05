@@ -99,6 +99,7 @@ export default function RegisterPage() {
               onChange={handleNameChange}
               additionalInputProps={inputProps}
               required
+              showRequired
             />
             <Input
               name="restaurantUrl"
@@ -110,6 +111,7 @@ export default function RegisterPage() {
               onBlur={handleUrlBlur}
               additionalInputProps={inputProps}
               required
+              showRequired
             />
             <Input
               type="email"
@@ -121,6 +123,7 @@ export default function RegisterPage() {
               onChange={handleChange}
               additionalInputProps={inputProps}
               required
+              showRequired
             />
             <PasswordInput
               value={fields.password}

@@ -69,6 +69,7 @@ export function PasswordInput({ value, error, onChange, setIsValid }: Props) {
           </div>
         }
         required
+        showRequired
       />
       <div className="mx-1 mt-3 grid grid-cols-5 gap-2">
         {Array.from({ length: 5 }).map((_, i) => (

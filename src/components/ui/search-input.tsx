@@ -19,6 +19,7 @@ import { ERROR_MESSAGES, TEXT } from '@/constants/text';
 import { cn } from '@/utils/cn';
 import { Tooltip } from 'react-tooltip';
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
+import RequiredStar from '../required-star';
 
 const DEFAULT_DEBOUNCE = 300;
 const DEFAULT_MIN_LENGTH = 2;
@@ -40,6 +41,8 @@ export type SearchInputProps<T> = {
   disabled?: boolean;
   debounce?: number;
   minLength?: number;
+  required?: boolean;
+  showRequired?: boolean;
 };
 
 export type SearchInputRef = {
@@ -64,6 +67,8 @@ function SearchInputInner<T>(
     disabled = false,
     debounce = DEFAULT_DEBOUNCE,
     minLength = DEFAULT_MIN_LENGTH,
+    required,
+    showRequired,
   }: SearchInputProps<T>,
   ref: ForwardedRef<SearchInputRef>,
 ) {
@@ -200,6 +205,7 @@ function SearchInputInner<T>(
       {label ? (
         <span id={`${inputId}-label`} className="flex items-center gap-2 text-sm font-medium">
           {label}
+          <RequiredStar required={required && showRequired} />
           {tooltip ? (
             <>
               <span data-tooltip-id="tooltip" data-tooltip-place="right">

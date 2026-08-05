@@ -18,6 +18,7 @@ import { rSlug } from '@/utils/r-slug';
 import { useRestaurant } from '@/providers/restaurant-provider';
 import { formatMoney, moneyFormatter } from '@/utils/money';
 import { handleSubmitError } from '@/utils/handle-submit-error';
+import RequiredStar from '@/components/required-star';
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -102,6 +103,8 @@ export default function CheckoutPage({ params }: Props) {
             placeholder={TEXT.yourName}
             error={fieldErrors.name}
             onChange={handleChange}
+            required
+            showRequired
           />
           <Input
             name="phone"
@@ -110,6 +113,8 @@ export default function CheckoutPage({ params }: Props) {
             placeholder={TEXT.yourPhoneNumber}
             error={fieldErrors.phone}
             onChange={handleChange}
+            required
+            showRequired
           />
           <Input
             name="address"
@@ -119,6 +124,8 @@ export default function CheckoutPage({ params }: Props) {
             placeholder={TEXT.yourAddress}
             error={fieldErrors.address}
             onChange={handleChange}
+            required
+            showRequired
           />
           <TextArea
             name="notes"
@@ -130,7 +137,10 @@ export default function CheckoutPage({ params }: Props) {
             rows={4}
           />
           <div className="space-y-1">
-            <label className="text-sm font-medium">{TEXT.paymentMethod}</label>
+            <label className="flex items-center gap-2 text-sm font-medium">
+              {TEXT.paymentMethod}
+              <RequiredStar required />
+            </label>
             <div className="w-fit">
               <Radio name="payment" label={TEXT.cash} value="CASH" checked={fields.payment} onChange={handleChange} />
               <Radio name="payment" label={TEXT.card} value="CARD" checked={fields.payment} onChange={handleChange} />

@@ -6,6 +6,7 @@ import { useEffect, useId, useState, type ChangeEvent, type ReactNode } from 're
 import { Tooltip } from 'react-tooltip';
 import { ERROR_MESSAGES, TEXT } from '@/constants/text';
 import { cn } from '@/utils/cn';
+import RequiredStar from '@/components/required-star';
 
 export type CategoryInputProps = {
   label: string;
@@ -73,6 +74,7 @@ export function CategoryInput({
       {label ? (
         <span id={`${inputId}-label`} className="flex items-center gap-2 text-sm font-medium">
           {label}
+          <RequiredStar required />
           {tooltip ? (
             <>
               <span data-tooltip-id="tooltip" data-tooltip-place="right">

@@ -1,8 +1,8 @@
 import { ERROR_MESSAGES } from '@/constants/text';
+import RequiredStar from '../required-star';
 
 type Props = Readonly<{
   label: string;
-  addLabel?: string;
   name?: string;
   placeholder?: string;
   value?: string;
@@ -10,14 +10,30 @@ type Props = Readonly<{
   cols?: number;
   onChange?: React.ChangeEventHandler<HTMLTextAreaElement>;
   error?: string;
+  errorLabel?: string;
+  required?: boolean;
+  showRequired?: boolean;
 }>;
 
-export function TextArea({ label, addLabel, name, placeholder, value, rows, cols, onChange, error }: Props) {
-  const fullLabel = addLabel ? `${label} (${addLabel})` : label;
-
+export function TextArea({
+  label,
+  name,
+  placeholder,
+  value,
+  rows,
+  cols,
+  onChange,
+  error,
+  errorLabel,
+  required,
+  showRequired,
+}: Props) {
   return (
     <label className="block space-y-1">
-      <span className="text-sm font-medium">{fullLabel}</span>
+      <span className="text-sm font-medium">
+        {label}
+        <RequiredStar required={required && showRequired} />
+      </span>
       <textarea
         id={name}
         name={name}
@@ -28,7 +44,7 @@ export function TextArea({ label, addLabel, name, placeholder, value, rows, cols
         value={value}
         onChange={onChange}
       />
-      {error ? <p className="mt-1 text-sm text-red-600">{`${label} ${ERROR_MESSAGES[error]}`}</p> : null}
+      {error ? <p className="mt-1 text-sm text-red-600">{`${errorLabel ?? label} ${ERROR_MESSAGES[error]}`}</p> : null}
     </label>
   );
 }

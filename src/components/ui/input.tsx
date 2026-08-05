@@ -5,6 +5,7 @@ import { cn } from '@/utils/cn';
 import { CircleQuestionMark } from 'lucide-react';
 import { useLayoutEffect, useRef, useState } from 'react';
 import { Tooltip } from 'react-tooltip';
+import RequiredStar from '../required-star';
 
 type Props = Readonly<{
   label: string;
@@ -20,6 +21,7 @@ type Props = Readonly<{
   error?: string;
   errorLabel?: string;
   required?: boolean;
+  showRequired?: boolean;
   additionalInputProps?: React.ComponentProps<'input'>;
 }>;
 
@@ -37,6 +39,7 @@ export function Input({
   error,
   errorLabel,
   required,
+  showRequired,
   additionalInputProps,
 }: Props) {
   const prefixRef = useRef<HTMLElement>(null);
@@ -62,6 +65,7 @@ export function Input({
       {label ? (
         <span className="flex items-center gap-2 text-sm font-medium">
           {label}
+          <RequiredStar required={required && showRequired} />
           {tooltip ? (
             <>
               <span data-tooltip-id="tooltip" data-tooltip-place="right">

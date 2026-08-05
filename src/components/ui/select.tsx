@@ -4,6 +4,7 @@ import { ChevronDownIcon, CircleQuestionMark } from 'lucide-react';
 import { Select as HSelect } from '@headlessui/react';
 import { Tooltip } from 'react-tooltip';
 import { ERROR_MESSAGES } from '@/constants/text';
+import RequiredStar from '../required-star';
 
 type Props = {
   label?: string;
@@ -15,14 +16,27 @@ type Props = {
   error?: string;
   errorLabel?: string;
   required?: boolean;
+  showRequired?: boolean;
 };
 
-export function Select({ label, options, name, value, tooltip, onChange, error, errorLabel, required }: Props) {
+export function Select({
+  label,
+  options,
+  name,
+  value,
+  tooltip,
+  onChange,
+  error,
+  errorLabel,
+  required,
+  showRequired,
+}: Props) {
   return (
     <label className="block space-y-1">
       {label ? (
         <span className="flex items-center gap-2 text-sm font-medium">
           {label}
+          <RequiredStar required={required && showRequired} />
           {tooltip ? (
             <>
               <span data-tooltip-id="tooltip" data-tooltip-place="right">

@@ -17,6 +17,7 @@ import { createMenuItem, MenuItemResult, updateMenuItem } from '@/actions/menuIt
 import { handleSubmitError } from '@/utils/handle-submit-error';
 import { toastSuccess } from '@/utils/toast';
 import Link from 'next/link';
+import RequiredStar from '@/components/required-star';
 
 type Props = Readonly<{ mode: 'create' | 'edit'; item?: MenuItem; categories: string[] }>;
 
@@ -120,6 +121,7 @@ export function MenuItemForm({ mode, item, categories }: Props) {
                 onChange={handleChange}
                 additionalInputProps={{ autoComplete: 'off' }}
                 required
+                showRequired
               />
               <Input
                 type="text"
@@ -130,6 +132,7 @@ export function MenuItemForm({ mode, item, categories }: Props) {
                 error={fieldErrors.price}
                 onChange={handleMoneyChange}
                 required
+                showRequired
               />
             </div>
             <TextArea
@@ -164,8 +167,9 @@ export function MenuItemForm({ mode, item, categories }: Props) {
           </section>
           <section className="space-y-6">
             <div>
-              <h2 id="image-heading" className="text-lg font-semibold text-neutral-900">
+              <h2 id="image-heading" className="flex items-center gap-2 text-lg font-semibold text-neutral-900">
                 {TEXT.image}
+                <RequiredStar required />
               </h2>
               <p className="mt-1 text-sm text-neutral-500">{TEXT.menuItemImageSubtitle}</p>
             </div>
