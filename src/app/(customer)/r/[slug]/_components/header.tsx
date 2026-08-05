@@ -9,7 +9,7 @@ export function Header({ slug }: Readonly<{ slug: string }>) {
   return (
     <header className="bg-red-muted sticky top-0 z-50 border-b border-red-700 text-white">
       <div className="mx-auto flex h-16 max-w-235 items-center justify-between px-4">
-        <Link href={rSlug(slug)} className="flex items-center">
+        <Link href={rSlug(slug)} className="flex items-center outline-white">
           <Image
             src="/logo-white.png"
             alt="Web Menu"
@@ -39,7 +39,7 @@ export function Header({ slug }: Readonly<{ slug: string }>) {
             <Link
               key={`link-${x.link}`}
               href={rSlug(slug, x.link)}
-              className="relative py-1 text-sm font-medium transition-colors after:bottom-0 after:left-0 after:h-[.5px] after:w-full after:bg-white hover:after:absolute focus-visible:outline-0 active:after:absolute"
+              className="relative py-1 text-sm font-medium outline-white transition-colors after:bottom-0 after:left-0 after:h-[.5px] after:w-full after:bg-white hover:after:absolute active:after:absolute"
             >
               {x.label}
             </Link>
@@ -47,7 +47,7 @@ export function Header({ slug }: Readonly<{ slug: string }>) {
           <Link
             href={rSlug(slug, '/cart')}
             aria-label="Cart"
-            className="relative mb-[1px] cursor-pointer rounded-full p-2 transition-opacity hover:drop-shadow-[0px_1px_1px_rgba(255,255,255,0.4)]"
+            className="relative mb-[1px] cursor-pointer rounded-full p-2 outline-white transition-opacity hover:drop-shadow-[0px_1px_1px_rgba(255,255,255,0.4)]"
           >
             <CartAmountBubble />
             <ShoppingCart size={26} />

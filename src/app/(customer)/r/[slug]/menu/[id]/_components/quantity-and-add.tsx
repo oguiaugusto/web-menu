@@ -36,7 +36,7 @@ export function QuantityAndAdd({ slug, data }: Props) {
     <div className="mx-auto flex max-w-4xl justify-between gap-4">
       <div className="bg-red-muted flex items-center overflow-hidden rounded-lg text-white">
         <button
-          className="enabled:hover:bg-red-muted-light h-full p-3 enabled:cursor-pointer enabled:active:brightness-106 disabled:opacity-70"
+          className="enabled:hover:bg-red-muted-light h-full p-3 outline-white enabled:cursor-pointer enabled:active:brightness-106 disabled:opacity-70"
           onClick={() => setQuantity((p) => (p > 1 ? p - 1 : p))}
           disabled={quantity === 1}
         >
@@ -44,7 +44,7 @@ export function QuantityAndAdd({ slug, data }: Props) {
         </button>
         <span className="w-8 text-center font-semibold select-none">{quantity}</span>
         <button
-          className="enabled:hover:bg-red-muted-light h-full p-3 enabled:cursor-pointer enabled:active:brightness-106"
+          className="enabled:hover:bg-red-muted-light h-full p-3 outline-white enabled:cursor-pointer enabled:active:brightness-106"
           onClick={() => setQuantity((p) => p + 1)}
         >
           <Plus size={20} />

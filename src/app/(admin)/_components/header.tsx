@@ -32,7 +32,7 @@ export function Header({ restaurant }: Readonly<{ restaurant: Restaurant }>) {
             <Link
               key={`link-${x.link}`}
               href={`/admin/${x.link}`}
-              className="after:bg-red-muted relative py-1 text-sm font-medium transition-colors after:bottom-0 after:left-0 after:h-[.5px] after:w-full hover:after:absolute focus-visible:outline-0 active:after:absolute"
+              className="after:bg-red-muted relative py-1 text-sm font-medium transition-colors after:bottom-0 after:left-0 after:h-[.5px] after:w-full hover:after:absolute active:after:absolute"
             >
               {x.label}
             </Link>

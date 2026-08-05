@@ -20,7 +20,7 @@ export default async function MenuPage({ params, searchParams }: Props) {
   ]);
 
   return (
-    <main className="min-h-screen bg-neutral-50">
+    <main className="relative min-h-screen bg-neutral-50">
       <div className="mx-auto max-w-4xl px-4 py-6 lg:px-0">
         <div className="mb-8">
           <h1 className="text-3xl font-bold tracking-tight">{TEXT.menuTitle}</h1>

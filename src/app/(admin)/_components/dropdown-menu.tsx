@@ -19,7 +19,7 @@ export function DropdownMenu({
 
   return (
     <Menu as="div" className="relative">
-      <MenuButton className="focus-visible:ring-red-muted cursor-pointer rounded-full p-2 transition-colors hover:bg-neutral-100 focus:outline-none focus-visible:ring-2">
+      <MenuButton className="cursor-pointer rounded-full p-2 transition-colors hover:bg-neutral-100">
         <MenuIcon size={24} />
       </MenuButton>
       <MenuItems

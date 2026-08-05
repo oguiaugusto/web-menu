@@ -6,6 +6,14 @@
   --color-red-muted-light: #cc3939;
 }
 
+@layer base {
+  button, a, input, select, textarea, [tabindex="0"] {
+    &:focus-visible {
+      @apply outline-2 outline-solid outline-red-muted outline-offset-2;
+    }
+  }
+}
+
 body {
   background: var(--color-neutral-50);
   color: var(--color-neutral-900);

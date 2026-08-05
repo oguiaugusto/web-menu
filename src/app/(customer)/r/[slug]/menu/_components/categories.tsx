@@ -4,7 +4,7 @@ import { rSlug } from '@/utils/r-slug';
 import Link from 'next/link';
 
 type Props = Readonly<{
-  slug: string
+  slug: string;
   categories: string[];
   selected?: string;
 }>;
@@ -26,7 +26,7 @@ export async function Categories({ slug, categories, selected }: Props) {
   );
 
   return (
-    <div className="mb-6 flex gap-2 overflow-x-auto pb-2">
+    <div className="mb-6 flex gap-2 overflow-x-auto py-2">
       {renderLink(TEXT.all, true)}
       {categories.map((category) => renderLink(category))}
     </div>

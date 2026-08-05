@@ -21,7 +21,7 @@ export function Button<T extends ElementType = 'button'>({ as, variant, children
   const Component = as || 'button';
 
   const mergedClass = cn(
-    'focus-visible:outline-red-muted block cursor-pointer text-center focus-visible:outline-1 focus-visible:outline-offset-2 disabled:cursor-not-allowed',
+    'block cursor-pointer text-center disabled:cursor-not-allowed',
     variant !== 'clean'
       ? 'rounded-lg px-5 py-3 font-medium active:brightness-106 disabled:opacity-80 disabled:active:brightness-100'
       : '',
