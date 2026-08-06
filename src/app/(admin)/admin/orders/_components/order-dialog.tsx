@@ -1,7 +1,7 @@
 'use client';
 
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
-import { X } from 'lucide-react';
+import { MapPin, Phone, UserRound, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { TEXT } from '@/constants/text';
@@ -66,14 +66,33 @@ export function OrderDialog({ order, onClose, onAdvance, onCancelOrder }: Props)
               <div className="divide-y divide-neutral-100">
                 <section className="py-3">
                   <h2 className="text-sm font-semibold">{TEXT.customer}</h2>
-                  <p className="text-sm text-neutral-600">{order.customerName}</p>
+                  <div className="mt-1 space-y-1 text-neutral-600">
+                    <div className="flex items-center gap-1">
+                      <UserRound size={14} />
+                      <p className="text-sm">{order.customerName}</p>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Phone size={14} />
+                      <a
+                        className="text-sm underline transition-colors hover:text-neutral-700"
+                        href={`tel:${order.customerPhone}`}
+                      >
+                        {order.customerPhone}
+                      </a>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <MapPin size={14} />
+                      <a
+                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(order.deliveryAddress)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm underline transition-colors hover:text-neutral-700"
+                      >
+                        {order.deliveryAddress}
+                      </a>
+                    </div>
+                  </div>
                 </section>
-                {order.notes ? (
-                  <section className="py-3">
-                    <h2 className="text-sm font-semibold">{TEXT.notes}</h2>
-                    <p className="text-sm leading-6 text-neutral-600">{order.notes}</p>
-                  </section>
-                ) : null}
                 <section className="py-3">
                   <h2 className="text-sm font-semibold">{TEXT.orderItems}</h2>
                   <ul className="mt-1 space-y-1">
@@ -84,6 +103,12 @@ export function OrderDialog({ order, onClose, onAdvance, onCancelOrder }: Props)
                     ))}
                   </ul>
                 </section>
+                {order.notes ? (
+                  <section className="py-3">
+                    <h2 className="text-sm font-semibold">{TEXT.notes}</h2>
+                    <p className="text-sm leading-6 text-neutral-600">{order.notes}</p>
+                  </section>
+                ) : null}
                 <section className="space-y-1 py-3 text-sm">
                   <div className="flex justify-between text-neutral-600">
                     <span>{TEXT.subtotal}</span>
