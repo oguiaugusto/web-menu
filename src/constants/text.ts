@@ -154,6 +154,8 @@ export const TEXT = {
   close: 'Close',
   orderDelivered: 'Order delivered!',
   orderCancelled: 'Order cancelled',
+  noActiveOrders: 'No active orders',
+  noCompletedOrders: 'No completed orders',
 };
 
 export const ERROR_MESSAGES: Record<string, string> = {

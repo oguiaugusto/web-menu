@@ -125,10 +125,20 @@ export default function OrdersPage() {
           />
         </div>
         <div className="mt-8">
-          <OrdersSection title={TEXT.activeOrders} orders={filteredActiveOrders} onOrderClick={setSelectedOrder} />
+          <OrdersSection
+            title={TEXT.activeOrders}
+            orders={filteredActiveOrders}
+            onOrderClick={setSelectedOrder}
+            emptyText={query.length ? TEXT.noOrdersFound : TEXT.noActiveOrders}
+          />
         </div>
         <div className="my-10 border-t border-neutral-200" />
-        <OrdersSection title={TEXT.completedOrders} orders={filteredCompletedOrders} onOrderClick={setSelectedOrder} />
+        <OrdersSection
+          title={TEXT.completedOrders}
+          orders={filteredCompletedOrders}
+          onOrderClick={setSelectedOrder}
+          emptyText={query.length ? TEXT.noOrdersFound : TEXT.noCompletedOrders}
+        />
       </div>
       <OrderDialog
         order={selectedOrder}

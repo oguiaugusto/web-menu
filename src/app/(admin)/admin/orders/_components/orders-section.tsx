@@ -1,5 +1,3 @@
-import type { ReactNode } from 'react';
-import { TEXT } from '@/constants/text';
 import { OrderCard } from './order-card';
 import { Order } from '@/db/order';
 
@@ -7,10 +5,10 @@ type Props = Readonly<{
   title: string;
   orders: Order[];
   onOrderClick(order: Order): void;
-  emptyContent?: ReactNode;
+  emptyText?: string;
 }>;
 
-export function OrdersSection({ title, orders, onOrderClick, emptyContent }: Props) {
+export function OrdersSection({ title, orders, onOrderClick, emptyText }: Props) {
   return (
     <section>
       <div className="mb-4 flex items-center gap-2">
@@ -26,11 +24,9 @@ export function OrdersSection({ title, orders, onOrderClick, emptyContent }: Pro
           ))}
         </div>
       ) : (
-        (emptyContent ?? (
-          <p className="rounded-xl border border-dashed border-neutral-200 bg-white px-4 py-8 text-center text-sm text-neutral-500">
-            {TEXT.noOrdersFound}
-          </p>
-        ))
+        <p className="rounded-xl border border-dashed border-neutral-200 bg-white px-4 py-8 text-center text-sm text-neutral-500">
+          {emptyText}
+        </p>
       )}
     </section>
   );
