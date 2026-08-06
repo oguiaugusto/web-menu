@@ -24,8 +24,7 @@ export default function OrdersPage() {
 
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
 
-  useEffect(() => {
-    let interval: NodeJS.Timeout;
+  const [pending, setPending] = useState(false);
 
     const fetchActive = async () => {
       const response = await fetch('/api/admin/orders/active');
@@ -72,7 +71,6 @@ export default function OrdersPage() {
         <div className="mb-7">
           <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">{TEXT.ordersPageTitle}</h1>
         </div>
-
         <div className="max-w-xl">
           <Input
             label=""
@@ -83,19 +81,18 @@ export default function OrdersPage() {
             additionalInputProps={{ 'aria-label': TEXT.searchOrdersPlaceholder }}
           />
         </div>
-
         <div className="mt-8">
           <OrdersSection title={TEXT.activeOrders} orders={filteredActiveOrders} onOrderClick={setSelectedOrder} />
         </div>
         <div className="my-10 border-t border-neutral-200" />
         <OrdersSection title={TEXT.completedOrders} orders={filteredCompletedOrders} onOrderClick={setSelectedOrder} />
       </div>
-
       <OrderDialog
         order={selectedOrder}
         onClose={() => setSelectedOrder(null)}
         onAdvance={handleAdvance}
         onCancelOrder={handleCancelOrder}
+        pending={pending}
       />
     </main>
   );

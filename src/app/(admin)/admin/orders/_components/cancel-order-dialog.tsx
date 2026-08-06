@@ -9,9 +9,10 @@ type Props = Readonly<{
   open: boolean;
   onClose(): void;
   onConfirm(): void;
+  pending: boolean;
 }>;
 
-export function CancelOrderDialog({ open, onClose, onConfirm }: Props) {
+export function CancelOrderDialog({ open, onClose, onConfirm, pending }: Props) {
   return (
     <Dialog open={open} as="div" className="relative z-[110] focus:outline-none" onClose={onClose}>
       <div className="fixed inset-0 z-[110] w-screen overflow-y-auto bg-neutral-800/50">
@@ -39,6 +40,7 @@ export function CancelOrderDialog({ open, onClose, onConfirm }: Props) {
                   onConfirm();
                   onClose();
                 }}
+                disabled={pending}
               >
                 {TEXT.cancelOrder}
               </Button>

@@ -7,11 +7,12 @@ import { TEXT } from '@/constants/text';
 type Props = Readonly<{
   nextStatus: string;
   onComplete(): void;
+  pending: boolean;
 }>;
 
 const HOLD_DURATION = 800;
 
-export function AdvanceStatusButton({ nextStatus, onComplete }: Props) {
+export function AdvanceStatusButton({ nextStatus, onComplete, pending }: Props) {
   const frame = useRef<number | null>(null);
   const startedAt = useRef<number | null>(null);
   const [progress, setProgress] = useState(0);
@@ -67,12 +68,12 @@ export function AdvanceStatusButton({ nextStatus, onComplete }: Props) {
   return (
     <button
       type="button"
-      onPointerDown={start}
-      onPointerUp={cancel}
-      onPointerCancel={cancel}
-      onLostPointerCapture={cancel}
-      disabled={isComplete}
-      className="bg-red-muted hover:bg-red-muted-light relative flex min-h-20 w-full cursor-pointer touch-none items-center justify-center overflow-hidden rounded-lg px-5 py-3 text-center text-white transition select-none disabled:cursor-default"
+      onPointerDown={pending ? undefined : start}
+      onPointerUp={pending ? undefined : cancel}
+      onPointerCancel={pending ? undefined : cancel}
+      onLostPointerCapture={pending ? undefined : cancel}
+      disabled={isComplete || pending}
+      className="bg-red-muted hover:bg-red-muted-light disabled:hover:bg-red-muted relative flex min-h-20 w-full cursor-pointer touch-none items-center justify-center overflow-hidden rounded-lg px-5 py-3 text-center text-white transition select-none disabled:cursor-not-allowed disabled:opacity-80"
     >
       <span className="bg-red-muted-dark absolute inset-y-0 left-0 transition-none" style={{ width: `${progress}%` }} />
       {isComplete ? (

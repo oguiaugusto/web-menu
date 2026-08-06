@@ -18,6 +18,7 @@ type Props = Readonly<{
   onClose(): void;
   onAdvance(order: Order): void;
   onCancelOrder(order: Order): void;
+  pending: boolean;
 }>;
 
 const NEXT_STATUS = {
@@ -27,7 +28,7 @@ const NEXT_STATUS = {
   [OrderStatus.READY]: OrderStatus.DELIVERED,
 } as const;
 
-export function OrderDialog({ order, onClose, onAdvance, onCancelOrder }: Props) {
+export function OrderDialog({ order, onClose, onAdvance, onCancelOrder, pending }: Props) {
   const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
 
   useEffect(() => {
@@ -40,7 +41,7 @@ export function OrderDialog({ order, onClose, onAdvance, onCancelOrder }: Props)
 
   return (
     <>
-      <Dialog open as="div" className="relative z-100 focus:outline-none" onClose={onClose}>
+      <Dialog open as="div" className="relative z-100 focus:outline-none" onClose={pending ? () => {} : onClose}>
         <div className="fixed inset-0 z-100 w-screen overflow-y-auto bg-neutral-800/50">
           <div className="flex min-h-full items-center justify-center p-4">
             <DialogPanel
@@ -59,6 +60,7 @@ export function OrderDialog({ order, onClose, onAdvance, onCancelOrder }: Props)
                   className="cursor-pointer rounded-md p-2 text-neutral-500 transition-colors hover:bg-neutral-100"
                   onClick={onClose}
                   aria-label={TEXT.close}
+                  disabled={pending}
                 >
                   <X size={20} />
                 </Button>
@@ -128,12 +130,17 @@ export function OrderDialog({ order, onClose, onAdvance, onCancelOrder }: Props)
               </div>
               {nextStatus ? (
                 <div className="space-y-3 border-t border-neutral-100 pt-5">
-                  <AdvanceStatusButton nextStatus={STATUS_INFO[nextStatus].label} onComplete={() => onAdvance(order)} />
+                  <AdvanceStatusButton
+                    nextStatus={STATUS_INFO[nextStatus].label}
+                    onComplete={() => onAdvance(order)}
+                    pending={pending}
+                  />
                   <Button
                     type="button"
                     variant="primary-text"
                     className="mx-auto text-sm"
                     onClick={() => setIsCancelDialogOpen(true)}
+                    disabled={pending}
                   >
                     {TEXT.cancelOrder}
                   </Button>
@@ -147,6 +154,7 @@ export function OrderDialog({ order, onClose, onAdvance, onCancelOrder }: Props)
         open={isCancelDialogOpen}
         onClose={() => setIsCancelDialogOpen(false)}
         onConfirm={() => onCancelOrder(order)}
+        pending={pending}
       />
     </>
   );
