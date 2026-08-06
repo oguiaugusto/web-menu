@@ -152,6 +152,7 @@ export const TEXT = {
   keepOrder: 'Keep order',
   cancelOrderAreYouSure: 'Are you sure you want to cancel this order?',
   close: 'Close',
+  orderDelivered: 'Order delivered!',
   orderCancelled: 'Order cancelled',
 };
 

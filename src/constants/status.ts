@@ -1,5 +1,5 @@
 import { TEXT } from '@/constants/text';
-import { type OrderStatus } from '@/generated/prisma/enums';
+import { OrderStatus } from '@/generated/prisma/enums';
 
 export const STATUS_INFO: Record<OrderStatus, { label: string; description: string }> = {
   PENDING: { label: TEXT.statusLabelPending, description: TEXT.statusDescriptionPending },
@@ -26,4 +26,11 @@ export const STATUS_DOT_COLORS: Record<OrderStatus, string> = {
   READY: 'bg-green-500',
   DELIVERED: 'bg-green-500',
   CANCELLED: 'bg-red-500',
+} as const;
+
+export const NEXT_STATUS = {
+  [OrderStatus.PENDING]: OrderStatus.ACCEPTED,
+  [OrderStatus.ACCEPTED]: OrderStatus.PREPARING,
+  [OrderStatus.PREPARING]: OrderStatus.READY,
+  [OrderStatus.READY]: OrderStatus.DELIVERED,
 } as const;

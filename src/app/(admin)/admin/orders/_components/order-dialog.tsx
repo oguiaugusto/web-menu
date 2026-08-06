@@ -5,28 +5,20 @@ import { MapPin, Phone, UserRound, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { TEXT } from '@/constants/text';
-import { STATUS_INFO } from '@/constants/status';
+import { NEXT_STATUS } from '@/constants/status';
 import { AdvanceStatusButton } from './advance-status-button';
 import { CancelOrderDialog } from './cancel-order-dialog';
 import { formatCurrency, formatOrderDate, formatOrderItem } from '../_helpers/format-order';
 import { OrderStatusBadge } from '../../../../../components/order-status-badge';
 import { Order } from '@/db/order';
-import { OrderStatus } from '@/generated/prisma/enums';
 
 type Props = Readonly<{
   order: Order | null;
   onClose(): void;
-  onAdvance(order: Order): void;
+  onAdvance(order: Order, restart: VoidFunction): void;
   onCancelOrder(order: Order): void;
   pending: boolean;
 }>;
-
-const NEXT_STATUS = {
-  [OrderStatus.PENDING]: OrderStatus.ACCEPTED,
-  [OrderStatus.ACCEPTED]: OrderStatus.PREPARING,
-  [OrderStatus.PREPARING]: OrderStatus.READY,
-  [OrderStatus.READY]: OrderStatus.DELIVERED,
-} as const;
 
 export function OrderDialog({ order, onClose, onAdvance, onCancelOrder, pending }: Props) {
   const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
@@ -133,8 +125,8 @@ export function OrderDialog({ order, onClose, onAdvance, onCancelOrder, pending 
               {nextStatus ? (
                 <div className="space-y-3 border-t border-neutral-100 pt-5">
                   <AdvanceStatusButton
-                    nextStatus={STATUS_INFO[nextStatus].label}
-                    onComplete={() => onAdvance(order)}
+                    nextStatus={nextStatus}
+                    onComplete={(reset) => onAdvance(order, reset)}
                     pending={pending}
                   />
                   <Button

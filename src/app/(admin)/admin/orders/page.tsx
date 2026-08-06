@@ -10,6 +10,7 @@ import { Order } from '@/db/order';
 import { updateOrderStatus } from '@/actions/orders';
 import { OrderStatus } from '@/generated/prisma/enums';
 import { toastError, toastSuccess } from '@/utils/toast';
+import { NEXT_STATUS } from '@/constants/status';
 
 function filterOrders(orders: Order[], query: string): Order[] {
   const searchTerm = query.trim().toLowerCase();
@@ -58,8 +59,33 @@ export default function OrdersPage() {
   const filteredActiveOrders = filterOrders(activeOrders, query);
   const filteredCompletedOrders = filterOrders(completedOrders, query);
 
-  const handleAdvance = (_order: Order) => {
-    // Placeholder for a future status update.
+  const handleAdvance = async (order: Order, restart: VoidFunction) => {
+    setPending(true);
+
+    try {
+      const nextStatus = NEXT_STATUS[order.status as keyof typeof NEXT_STATUS];
+      const result = await updateOrderStatus(order.id, nextStatus);
+
+      if (!result.success) {
+        if (result.error.form) toastError(ERROR_MESSAGES[result.error.form], { position: 'top-center' });
+        return;
+      }
+
+      if (result.status === OrderStatus.DELIVERED) {
+        toastSuccess(TEXT.orderDelivered, { position: 'bottom-center' });
+
+        await refreshOrders();
+        setSelectedOrder(null);
+      } else {
+        await fetchActive();
+      }
+
+      await new Promise((res) => setTimeout(res, 1200));
+      setSelectedOrder((p) => (p ? { ...p, status: result.status } : p));
+    } finally {
+      setPending(false);
+      restart();
+    }
   };
 
   const handleCancelOrder = async (order: Order) => {

@@ -3,10 +3,13 @@
 import { Check } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { TEXT } from '@/constants/text';
+import { cn } from '@/utils/cn';
+import { OrderStatus } from '@/generated/prisma/enums';
+import { STATUS_INFO } from '@/constants/status';
 
 type Props = Readonly<{
-  nextStatus: string;
-  onComplete(): void;
+  nextStatus: OrderStatus;
+  onComplete(restart: VoidFunction): void;
   pending: boolean;
 }>;
 
@@ -26,6 +29,11 @@ export function AdvanceStatusButton({ nextStatus, onComplete, pending }: Props) 
 
     startedAt.current = null;
     if (!isComplete) setProgress(0);
+  };
+
+  const restart = () => {
+    setProgress(0);
+    setIsComplete(false);
   };
 
   useEffect(
@@ -50,7 +58,7 @@ export function AdvanceStatusButton({ nextStatus, onComplete, pending }: Props) 
       if (nextProgress >= 100) {
         frame.current = null;
         setIsComplete(true);
-        onComplete();
+        onComplete(restart);
         return;
       }
 
@@ -73,17 +81,26 @@ export function AdvanceStatusButton({ nextStatus, onComplete, pending }: Props) 
       onPointerCancel={pending ? undefined : cancel}
       onLostPointerCapture={pending ? undefined : cancel}
       disabled={isComplete || pending}
-      className="bg-red-muted hover:bg-red-muted-light disabled:hover:bg-red-muted relative flex min-h-20 w-full cursor-pointer touch-none items-center justify-center overflow-hidden rounded-lg px-5 py-3 text-center text-white transition select-none disabled:cursor-not-allowed disabled:opacity-80"
+      className={cn(
+        !isComplete ? 'disabled:cursor-not-allowed disabled:opacity-80' : '',
+        'bg-red-muted hover:bg-red-muted-light disabled:hover:bg-red-muted relative flex min-h-20 w-full cursor-pointer touch-none items-center justify-center overflow-hidden rounded-lg px-5 py-3 text-center text-white transition select-none disabled:cursor-default',
+      )}
     >
-      <span className="bg-red-muted-dark absolute inset-y-0 left-0 transition-none" style={{ width: `${progress}%` }} />
+      <span
+        className={cn(
+          nextStatus === OrderStatus.DELIVERED ? 'bg-green-600' : 'bg-red-muted-dark',
+          'absolute inset-y-0 left-0 transition-none',
+        )}
+        style={{ width: `${progress}%` }}
+      />
       {isComplete ? (
-        <Check className="relative size-7 animate-bounce" aria-label={TEXT.statusLabelReady} />
+        <Check className="relative size-7" aria-label={TEXT.statusLabelReady} />
       ) : (
         <span className="relative">
           <span className="block text-[11px] font-semibold tracking-[0.14em] uppercase">
             {TEXT.pressAndHoldToAdvanceTo}
           </span>
-          <span className="mt-1 block text-base font-semibold">{nextStatus}</span>
+          <span className="mt-1 block text-base font-semibold">{STATUS_INFO[nextStatus].label}</span>
         </span>
       )}
     </button>

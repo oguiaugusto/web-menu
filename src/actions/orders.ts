@@ -28,7 +28,8 @@ const CreateOrderSchema = z.object({
 type CreateOrderInput = z.infer<typeof CreateOrderSchema>;
 
 type ResultSuccess = { success: true };
-type CreateOrderResult = ResultSuccess & { code: string } | ResultError;
+type CreateOrderResult = (ResultSuccess & { code: string }) | ResultError;
+type UpdateOrderStatusResult = (ResultSuccess & { status: OrderStatus }) | ResultError;
 
 type ItemInput = {
   menuItemId: string;
@@ -133,17 +134,17 @@ export async function createOrder(restaurantId: string, rawData: CreateOrderInpu
   return { success: true, code };
 }
 
-export async function updateOrderStatus(id: string, status: OrderStatus): Promise<ResultSuccess | ResultError> {
+export async function updateOrderStatus(id: string, status: OrderStatus): Promise<UpdateOrderStatusResult> {
   const user = await requireCurrentUser();
 
   try {
-    await prisma.order.update({
+    const order = await prisma.order.update({
       where: { restaurantId: user.restaurant.id, id },
       data: { status },
     });
+
+    return { success: true, status: order.status };
   } catch {
     return returnError({ form: ErrorCode.STATUS_NOT_UPDATED });
   }
-
-  return { success: true };
 }
