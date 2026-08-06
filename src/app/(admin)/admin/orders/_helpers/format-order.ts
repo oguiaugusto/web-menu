@@ -1,7 +1,7 @@
 import { TEXT } from '@/constants/text';
 import { OrderItem } from '@/db/orderItem';
 
-export function formatOrderDate(value: string) {
+export function formatOrderDate(value: string | Date) {
   return new Intl.DateTimeFormat(TEXT.languageCountryISO, {
     dateStyle: 'medium',
     timeStyle: 'short',
