@@ -152,6 +152,7 @@ export const TEXT = {
   keepOrder: 'Keep order',
   cancelOrderAreYouSure: 'Are you sure you want to cancel this order?',
   close: 'Close',
+  orderCancelled: 'Order cancelled',
 };
 
 export const ERROR_MESSAGES: Record<string, string> = {
@@ -172,6 +173,7 @@ export const ERROR_MESSAGES: Record<string, string> = {
   already_in_use: 'is already in use',
   wrong_credentials: 'Email or password is incorrect',
   item_not_deleted: 'Item not found or already deleted',
+  status_not_updated: 'Order status not updated',
 };
 
 export const PAYMENT_METHODS: Record<PaymentMethod, string> = {

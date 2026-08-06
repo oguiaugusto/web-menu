@@ -1,6 +1,7 @@
 'use server';
 
-import { Prisma } from '@/generated/prisma/client';
+import { OrderStatus, Prisma } from '@/generated/prisma/client';
+import { requireCurrentUser } from '@/lib/auth/user';
 import { prisma } from '@/lib/prisma';
 import { ErrorCode } from '@/types/enums';
 import { ResultError } from '@/types/misc';
@@ -26,8 +27,8 @@ const CreateOrderSchema = z.object({
 
 type CreateOrderInput = z.infer<typeof CreateOrderSchema>;
 
-type ResultSuccess = { success: true; code: string };
-type CreateOrderResult = ResultSuccess | ResultError;
+type ResultSuccess = { success: true };
+type CreateOrderResult = ResultSuccess & { code: string } | ResultError;
 
 type ItemInput = {
   menuItemId: string;
@@ -130,4 +131,19 @@ export async function createOrder(restaurantId: string, rawData: CreateOrderInpu
   });
 
   return { success: true, code };
+}
+
+export async function updateOrderStatus(id: string, status: OrderStatus): Promise<ResultSuccess | ResultError> {
+  const user = await requireCurrentUser();
+
+  try {
+    await prisma.order.update({
+      where: { restaurantId: user.restaurant.id, id },
+      data: { status },
+    });
+  } catch {
+    return returnError({ form: ErrorCode.STATUS_NOT_UPDATED });
+  }
+
+  return { success: true };
 }

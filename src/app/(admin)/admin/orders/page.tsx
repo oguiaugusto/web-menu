@@ -1,12 +1,15 @@
 'use client';
 
 import { Search } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Input } from '@/components/ui/input';
-import { TEXT } from '@/constants/text';
+import { ERROR_MESSAGES, TEXT } from '@/constants/text';
 import { OrderDialog } from './_components/order-dialog';
 import { OrdersSection } from './_components/orders-section';
 import { Order } from '@/db/order';
+import { updateOrderStatus } from '@/actions/orders';
+import { OrderStatus } from '@/generated/prisma/enums';
+import { toastError, toastSuccess } from '@/utils/toast';
 
 function filterOrders(orders: Order[], query: string): Order[] {
   const searchTerm = query.trim().toLowerCase();
@@ -19,6 +22,7 @@ function filterOrders(orders: Order[], query: string): Order[] {
 
 export default function OrdersPage() {
   const [query, setQuery] = useState('');
+
   const [activeOrders, setActiveOrders] = useState<Order[]>([]);
   const [completedOrders, setCompletedOrders] = useState<Order[]>([]);
 
@@ -26,43 +30,56 @@ export default function OrdersPage() {
 
   const [pending, setPending] = useState(false);
 
-    const fetchActive = async () => {
-      const response = await fetch('/api/admin/orders/active');
+  const fetchActive = async () => {
+    const response = await fetch('/api/admin/orders/active');
+    if (!response.ok) return;
 
-      if (!response.ok) return;
+    const data = (await response.json()) as Order[];
+    setActiveOrders(data);
+  };
 
-      const data = (await response.json()) as Order[];
-      setActiveOrders(data);
-    };
+  const fetchCompleted = async () => {
+    const response = await fetch('/api/admin/orders/completed');
+    if (!response.ok) return;
 
-    const fetchCompleted = async () => {
-      const response = await fetch('/api/admin/orders/completed');
+    const data = (await response.json()) as Order[];
+    setCompletedOrders(data);
+  };
 
-      if (!response.ok) return;
+  const refreshOrders = useCallback(() => Promise.all([fetchActive(), fetchCompleted()]), []);
 
-      const data = (await response.json()) as Order[];
-      setCompletedOrders(data);
-    };
+  useEffect(() => {
+    refreshOrders();
 
-    fetchActive();
-    fetchCompleted();
-
-    // eslint-disable-next-line prefer-const
-    interval = setInterval(fetchActive, 15000);
+    const interval = setInterval(fetchActive, 15000);
     return () => clearInterval(interval);
-  }, []);
+  }, [refreshOrders]);
 
   const filteredActiveOrders = filterOrders(activeOrders, query);
   const filteredCompletedOrders = filterOrders(completedOrders, query);
-
-  console.log(filteredActiveOrders);
 
   const handleAdvance = (_order: Order) => {
     // Placeholder for a future status update.
   };
 
-  const handleCancelOrder = (_order: Order) => {
-    // Placeholder for a future cancellation update.
+  const handleCancelOrder = async (order: Order) => {
+    setPending(true);
+
+    try {
+      const result = await updateOrderStatus(order.id, OrderStatus.CANCELLED);
+
+      if (!result.success && result.error.form) {
+        toastError(ERROR_MESSAGES[result.error.form], { position: 'top-center' });
+        return;
+      }
+
+      toastSuccess(TEXT.orderCancelled, { position: 'bottom-center' });
+
+      await refreshOrders();
+      setSelectedOrder(null);
+    } finally {
+      setPending(false);
+    }
   };
 
   return (
