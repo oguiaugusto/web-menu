@@ -1,7 +1,8 @@
 import { PAYMENT_METHODS } from '@/constants/text';
-import { Order as PrismaOrder, OrderStatus } from '@/generated/prisma/client';
+import { Order as PrismaOrder, OrderStatus, OrderItem as PrismaOrderItem } from '@/generated/prisma/client';
 import { prisma } from '@/lib/prisma';
-import { OrderItem } from './orderItem';
+import { OrderItem, parseOrderItem } from './orderItem';
+import { requireCurrentUser } from '@/lib/auth/user';
 
 export type Order = Omit<PrismaOrder, 'changeFor' | 'deliveryFee' | 'total' | 'payment'> & {
   changeFor: number | null;
@@ -17,6 +18,17 @@ export type OrderSummary = {
   createdAt: Date;
 };
 
+function parseOrder(order: PrismaOrder & { items: PrismaOrderItem[] }): Order {
+  return {
+    ...order,
+    changeFor: order.changeFor?.toNumber() ?? null,
+    deliveryFee: order.deliveryFee?.toNumber() ?? null,
+    total: order.total.toNumber(),
+    payment: PAYMENT_METHODS[order.payment],
+    items: order.items.map(parseOrderItem),
+  };
+}
+
 export async function getOrder(restaurantId: string, code: string): Promise<Order | null> {
   const order = await prisma.order.findUnique({
     where: { restaurantId, code: code.toUpperCase() },
@@ -24,15 +36,7 @@ export async function getOrder(restaurantId: string, code: string): Promise<Orde
   });
 
   if (!order) return null;
-
-  return {
-    ...order,
-    changeFor: order.changeFor?.toNumber() ?? null,
-    deliveryFee: order.deliveryFee?.toNumber() ?? null,
-    total: order.total.toNumber(),
-    payment: PAYMENT_METHODS[order.payment],
-    items: order.items.map((x) => ({ ...x, price: x.price.toNumber() })),
-  };
+  return parseOrder(order);
 }
 
 export async function getOrderStatus(restaurantId: string, code: string): Promise<string | null> {
@@ -53,4 +57,34 @@ export async function getOrderSummaries(restaurantId: string, codes: string[]): 
   });
 
   return orders;
+}
+
+export async function getActiveOrders(): Promise<Order[]> {
+  const user = await requireCurrentUser();
+
+  const orders = await prisma.order.findMany({
+    where: {
+      restaurantId: user.restaurant.id,
+      status: { notIn: [OrderStatus.CANCELLED, OrderStatus.DELIVERED] },
+    },
+    include: { items: true },
+    orderBy: { createdAt: 'desc' },
+  });
+
+  return orders.map(parseOrder);
+}
+
+export async function getCompletedOrders(): Promise<Order[]> {
+  const user = await requireCurrentUser();
+
+  const orders = await prisma.order.findMany({
+    where: {
+      restaurantId: user.restaurant.id,
+      status: { in: [OrderStatus.CANCELLED, OrderStatus.DELIVERED] },
+    },
+    include: { items: true },
+    orderBy: { updatedAt: 'desc' },
+  });
+
+  return orders.map(parseOrder);
 }

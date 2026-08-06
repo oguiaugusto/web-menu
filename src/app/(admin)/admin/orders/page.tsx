@@ -1,35 +1,62 @@
 'use client';
 
 import { Search } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { TEXT } from '@/constants/text';
 import { OrderDialog } from './_components/order-dialog';
-import { MOCK_ORDERS } from './_components/mock-orders';
 import { OrdersSection } from './_components/orders-section';
 import { Order } from '@/db/order';
 
-function isTerminalStatus(status: Order['status']) {
-  return status === 'DELIVERED' || status === 'CANCELLED';
+function filterOrders(orders: Order[], query: string): Order[] {
+  const searchTerm = query.trim().toLowerCase();
+  if (!searchTerm) return orders;
+
+  return orders.filter((order) =>
+    [order.customerName, order.code].some((value) => value.toLowerCase().includes(searchTerm)),
+  );
 }
 
 export default function OrdersPage() {
   const [query, setQuery] = useState('');
+  const [activeOrders, setActiveOrders] = useState<Order[]>([]);
+  const [completedOrders, setCompletedOrders] = useState<Order[]>([]);
+
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
 
-  const { activeOrders, completedOrders } = useMemo(() => {
-    const searchTerm = query.trim().toLowerCase();
-    const matchingOrders = !searchTerm
-      ? MOCK_ORDERS
-      : MOCK_ORDERS.filter((order) =>
-          [order.customerName, order.code].some((value) => value.toLowerCase().includes(searchTerm)),
-        );
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
 
-    return {
-      activeOrders: matchingOrders.filter((order) => !isTerminalStatus(order.status)),
-      completedOrders: matchingOrders.filter((order) => isTerminalStatus(order.status)),
+    const fetchActive = async () => {
+      const response = await fetch('/api/admin/orders/active');
+
+      if (!response.ok) return;
+
+      const data = (await response.json()) as Order[];
+      setActiveOrders(data);
     };
-  }, [query]);
+
+    const fetchCompleted = async () => {
+      const response = await fetch('/api/admin/orders/completed');
+
+      if (!response.ok) return;
+
+      const data = (await response.json()) as Order[];
+      setCompletedOrders(data);
+    };
+
+    fetchActive();
+    fetchCompleted();
+
+    // eslint-disable-next-line prefer-const
+    interval = setInterval(fetchActive, 15000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const filteredActiveOrders = filterOrders(activeOrders, query);
+  const filteredCompletedOrders = filterOrders(completedOrders, query);
+
+  console.log(filteredActiveOrders);
 
   const handleAdvance = (_order: Order) => {
     // Placeholder for a future status update.
@@ -58,10 +85,10 @@ export default function OrdersPage() {
         </div>
 
         <div className="mt-8">
-          <OrdersSection title={TEXT.activeOrders} orders={activeOrders} onOrderClick={setSelectedOrder} />
+          <OrdersSection title={TEXT.activeOrders} orders={filteredActiveOrders} onOrderClick={setSelectedOrder} />
         </div>
         <div className="my-10 border-t border-neutral-200" />
-        <OrdersSection title={TEXT.completedOrders} orders={completedOrders} onOrderClick={setSelectedOrder} />
+        <OrdersSection title={TEXT.completedOrders} orders={filteredCompletedOrders} onOrderClick={setSelectedOrder} />
       </div>
 
       <OrderDialog

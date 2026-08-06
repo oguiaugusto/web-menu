@@ -8,7 +8,7 @@ import { TEXT } from '@/constants/text';
 import { STATUS_INFO } from '@/constants/status';
 import { AdvanceStatusButton } from './advance-status-button';
 import { CancelOrderDialog } from './cancel-order-dialog';
-import { formatCurrency, formatOrderDate, formatOrderItem } from './format-order';
+import { formatCurrency, formatOrderDate, formatOrderItem } from '../_helpers/format-order';
 import { OrderStatusBadge } from '../../../../../components/order-status-badge';
 import { Order } from '@/db/order';
 import { OrderStatus } from '@/generated/prisma/enums';

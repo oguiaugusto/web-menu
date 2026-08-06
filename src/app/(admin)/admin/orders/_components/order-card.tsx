@@ -1,5 +1,5 @@
 import { CalendarClock, ChevronRight } from 'lucide-react';
-import { formatOrderDate, formatOrderItem } from './format-order';
+import { formatOrderDate, formatOrderItem } from '../_helpers/format-order';
 import { OrderStatusBadge } from '../../../../../components/order-status-badge';
 import { Order } from '@/db/order';
 

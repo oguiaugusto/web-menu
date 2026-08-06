@@ -1,11 +1,11 @@
 import { TEXT } from '@/constants/text';
 import { OrderItem } from '@/db/orderItem';
 
-export function formatOrderDate(value: Date) {
+export function formatOrderDate(value: string) {
   return new Intl.DateTimeFormat(TEXT.languageCountryISO, {
     dateStyle: 'medium',
     timeStyle: 'short',
-  }).format(value);
+  }).format(new Date(value));
 }
 
 export function formatOrderItem(item: OrderItem, alwaysIncludeQuantity?: boolean) {
