@@ -24,8 +24,8 @@ function filterOrders(orders: Order[], query: string): Order[] {
 export default function OrdersPage() {
   const [query, setQuery] = useState('');
 
-  const [activeOrders, setActiveOrders] = useState<Order[]>([]);
-  const [completedOrders, setCompletedOrders] = useState<Order[]>([]);
+  const [activeOrders, setActiveOrders] = useState<Order[] | null>(null);
+  const [completedOrders, setCompletedOrders] = useState<Order[] | null>(null);
 
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
 
@@ -56,8 +56,8 @@ export default function OrdersPage() {
     return () => clearInterval(interval);
   }, [refreshOrders]);
 
-  const filteredActiveOrders = filterOrders(activeOrders, query);
-  const filteredCompletedOrders = filterOrders(completedOrders, query);
+  const filteredActiveOrders = activeOrders ? filterOrders(activeOrders, query) : null;
+  const filteredCompletedOrders = completedOrders ? filterOrders(completedOrders, query) : null;
 
   const handleAdvance = async (order: Order, restart: VoidFunction) => {
     setPending(true);
@@ -71,6 +71,8 @@ export default function OrdersPage() {
         return;
       }
 
+      await new Promise((res) => setTimeout(res, 1200));
+
       if (result.status === OrderStatus.DELIVERED) {
         toastSuccess(TEXT.orderDelivered, { position: 'bottom-center' });
 
@@ -80,7 +82,6 @@ export default function OrdersPage() {
         await fetchActive();
       }
 
-      await new Promise((res) => setTimeout(res, 1200));
       setSelectedOrder((p) => (p ? { ...p, status: result.status } : p));
     } finally {
       setPending(false);
