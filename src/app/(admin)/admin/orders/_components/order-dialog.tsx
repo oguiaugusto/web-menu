@@ -114,7 +114,9 @@ export function OrderDialog({ order, onClose, onAdvance, onCancelOrder, pending 
                 <section className="space-y-1 py-3 text-sm">
                   <div className="flex justify-between text-neutral-600">
                     <span>{TEXT.subtotal}</span>
-                    <span>{formatCurrency(order.items.reduce<number>((acc, curr) => acc + curr.price, 0))}</span>
+                    <span>
+                      {formatCurrency(order.items.reduce<number>((acc, curr) => acc + curr.price * curr.quantity, 0))}
+                    </span>
                   </div>
                   {order.deliveryFee ? (
                     <div className="flex justify-between text-neutral-600">
