@@ -17,9 +17,9 @@ export default async function AdminLayout({
   const user = await requireCurrentUser();
 
   return (
-    <>
+    <AdminProvider restaurant={user.restaurant}>
       <Header restaurant={user.restaurant} />
       {children}
-    </>
+    </AdminProvider>
   );
 }
