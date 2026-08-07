@@ -47,7 +47,7 @@ export function Header({ slug }: Readonly<{ slug: string }>) {
           <Link
             href={rSlug(slug, '/cart')}
             aria-label="Cart"
-            className="relative mb-[1px] cursor-pointer rounded-full p-2 outline-white transition-opacity hover:drop-shadow-[0px_1px_1px_rgba(255,255,255,0.4)]"
+            className="relative mb-[1px] cursor-pointer rounded-full p-2 outline-white transition-opacity hover:bg-neutral-200/10"
           >
             <CartAmountBubble />
             <ShoppingCart size={26} />
