@@ -4,7 +4,7 @@ import { useCart } from '@/providers/cart-provider';
 import { Button } from '@/components/ui/button';
 import { TEXT } from '@/constants/text';
 import { CartItem } from './_components/cart-item';
-import EmptyCart from '@/components/empty-cart';
+import EmptyCart from '@/app/(customer)/_components/empty-cart';
 import { use } from 'react';
 import { rSlug } from '@/utils/r-slug';
 import Link from 'next/link';

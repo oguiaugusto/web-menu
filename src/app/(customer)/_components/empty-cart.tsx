@@ -1,5 +1,5 @@
 import { TEXT } from '@/constants/text';
-import { Button } from './ui/button';
+import { Button } from '../../../components/ui/button';
 import { rSlug } from '@/utils/r-slug';
 import Link from 'next/link';
 

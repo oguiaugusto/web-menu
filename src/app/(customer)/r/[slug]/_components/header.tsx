@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { ShoppingCart } from 'lucide-react';
-import { CartAmountBubble } from '../../../../../components/cart-amount-bubble';
+import { CartAmountBubble } from '../../../_components/cart-amount-bubble';
 import { TEXT } from '@/constants/text';
 import Image from 'next/image';
 import { rSlug } from '@/utils/r-slug';

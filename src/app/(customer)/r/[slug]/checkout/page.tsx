@@ -12,7 +12,7 @@ import { createOrder } from '@/actions/orders';
 import { FieldErrors } from '@/types/misc';
 import { toastSuccess } from '@/utils/toast';
 import { saveOrderCode } from '@/utils/localstorage-orders';
-import EmptyCart from '@/components/empty-cart';
+import EmptyCart from '@/app/(customer)/_components/empty-cart';
 import { getHandleChange } from '@/utils/getHandleChange';
 import { rSlug } from '@/utils/r-slug';
 import { useRestaurant } from '@/providers/restaurant-provider';
