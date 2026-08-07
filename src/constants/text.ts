@@ -155,6 +155,8 @@ export const TEXT = {
   orderCancelled: 'Order cancelled',
   noActiveOrders: 'No active orders',
   noCompletedOrders: 'No completed orders',
+  copyPublicLink: 'Copy public link',
+  linkCopied: 'Link copied',
 };
 
 export const ERROR_MESSAGES: Record<string, string> = {
