@@ -51,13 +51,13 @@ model Restaurant {
   slug String @unique
 
   userId String @unique
-  user   User   @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   deliveryFee  Decimal? @db.Decimal(10, 2)
   openingHours String?
   contact      String?
 
-  isActive Boolean @default(true)
+  open Boolean @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

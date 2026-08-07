@@ -12,6 +12,7 @@ export type PublicRestaurant = {
   deliveryFee: number | null;
   openingHours: string | null;
   contact: string | null;
+  open: boolean;
 };
 
 export async function getRestaurantBySlug(slug: string): Promise<Restaurant | null> {
