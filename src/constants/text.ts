@@ -7,7 +7,6 @@ export const TEXT = {
   homeSubtitle: 'Search by restaurant name or access it directly through its shared link.',
   searching: 'Searching...',
   noResultsFound: 'No results found.',
-  dashboard: 'Dashboard',
   signIn: 'Sign in',
   signUp: 'Sign up',
   signInTitle: 'Sign in to your account',

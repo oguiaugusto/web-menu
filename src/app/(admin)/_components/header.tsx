@@ -8,7 +8,7 @@ export function Header({ restaurant }: Readonly<{ restaurant: Restaurant }>) {
   return (
     <header className="sticky top-0 z-50 border-b border-neutral-200 bg-white">
       <div className="mx-auto flex h-16 max-w-235 items-center justify-between px-4">
-        <Link href="/admin" className="flex items-center gap-3">
+        <Link href="/admin/orders" className="flex items-center gap-3">
           <Image
             src="/logo-red.png"
             alt="Web Menu"
@@ -25,7 +25,6 @@ export function Header({ restaurant }: Readonly<{ restaurant: Restaurant }>) {
         </Link>
         <nav className="text-red-muted flex items-center gap-2 sm:gap-4">
           {[
-            { link: 'dashboard', label: TEXT.dashboard },
             { link: 'menu', label: TEXT.menu },
             { link: 'orders', label: TEXT.orders },
           ].map((x) => (

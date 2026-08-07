@@ -72,7 +72,7 @@ export default function Home() {
             href="/admin"
             className="text-sm text-neutral-500 underline decoration-neutral-300 underline-offset-4 transition-colors hover:text-neutral-600 hover:decoration-neutral-600"
           >
-            {TEXT.dashboard}
+            {TEXT.management}
           </Link>
         </div>
       </div>
