@@ -19,6 +19,8 @@ import { useRestaurant } from '@/providers/restaurant-provider';
 import { formatMoney, moneyFormatter } from '@/utils/money';
 import { handleSubmitError } from '@/utils/handle-submit-error';
 import RequiredStar from '@/components/required-star';
+import { ClosedBanner } from '@/app/(customer)/_components/closed-banner';
+import { useRestaurantOpen } from '@/app/(customer)/_hooks/useRestaurantOpen';
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -39,6 +41,8 @@ export default function CheckoutPage({ params }: Props) {
   const router = useRouter();
   const restaurant = useRestaurant();
   const { items, subtotal, clearCart } = useCart();
+
+  const isOpen = useRestaurantOpen(slug);
 
   const [fields, setFields] = useState<typeof DEFAULT_FIELDS>(DEFAULT_FIELDS);
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
@@ -90,6 +94,7 @@ export default function CheckoutPage({ params }: Props) {
 
   return (
     <main className="mx-auto max-w-4xl px-4 py-6 lg:px-0 lg:pb-16">
+      {isOpen === false ? <ClosedBanner>{TEXT.orderCannotBePlaced}</ClosedBanner> : null}
       <div className="mb-6">
         <h1 className="text-2xl font-bold">{TEXT.checkout}</h1>
         <p className="text-sm text-neutral-500">{TEXT.checkoutSubtitle}</p>
@@ -218,9 +223,11 @@ export default function CheckoutPage({ params }: Props) {
               </div>
             </div>
           </div>
-          <Button variant="primary" type="submit" className="w-full" disabled={isSubmitting}>
-            {TEXT.placeOrder}
-          </Button>
+          {isOpen ? (
+            <Button variant="primary" type="submit" className="w-full" disabled={isSubmitting}>
+              {TEXT.placeOrder}
+            </Button>
+          ) : null}
         </aside>
       </form>
     </main>

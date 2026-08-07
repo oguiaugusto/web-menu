@@ -161,10 +161,12 @@ export const TEXT = {
   closeRestaurant: 'Close restaurant',
   openRestaurantHelper: 'Customers will be able to place new orders',
   closeRestaurantHelper: 'Customers will no longer be able to place new orders',
-  restaurantOpen: 'Restaurant open!',
-  restaurantClosed: 'Restaurant closed!',
+  restaurantOpen: 'Restaurant opened',
+  restaurantClosed: 'Restaurant closed',
   open: 'Open',
   closed: 'Closed',
+  notAcceptingOrders: "We're not accepting orders right now.",
+  orderCannotBePlaced: "This restaurant is currently closed, so your order can't be placed.",
 };
 
 export const ERROR_MESSAGES: Record<string, string> = {

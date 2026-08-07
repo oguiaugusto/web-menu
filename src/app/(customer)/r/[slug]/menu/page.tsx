@@ -3,6 +3,7 @@ import { TEXT } from '@/constants/text';
 import { Categories } from './_components/categories';
 import { getMenuCategories, getMenuItems } from '@/db/menu-item';
 import { getRestaurant } from '@/lib/restaurant';
+import { ClosedBanner } from '@/app/(customer)/_components/closed-banner';
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -22,6 +23,7 @@ export default async function MenuPage({ params, searchParams }: Props) {
   return (
     <main className="relative min-h-screen bg-neutral-50">
       <div className="mx-auto max-w-4xl px-4 py-6 lg:px-0">
+        {!restaurant.open ? <ClosedBanner>{TEXT.notAcceptingOrders}</ClosedBanner> : null}
         <div className="mb-8">
           <h1 className="text-3xl font-bold tracking-tight">{TEXT.menuTitle}</h1>
           <p className="mt-1 text-sm text-neutral-500">{TEXT.menuSubtitle}</p>
