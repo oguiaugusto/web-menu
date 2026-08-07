@@ -15,15 +15,18 @@ export type PublicRestaurant = {
   open: boolean;
 };
 
+function parseRestaurant(restaurant: PrismaRestaurant): Restaurant {
+  return {
+    ...restaurant,
+    deliveryFee: restaurant.deliveryFee?.toNumber() ?? null,
+  };
+}
+
 export async function getRestaurantBySlug(slug: string): Promise<Restaurant | null> {
   const restaurant = await prisma.restaurant.findUnique({
     where: { slug },
   });
 
   if (!restaurant) return null;
-
-  return {
-    ...restaurant,
-    deliveryFee: restaurant.deliveryFee?.toNumber() ?? null,
-  };
+  return parseRestaurant(restaurant);
 }

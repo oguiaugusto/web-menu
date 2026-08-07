@@ -57,6 +57,10 @@ export async function createOrder(restaurantId: string, rawData: CreateOrderInpu
   const restaurant = await prisma.restaurant.findUnique({ where: { id: restaurantId } });
   if (!restaurant) notFound();
 
+  if (!restaurant.open) {
+    return returnError({ form: ErrorCode.RESTAURANT_CLOSED });
+  }
+
   const parsed = CreateOrderSchema.safeParse(rawData);
   if (!parsed.success) {
     return returnError({ fields: parseZodErrors(parsed.error) });
