@@ -1,7 +1,7 @@
 import { PAYMENT_METHODS } from '@/constants/text';
 import { Order as PrismaOrder, OrderStatus, OrderItem as PrismaOrderItem } from '@/generated/prisma/client';
 import { prisma } from '@/lib/prisma';
-import { OrderItem, parseOrderItem } from './orderItem';
+import { OrderItem, parseOrderItem } from './order-item';
 import { requireCurrentUser } from '@/lib/auth/user';
 
 export type Order = Omit<PrismaOrder, 'changeFor' | 'deliveryFee' | 'total' | 'payment'> & {

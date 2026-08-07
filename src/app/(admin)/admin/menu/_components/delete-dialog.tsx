@@ -1,6 +1,6 @@
 'use client';
 
-import { deleteMenuItem } from '@/actions/menuItem';
+import { deleteMenuItem } from '@/actions/menu-item';
 import { Button } from '@/components/ui/button';
 import { ERROR_MESSAGES, TEXT } from '@/constants/text';
 import { toastError, toastSuccess } from '@/utils/toast';

@@ -1,6 +1,6 @@
 'use client';
 
-import { updateMenuItemAvailability } from '@/actions/menuItem';
+import { updateMenuItemAvailability } from '@/actions/menu-item';
 import { Switch } from '@/components/ui/switch';
 import { useState } from 'react';
 

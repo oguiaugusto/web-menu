@@ -13,7 +13,7 @@ import { getHandleChange } from '@/utils/getHandleChange';
 import { formatMoney, moneyFormatter } from '@/utils/money';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { createMenuItem, MenuItemResult, updateMenuItem } from '@/actions/menuItem';
+import { createMenuItem, MenuItemResult, updateMenuItem } from '@/actions/menu-item';
 import { handleSubmitError } from '@/utils/handle-submit-error';
 import { toastSuccess } from '@/utils/toast';
 import Link from 'next/link';
