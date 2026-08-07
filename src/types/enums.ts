@@ -16,4 +16,5 @@ export enum ErrorCode {
   WRONG_CREDENTIALS = 'wrong_credentials',
   ITEM_NOT_DELETED = 'item_not_deleted',
   STATUS_NOT_UPDATED = 'status_not_updated',
+  FAILED_TO_OPEN_CLOSE_RESTAURANT = 'failed_to_open_close_restaurant',
 }

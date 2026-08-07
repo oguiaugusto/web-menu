@@ -157,6 +157,12 @@ export const TEXT = {
   noCompletedOrders: 'No completed orders',
   copyPublicLink: 'Copy public link',
   linkCopied: 'Link copied',
+  openRestaurant: 'Open restaurant',
+  closeRestaurant: 'Close restaurant',
+  openRestaurantHelper: 'Customers will be able to place new orders',
+  closeRestaurantHelper: 'Customers will no longer be able to place new orders',
+  restaurantOpen: 'Restaurant open!',
+  restaurantClosed: 'Restaurant closed!',
 };
 
 export const ERROR_MESSAGES: Record<string, string> = {
