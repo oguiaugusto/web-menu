@@ -10,9 +10,10 @@ import { logout } from '@/actions/auth/logout';
 import { useCopy } from '@/hooks/use-copy';
 import { useEffect, useState } from 'react';
 import { OpenCloseDialog } from './open-close-dialog';
+import { useAdmin } from '@/providers/admin-provider';
 
 export function DropdownMenu({ slug }: Readonly<{ slug: string }>) {
-  const [isOpen, setIsOpen] = useState(false);
+  const { isOpen, setIsOpen } = useAdmin();
 
   const [openDialogOpen, setOpenDialogOpen] = useState(false);
   const [closeDialogOpen, setCloseDialogOpen] = useState(false);

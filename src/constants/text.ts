@@ -163,6 +163,8 @@ export const TEXT = {
   closeRestaurantHelper: 'Customers will no longer be able to place new orders',
   restaurantOpen: 'Restaurant open!',
   restaurantClosed: 'Restaurant closed!',
+  open: 'Open',
+  closed: 'Closed',
 };
 
 export const ERROR_MESSAGES: Record<string, string> = {
@@ -184,6 +186,7 @@ export const ERROR_MESSAGES: Record<string, string> = {
   wrong_credentials: 'Email or password is incorrect',
   item_not_deleted: 'Item not found or already deleted',
   status_not_updated: 'Order status not updated',
+  failed_to_open_close_restaurant: 'Failed to open/close the restaurant',
 };
 
 export const PAYMENT_METHODS: Record<PaymentMethod, string> = {

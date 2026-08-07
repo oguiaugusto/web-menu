@@ -1,10 +1,15 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { TEXT } from '@/constants/text';
-import { Restaurant } from '@/db/restaurant';
 import { DropdownMenu } from './dropdown-menu';
+import OpenClosedBadge from './open-closed-bagde';
 
-export function Header({ restaurant }: Readonly<{ restaurant: Restaurant }>) {
+type Props = Readonly<{
+  restaurantName: string;
+  restaurantSlug: string;
+}>
+
+export function Header({ restaurantName, restaurantSlug }: Props) {
   return (
     <header className="sticky top-0 z-50 border-b border-neutral-200 bg-white">
       <div className="mx-auto flex h-16 max-w-235 items-center justify-between px-4">
@@ -18,9 +23,9 @@ export function Header({ restaurant }: Readonly<{ restaurant: Restaurant }>) {
             style={{ width: 42, height: 'auto' }}
             sizes="100%"
           />
-          <div className="hidden leading-tight sm:block">
-            <p className="text-red-muted text-sm font-semibold">{restaurant.name}</p>
-            <p className="text-xs text-neutral-500">{TEXT.management}</p>
+          <div className="flex flex-col justify-start gap-[0.8px]">
+            <p className="text-red-muted text-sm font-semibold">{restaurantName}</p>
+            <OpenClosedBadge />
           </div>
         </Link>
         <nav className="text-red-muted flex items-center gap-2 sm:gap-4">
@@ -36,7 +41,7 @@ export function Header({ restaurant }: Readonly<{ restaurant: Restaurant }>) {
               {x.label}
             </Link>
           ))}
-          <DropdownMenu slug={restaurant.slug} />
+          <DropdownMenu slug={restaurantSlug} />
         </nav>
       </div>
     </header>

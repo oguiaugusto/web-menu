@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import { Header } from './_components/header';
 import { getCurrentUser, requireCurrentUser } from '@/lib/auth/user';
+import { AdminProvider } from '@/providers/admin-provider';
 
 export async function generateMetadata(): Promise<Metadata> {
   const user = await getCurrentUser();
@@ -18,7 +19,7 @@ export default async function AdminLayout({
 
   return (
     <AdminProvider restaurant={user.restaurant}>
-      <Header restaurant={user.restaurant} />
+      <Header restaurantName={user.restaurant.name} restaurantSlug={user.restaurant.slug} />
       {children}
     </AdminProvider>
   );

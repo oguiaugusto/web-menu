@@ -11,12 +11,12 @@ export function OrderStatusBadge({ status, hideDot }: Props) {
   return (
     <span
       className={cn(
-        'inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium',
+        'inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium',
         STATUS_COLORS[status],
       )}
     >
       {!hideDot ? <span className={cn('size-1.5 rounded-full', STATUS_DOT_COLORS[status])} /> : null}
-      {STATUS_INFO[status].label}
+      <span className="mb-[-1px]">{STATUS_INFO[status].label}</span>
     </span>
   );
 }
