@@ -35,11 +35,20 @@ export async function proxy(request: NextRequest) {
     return clearAndRedirect(request);
   }
 
-  const next = NextResponse.next();
+  const setCookies = response.headers.getSetCookie();
 
-  const setCookieHeader = response.headers.get('set-cookie');
-  if (setCookieHeader) {
-    next.headers.set('Set-Cookie', setCookieHeader);
+  for (const cookieStr of setCookies) {
+    const [nameValue] = cookieStr.split(';');
+    const eqIdx = nameValue.indexOf('=');
+    const name = nameValue.slice(0, eqIdx).trim();
+    const value = nameValue.slice(eqIdx + 1).trim();
+    request.cookies.set(name, value);
+  }
+
+  const next = NextResponse.next({ request });
+
+  for (const cookie of setCookies) {
+    next.headers.append('Set-Cookie', cookie);
   }
 
   return next;
