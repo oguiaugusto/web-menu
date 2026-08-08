@@ -64,7 +64,7 @@ export const TEXT = {
   paymentMethod: 'Payment Method',
   cash: 'Cash',
   card: 'Card',
-  changeFor: 'Need change for?',
+  needChangeFor: 'Need change for?',
   startingMoney: '0.00',
   orderSummary: 'Order summary',
   editCart: 'Edit cart',
@@ -174,6 +174,8 @@ export const TEXT = {
   followingItemsNotAvailable: 'The following items are no longer available:',
   removeFromCart: 'Remove them from your cart to continue.',
   removeUnavailableItems: 'Remove items',
+  change: 'Change',
+  changeFor: 'Change for',
 };
 
 export const ERROR_MESSAGES: Record<string, string> = {

@@ -1,7 +1,7 @@
 'use client';
 
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
-import { MapPin, Phone, UserRound, X } from 'lucide-react';
+import { ArrowRight, MapPin, Phone, UserRound, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { TEXT } from '@/constants/text';
@@ -86,6 +86,22 @@ export function OrderDialog({ order, onClose, onAdvance, onCancelOrder, pending 
                       </a>
                     </div>
                   </div>
+                </section>
+                <section className="py-3">
+                  <h2 className="text-sm font-semibold">{TEXT.payment}</h2>
+                  <p className="mt-1 flex items-center text-sm text-neutral-600">
+                    {order.payment}
+                    {order.changeFor ? (
+                      <>
+                        <span className="mx-1">•</span>
+                        {formatCurrency(order.changeFor)}
+                        <ArrowRight size={12} className="mx-1 text-neutral-600" />
+                        <span className="font-medium text-neutral-900">
+                          {formatCurrency(order.changeFor - order.total)} {TEXT.change.toLowerCase()}
+                        </span>
+                      </>
+                    ) : null}
+                  </p>
                 </section>
                 <section className="py-3">
                   <h2 className="text-sm font-semibold">{TEXT.orderItems}</h2>

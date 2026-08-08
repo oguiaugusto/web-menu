@@ -189,13 +189,13 @@ export default function CheckoutPage({ params }: Props) {
                       name="changeFor"
                       prefix={{ value: TEXT.currency }}
                       value={moneyFormatter.format(fields.changeFor)}
-                      label={TEXT.changeFor}
+                      label={TEXT.needChangeFor}
                       placeholder={TEXT.startingMoney}
                       onChange={handleMoneyChange}
                     />
                   </div>
                   {fieldErrors.changeFor ? (
-                    <p className="text-sm text-red-600">{`${TEXT.changeFor} ${ERROR_MESSAGES[fieldErrors.changeFor]}`}</p>
+                    <p className="text-sm text-red-600">{`${TEXT.needChangeFor} ${ERROR_MESSAGES[fieldErrors.changeFor]}`}</p>
                   ) : null}
                 </div>
               ) : null}
