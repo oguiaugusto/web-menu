@@ -28,7 +28,13 @@ const CreateOrderSchema = z.object({
 type CreateOrderInput = z.infer<typeof CreateOrderSchema>;
 
 type ResultSuccess = { success: true };
-type CreateOrderResult = (ResultSuccess & { code: string }) | ResultError;
+type ResultErrorUnavailable = {
+  success: false;
+  error: ErrorCode.UNAVAILABLE_ITEMS;
+  unavailableItems: UnavailableItem[];
+};
+
+type CreateOrderResult = (ResultSuccess & { code: string }) | ResultError | ResultErrorUnavailable;
 type UpdateOrderStatusResult = (ResultSuccess & { status: OrderStatus }) | ResultError;
 
 type ItemInput = {
@@ -37,6 +43,12 @@ type ItemInput = {
   price: Prisma.Decimal;
   quantity: number;
   restaurantId: string;
+};
+
+export type UnavailableItem = {
+  menuItemId: string;
+  name: string;
+  quantity: number;
 };
 
 function generateCode() {
@@ -70,17 +82,23 @@ export async function createOrder(restaurantId: string, rawData: CreateOrderInpu
 
   const menuItems = await prisma.menuItem.findMany({
     where: { restaurantId: restaurant.id, id: { in: data.items.map((x) => x.id) } },
-    select: { id: true, name: true, price: true },
+    select: { id: true, name: true, price: true, available: true },
   });
   const menuItemMap = new Map(menuItems.map((x) => [x.id, x]));
 
   let total = new Prisma.Decimal(0);
+
   const items: ItemInput[] = [];
+  const unavailableItems: UnavailableItem[] = [];
 
   for (const curr of data.items) {
     const exItem = menuItemMap.get(curr.id);
 
     if (!exItem) continue;
+
+    if (!exItem.available) {
+      unavailableItems.push({ menuItemId: curr.id, name: exItem.name, quantity: curr.quantity });
+    }
 
     total = total.plus(exItem.price.mul(curr.quantity));
 
@@ -111,6 +129,10 @@ export async function createOrder(restaurantId: string, rawData: CreateOrderInpu
         return returnError({ fields: { changeFor: ErrorCode.CHANGE_FOR_SMALLER_THAN_TOTAL } });
       }
     }
+  }
+
+  if (unavailableItems.length > 0) {
+    return { success: false, error: ErrorCode.UNAVAILABLE_ITEMS, unavailableItems };
   }
 
   let code: string;

@@ -14,7 +14,7 @@ export type CartItem = {
 type CartContextType = {
   items: CartItem[];
   addItem: (item: Omit<CartItem, 'quantity'>, quantity: number) => void;
-  removeItem: (id: string) => void;
+  removeItem: (id: string | string[]) => void;
   updateQuantity: (id: string, quantity: number) => void;
   clearCart: () => void;
   itemCount: number;
@@ -44,7 +44,12 @@ export function CartProvider({ children, slug }: Props) {
   };
 
   const removeItem: CartContextType['removeItem'] = (id) => {
-    setItems((p) => p.filter((x) => x.id !== id));
+    if (typeof id === 'string') {
+      setItems((p) => p.filter((x) => x.id !== id));
+    } else {
+      const idSet = new Set(id);
+      setItems((p) => p.filter((x) => !idSet.has(x.id)));
+    }
   };
 
   const updateQuantity: CartContextType['updateQuantity'] = (id, quantity) => {

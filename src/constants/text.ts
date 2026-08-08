@@ -170,6 +170,10 @@ export const TEXT = {
   orderCouldNotBePlaced:
     'This restaurant is currently closed and your order could not be placed. Your cart is still saved and can be accessed again once the restaurant is back open.',
   backToMenu: 'Back to menu',
+  someItemsNoLongerAvailable: 'Some items are no longer available',
+  followingItemsNotAvailable: 'The following items are no longer available:',
+  removeFromCart: 'Remove them from your cart to continue.',
+  removeUnavailableItems: 'Remove items',
 };
 
 export const ERROR_MESSAGES: Record<string, string> = {
@@ -193,6 +197,7 @@ export const ERROR_MESSAGES: Record<string, string> = {
   status_not_updated: 'Order status not updated',
   failed_to_open_close_restaurant: 'Failed to open/close the restaurant',
   restaurant_closed: 'Restaurant closed',
+  unavailable_items: 'Unavailable items',
 };
 
 export const PAYMENT_METHODS: Record<PaymentMethod, string> = {

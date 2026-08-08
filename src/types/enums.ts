@@ -18,4 +18,5 @@ export enum ErrorCode {
   STATUS_NOT_UPDATED = 'status_not_updated',
   FAILED_TO_OPEN_CLOSE_RESTAURANT = 'failed_to_open_close_restaurant',
   RESTAURANT_CLOSED = 'restaurant_closed',
+  UNAVAILABLE_ITEMS = 'unavailable_items',
 }

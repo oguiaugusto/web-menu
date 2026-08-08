@@ -8,7 +8,7 @@ import { TextArea } from '@/components/ui/textarea';
 import { useRouter } from 'next/navigation';
 import { ERROR_MESSAGES, TEXT } from '@/constants/text';
 import { Radio } from '@/components/ui/radio';
-import { createOrder } from '@/actions/orders';
+import { createOrder, UnavailableItem } from '@/actions/orders';
 import { FieldErrors } from '@/types/misc';
 import { toastSuccess } from '@/utils/toast';
 import { saveOrderCode } from '@/utils/localstorage-orders';
@@ -23,6 +23,7 @@ import { ClosedBanner } from '@/app/(customer)/_components/closed-banner';
 import { useRestaurantOpen } from '@/app/(customer)/_hooks/useRestaurantOpen';
 import { ErrorCode } from '@/types/enums';
 import { ClosedDialog } from './_components/closed-dialog';
+import { UnavailableDialog } from './_components/unavailable-dialog';
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -46,6 +47,9 @@ export default function CheckoutPage({ params }: Props) {
 
   const isOpen = useRestaurantOpen(slug);
   const [isClosedDialogOpen, setIsClosedDialogOpen] = useState(false);
+
+  const [unavailableItems, setUnavailableItems] = useState<UnavailableItem[]>([]);
+  const [unavailableDialogOpen, setUnavailableDialogOpen] = useState(false);
 
   const [fields, setFields] = useState<typeof DEFAULT_FIELDS>(DEFAULT_FIELDS);
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
@@ -82,6 +86,12 @@ export default function CheckoutPage({ params }: Props) {
       });
 
       if (!result.success) {
+        if (result.error === ErrorCode.UNAVAILABLE_ITEMS) {
+          setUnavailableDialogOpen(true);
+          setUnavailableItems(result.unavailableItems);
+          return;
+        }
+
         if (result.error.form === ErrorCode.RESTAURANT_CLOSED) {
           setIsClosedDialogOpen(true);
           return;
@@ -105,6 +115,12 @@ export default function CheckoutPage({ params }: Props) {
   return (
     <>
       <ClosedDialog isOpen={isClosedDialogOpen} slug={slug} />
+      <UnavailableDialog
+        isOpen={unavailableDialogOpen}
+        setIsOpen={setUnavailableDialogOpen}
+        slug={slug}
+        items={unavailableItems}
+      />
       <main className="mx-auto max-w-4xl px-4 py-6 lg:px-0 lg:pb-16">
         {isOpen === false ? <ClosedBanner>{TEXT.orderCannotBePlaced}</ClosedBanner> : null}
         <div className="mb-6">
