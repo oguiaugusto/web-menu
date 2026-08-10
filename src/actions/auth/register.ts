@@ -1,5 +1,6 @@
 'use server';
 
+import { SLUG_PATTERN } from '@/constants/regex';
 import { hash } from '@/lib/auth/password';
 import { createSession } from '@/lib/auth/session';
 import { prisma } from '@/lib/prisma';
@@ -12,11 +13,7 @@ import z from 'zod';
 
 const RegisterSchema = z.object({
   restaurantName: z.string().trim().nonempty().max(100),
-  restaurantUrl: z
-    .string()
-    .trim()
-    .lowercase()
-    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
+  restaurantUrl: z.string().trim().lowercase().regex(SLUG_PATTERN),
   email: z.email().transform((x) => x.trim()),
   password: z.string().nonempty(),
 });

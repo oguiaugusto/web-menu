@@ -176,6 +176,9 @@ export const TEXT = {
   removeUnavailableItems: 'Remove items',
   change: 'Change',
   changeFor: 'Change for',
+  urlAvailable: 'URL is available',
+  urlInUse: 'URL already in use',
+  checking: 'Checking...',
 };
 
 export const ERROR_MESSAGES: Record<string, string> = {

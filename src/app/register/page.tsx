@@ -3,11 +3,12 @@
 import { AuthCard } from '@/components/auth-card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { RestaurantSlugInput } from '@/components/restaurant-slug-input';
 import { TEXT } from '@/constants/text';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { PasswordInput } from './_components/password-input';
-import { generateSlug } from '@/constants/generate-slug';
+import { generateSlug } from '@/utils/slug';
 import { FieldErrors } from '@/types/misc';
 import { register } from '@/actions/auth/register';
 import { useRouter } from 'next/navigation';
@@ -32,29 +33,37 @@ export default function RegisterPage() {
   const [lastUrlFill, setLastUrlFill] = useState(fields.restaurantUrl);
   const [lockUrlAutofill, setLockUrlAutofill] = useState(false);
 
-  const [url, setUrl] = useState('');
-  useEffect(() => {
-    setUrl(window.location.host + '/r/');
-  }, []);
-
   const handleChange = getHandleChange(setFields, setFieldErrors);
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const restaurantUrl = generateSlug(e.target.value);
+    setFields((p) => ({ ...p, restaurantName: e.target.value, ...(lockUrlAutofill ? {} : { restaurantUrl }) }));
+    setFieldErrors((p) => {
+      const next = { ...p };
+      delete next.restaurantName;
+      return next;
+    });
+
     if (!lockUrlAutofill) {
-      setFields((p) => ({ ...p, restaurantName: e.target.value, restaurantUrl }));
       setLastUrlFill(restaurantUrl);
     }
   };
 
-  const handleUrlBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-    if (e.target.value === '') {
+  const handleUrlChange = (restaurantUrl: string) => {
+    setFields((p) => ({ ...p, restaurantUrl }));
+    setFieldErrors((p) => {
+      const next = { ...p };
+      delete next.restaurantUrl;
+      return next;
+    });
+
+    if (restaurantUrl === '') {
       setLockUrlAutofill(false);
       setLastUrlFill('');
       return;
     }
 
-    if (e.target.value !== lastUrlFill) setLockUrlAutofill(true);
+    if (restaurantUrl !== lastUrlFill) setLockUrlAutofill(true);
   };
 
   const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
@@ -101,15 +110,10 @@ export default function RegisterPage() {
               required
               showRequired
             />
-            <Input
-              name="restaurantUrl"
-              prefix={{ value: url, noPadding: true }}
-              label={TEXT.restaurantUrl}
+            <RestaurantSlugInput
               value={fields.restaurantUrl}
               error={fieldErrors.restaurantUrl}
-              onChange={handleChange}
-              onBlur={handleUrlBlur}
-              additionalInputProps={inputProps}
+              onChange={handleUrlChange}
               required
               showRequired
             />
