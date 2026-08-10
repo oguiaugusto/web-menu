@@ -19,7 +19,7 @@ export default async function AdminLayout({
 
   return (
     <AdminProvider restaurant={user.restaurant}>
-      <Header restaurantName={user.restaurant.name} restaurantSlug={user.restaurant.slug} />
+      <Header />
       {children}
     </AdminProvider>
   );

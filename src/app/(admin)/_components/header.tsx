@@ -1,15 +1,15 @@
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
 import { TEXT } from '@/constants/text';
 import { DropdownMenu } from './dropdown-menu';
 import OpenClosedBadge from './open-closed-bagde';
+import { useAdmin } from '@/providers/admin-provider';
 
-type Props = Readonly<{
-  restaurantName: string;
-  restaurantSlug: string;
-}>
+export function Header() {
+  const { restaurant } = useAdmin();
 
-export function Header({ restaurantName, restaurantSlug }: Props) {
   return (
     <header className="sticky top-0 z-50 border-b border-neutral-200 bg-white">
       <div className="mx-auto flex h-16 max-w-235 items-center justify-between px-4">
@@ -24,7 +24,7 @@ export function Header({ restaurantName, restaurantSlug }: Props) {
             sizes="100%"
           />
           <div className="flex flex-col justify-start gap-[0.8px]">
-            <p className="text-red-muted text-sm font-semibold">{restaurantName}</p>
+            <p className="text-red-muted text-sm font-semibold">{restaurant.name}</p>
             <OpenClosedBadge />
           </div>
         </Link>
@@ -41,7 +41,7 @@ export function Header({ restaurantName, restaurantSlug }: Props) {
               {x.label}
             </Link>
           ))}
-          <DropdownMenu slug={restaurantSlug} />
+          <DropdownMenu slug={restaurant.slug} />
         </nav>
       </div>
     </header>

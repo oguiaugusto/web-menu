@@ -17,9 +17,12 @@ export function RestaurantProvider({ children, restaurant }: Props) {
         id: restaurant.id,
         name: restaurant.name,
         slug: restaurant.slug,
+        language: restaurant.language,
+        currency: restaurant.currency,
         deliveryFee: restaurant.deliveryFee,
         openingHours: restaurant.openingHours,
         contact: restaurant.contact,
+        open: restaurant.open,
       }}
     >
       {children}

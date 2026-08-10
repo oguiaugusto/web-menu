@@ -11,3 +11,12 @@ export function formatMoney(value: string) {
 
   return num.toFixed(2);
 }
+
+export function getCurrencySymbol(currency: string) {
+  return new Intl.NumberFormat(TEXT.languageCountryISO, {
+    style: 'currency',
+    currency,
+  })
+    .formatToParts(0)
+    .find((part) => part.type === 'currency')?.value;
+}

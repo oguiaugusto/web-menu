@@ -70,6 +70,7 @@ export function OpenCloseDialog({ mode, isDialogOpen, setIsDialogOpen, setOpenRe
             </div>
             <div className="mt-6 flex justify-center gap-2">
               <Button
+                type="button"
                 variant="primary-outline"
                 className="flex-1 text-sm"
                 onClick={() => setIsDialogOpen(false)}
@@ -77,7 +78,7 @@ export function OpenCloseDialog({ mode, isDialogOpen, setIsDialogOpen, setOpenRe
               >
                 {TEXT.cancel}
               </Button>
-              <Button variant="primary" className="flex-1 text-sm" onClick={handleOpen} disabled={pending}>
+              <Button type="button" variant="primary" className="flex-1 text-sm" onClick={handleOpen} disabled={pending}>
                 {openMode ? TEXT.openRestaurant : TEXT.closeRestaurant}
               </Button>
             </div>

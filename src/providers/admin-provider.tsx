@@ -5,6 +5,7 @@ import { createContext, Dispatch, SetStateAction, useContext, useState } from 'r
 
 type AdminContextType = {
   restaurant: Restaurant;
+  setRestaurant: Dispatch<SetStateAction<Restaurant>>;
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
 };
@@ -17,9 +18,14 @@ type Props = Readonly<{
 }>;
 
 export function AdminProvider({ children, restaurant }: Props) {
+  const [currentRestaurant, setRestaurant] = useState(restaurant);
   const [isOpen, setIsOpen] = useState(restaurant.open);
 
-  return <AdminContext.Provider value={{ restaurant, isOpen, setIsOpen }}>{children}</AdminContext.Provider>;
+  return (
+    <AdminContext.Provider value={{ restaurant: currentRestaurant, setRestaurant, isOpen, setIsOpen }}>
+      {children}
+    </AdminContext.Provider>
+  );
 }
 
 export function useAdmin() {

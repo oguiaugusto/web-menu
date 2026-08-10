@@ -17,7 +17,7 @@ export type PublicRestaurant = {
   open: boolean;
 };
 
-function parseRestaurant(restaurant: PrismaRestaurant): Restaurant {
+export function parseRestaurant(restaurant: PrismaRestaurant): Restaurant {
   return {
     ...restaurant,
     deliveryFee: restaurant.deliveryFee?.toNumber() ?? null,

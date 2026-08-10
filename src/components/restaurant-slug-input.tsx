@@ -126,7 +126,7 @@ export function RestaurantSlugInput({
       name={name}
       prefix={{ value: host ? `${host}/r/` : '', noPadding: true }}
       suffix={status ? { value: status } : undefined}
-      label="Restaurant URL"
+      label={TEXT.restaurantUrl}
       value={value}
       error={error}
       onChange={handleChange}

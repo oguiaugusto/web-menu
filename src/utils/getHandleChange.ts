@@ -5,7 +5,7 @@ export function getHandleChange<T>(
   setFields: Dispatch<SetStateAction<T>>,
   setFieldErrors: Dispatch<SetStateAction<FieldErrors>>,
 ) {
-  return (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  return (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const isCheckbox = e.target.type === 'checkbox';
 
     setFields((p) => ({
