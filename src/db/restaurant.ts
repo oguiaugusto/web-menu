@@ -9,6 +9,8 @@ export type PublicRestaurant = {
   id: string;
   name: string;
   slug: string;
+  language: string;
+  currency: string;
   deliveryFee: number | null;
   openingHours: string | null;
   contact: string | null;

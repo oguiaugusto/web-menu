@@ -1,6 +1,8 @@
 'use server';
 
 import { SLUG_PATTERN } from '@/constants/regex';
+import { DEFAULT_CURRENCY } from '@/constants/supported-currencies';
+import { DEFAULT_LANGUAGE, SUPPORTED_LANGUAGES } from '@/constants/supported-languages';
 import { hash } from '@/lib/auth/password';
 import { createSession } from '@/lib/auth/session';
 import { prisma } from '@/lib/prisma';
@@ -23,7 +25,7 @@ type RegisterInput = z.infer<typeof RegisterSchema>;
 type ResultSuccess = { success: true };
 type RegisterResult = ResultSuccess | ResultError;
 
-export async function register(rawData: RegisterInput): Promise<RegisterResult> {
+export async function register(rawData: RegisterInput, language?: string): Promise<RegisterResult> {
   const parsed = RegisterSchema.safeParse(rawData);
   if (!parsed.success) {
     return returnError({ fields: parseZodErrors(parsed.error) });
@@ -46,6 +48,8 @@ export async function register(rawData: RegisterInput): Promise<RegisterResult> 
     return returnError({ fields: { restaurantUrl: ErrorCode.ALREADY_IN_USE } });
   }
 
+  const supportedLanguage = SUPPORTED_LANGUAGES.find((x) => x.value === language);
+
   const passwordHash = await hash(data.password);
   const user = await prisma.user.create({
     data: {
@@ -55,6 +59,8 @@ export async function register(rawData: RegisterInput): Promise<RegisterResult> 
         create: {
           name: data.restaurantName,
           slug: data.restaurantUrl,
+          currency: DEFAULT_CURRENCY,
+          language: supportedLanguage?.value ?? DEFAULT_LANGUAGE,
         },
       },
     },

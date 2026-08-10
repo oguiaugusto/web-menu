@@ -14,6 +14,7 @@ import { register } from '@/actions/auth/register';
 import { useRouter } from 'next/navigation';
 import { getHandleChange } from '@/utils/getHandleChange';
 import { handleSubmitError } from '@/utils/handle-submit-error';
+import { SUPPORTED_LANGUAGES } from '@/constants/supported-languages';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -71,12 +72,19 @@ export default function RegisterPage() {
     setIsSubmitting(true);
 
     try {
-      const result = await register({
-        email: fields.email,
-        password: fields.password,
-        restaurantName: fields.restaurantName,
-        restaurantUrl: fields.restaurantUrl,
-      });
+      const browserLocale = navigator.languages?.length ? navigator.languages[0] : navigator.language;
+      const baseLanguage = browserLocale?.split('-')?.[0] ?? 'en';
+      const supportedLanguage = SUPPORTED_LANGUAGES.find((x) => x.value.startsWith(baseLanguage))?.value ?? 'en';
+
+      const result = await register(
+        {
+          email: fields.email,
+          password: fields.password,
+          restaurantName: fields.restaurantName,
+          restaurantUrl: fields.restaurantUrl,
+        },
+        supportedLanguage,
+      );
 
       if (!result.success) return handleSubmitError(result, setFieldErrors);
 
