@@ -4,10 +4,21 @@ import { TEXT } from '@/constants/text';
 import { getMenuItem } from '@/db/menu-item';
 import Image from 'next/image';
 import { getRestaurant } from '@/lib/restaurant';
+import { mountPageMetadata } from '@/utils/mount-page-metadata';
+import { Metadata } from 'next';
 
 type Props = {
   params: Promise<{ slug: string; id: string }>;
 };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug, id } = await params;
+
+  const restaurant = await getRestaurant(slug);
+  const item = await getMenuItem(restaurant.id, id, true);
+
+  return mountPageMetadata(restaurant.name, item?.name ?? TEXT.itemNotFound);
+}
 
 export default async function MenuItem({ params }: Props) {
   const { slug, id } = await params;
@@ -34,7 +45,7 @@ export default async function MenuItem({ params }: Props) {
           <div className="flex items-start justify-between gap-4">
             <div>
               <h1 className="text-2xl font-bold tracking-tight">{data.name}</h1>
-              <p className="mt-2 text-sm leading-relaxed text-neutral-500 whitespace-pre">{data.description}</p>
+              <p className="mt-2 text-sm leading-relaxed whitespace-pre text-neutral-500">{data.description}</p>
             </div>
             <span className="shrink-0 text-lg font-semibold">
               {TEXT.currency}

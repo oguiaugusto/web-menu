@@ -81,6 +81,7 @@ export const TEXT = {
   needChangeFor: 'Need change for?',
   startingMoney: '0.00',
   orderSummary: 'Order summary',
+  edit: 'Edit',
   editCart: 'Edit cart',
   placeOrder: 'Place order',
   orderPlaced: 'Order placed successfully',
@@ -200,6 +201,7 @@ export const TEXT = {
   backToOrders: 'Back to Orders',
   customerPageNotFoundDescription: "We couldn't find what you were looking for.",
   goBack: 'Go back',
+  itemNotFound: 'Item not found',
 };
 
 export const ERROR_MESSAGES: Record<string, string> = {

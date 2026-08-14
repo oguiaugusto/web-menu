@@ -5,10 +5,21 @@ import { notFound } from 'next/navigation';
 import { OrderStatus } from './_components/order-status';
 import { RememberOrder } from './_components/remember-order';
 import { getRestaurant } from '@/lib/restaurant';
+import { Metadata } from 'next';
+import { mountPageMetadata } from '@/utils/mount-page-metadata';
 
 type Props = {
   params: Promise<{ slug: string; code: string }>;
 };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug, code } = await params;
+
+  const restaurant = await getRestaurant(slug);
+  const data = await getOrder(restaurant.id, code);
+
+  return mountPageMetadata(restaurant.name, data ? `${TEXT.order} ${data.code}` : TEXT.orderNotFound);
+}
 
 export default async function OrderPage({ params }: Props) {
   const { slug, code } = await params;
@@ -50,9 +61,7 @@ export default async function OrderPage({ params }: Props) {
             <div className="my-4 border-t border-neutral-200" />
             <div className="mb-2 flex justify-between text-sm">
               <span>{TEXT.deliveryFee}</span>
-              <span>
-                {`${TEXT.currency}${(data.deliveryFee ?? 0).toFixed(2)}`}
-              </span>
+              <span>{`${TEXT.currency}${(data.deliveryFee ?? 0).toFixed(2)}`}</span>
             </div>
             <div className="flex justify-between font-semibold">
               <span>{TEXT.total}</span>
