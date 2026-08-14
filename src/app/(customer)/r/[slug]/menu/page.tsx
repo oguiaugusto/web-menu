@@ -5,11 +5,20 @@ import { getMenuCategories, getMenuItems } from '@/db/menu-item';
 import { getRestaurant } from '@/lib/restaurant';
 import { ClosedBanner } from '@/app/(customer)/_components/closed-banner';
 import { RestaurantInfo } from './_components/restaurant-info';
+import { Metadata } from 'next';
+import { mountCustomerPageMetadata } from '@/utils/mount-page-metadata';
 
 type Props = {
   params: Promise<{ slug: string }>;
   searchParams: Promise<{ category?: string }>;
 };
+
+export async function generateMetadata({ params, searchParams }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const { category } = await searchParams;
+
+  return mountCustomerPageMetadata(slug, category ?? '');
+}
 
 export default async function MenuPage({ params, searchParams }: Props) {
   const { slug } = await params;
