@@ -81,7 +81,7 @@ export function CategoryInput({
                 <CircleQuestionMark size={14} />
               </span>
               <Tooltip
-                id="tooltip"
+                id={`tooltip-${inputId}`}
                 style={{
                   backgroundColor: 'var(--color-neutral-700)',
                   zIndex: '1000',

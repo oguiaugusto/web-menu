@@ -72,7 +72,7 @@ export function Input({
                 <CircleQuestionMark size={14} />
               </span>
               <Tooltip
-                id="tooltip"
+                id={`tooltip-${name}`}
                 style={{
                   backgroundColor: 'var(--color-neutral-700)',
                   zIndex: '1000',
