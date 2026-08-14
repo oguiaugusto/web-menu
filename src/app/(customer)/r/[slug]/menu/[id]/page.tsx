@@ -13,7 +13,7 @@ export default async function MenuItem({ params }: Props) {
   const { slug, id } = await params;
   const restaurant = await getRestaurant(slug);
 
-  const data = await getMenuItem(restaurant.id, id);
+  const data = await getMenuItem(restaurant.id, id, true);
   if (!data) notFound();
 
   return (

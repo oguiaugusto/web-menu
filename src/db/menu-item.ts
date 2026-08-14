@@ -69,9 +69,9 @@ export async function getMenuItemsList({
   }));
 }
 
-export async function getMenuItem(restaurantId: string, id: string): Promise<MenuItem | null> {
+export async function getMenuItem(restaurantId: string, id: string, onlyAvailable?: boolean): Promise<MenuItem | null> {
   const item = await prisma.menuItem.findUnique({
-    where: { restaurantId, id, available: true },
+    where: { restaurantId, id, available: onlyAvailable ? true : undefined },
   });
 
   if (!item) return null;
