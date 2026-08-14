@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { Header } from './_components/header';
+import { Header } from '../_components/header';
 import { getCurrentUser, requireCurrentUser } from '@/lib/auth/user';
 import { AdminProvider } from '@/providers/admin-provider';
 

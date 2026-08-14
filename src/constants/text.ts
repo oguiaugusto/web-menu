@@ -193,6 +193,13 @@ export const TEXT = {
   urlAvailable: 'URL is available',
   urlInUse: 'URL already in use',
   checking: 'Checking...',
+  pageNotFound: 'Page not found',
+  pageNotFoundDescription: "The page you're looking for doesn't exist.",
+  goToHomePage: 'Got to Home Page',
+  adminPageNotFoundDescription: "This page doesn't exist or is no longer available.",
+  backToOrders: 'Back to Orders',
+  customerPageNotFoundDescription: "We couldn't find what you were looking for.",
+  goBack: 'Go back',
 };
 
 export const ERROR_MESSAGES: Record<string, string> = {
