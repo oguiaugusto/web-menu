@@ -3,6 +3,8 @@ import { EmptyTable } from './_components/empty-table';
 import { MenuItemsTable } from './_components/menu-items-table';
 import { Toolbar } from './_components/toolbar';
 import { getMenuItemsList } from '@/db/menu-item';
+import { Metadata } from 'next';
+import { mountAdminPageMetadata } from '@/utils/mount-page-metadata';
 
 type Props = Readonly<{
   searchParams: Promise<{
@@ -11,6 +13,10 @@ type Props = Readonly<{
     order?: string;
   }>;
 }>;
+
+export async function generateMetadata(): Promise<Metadata> {
+  return mountAdminPageMetadata(TEXT.menuItems);
+}
 
 export default async function MenuPage({ searchParams }: Props) {
   const params = await searchParams;
