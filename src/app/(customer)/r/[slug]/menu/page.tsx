@@ -4,6 +4,7 @@ import { Categories } from './_components/categories';
 import { getMenuCategories, getMenuItems } from '@/db/menu-item';
 import { getRestaurant } from '@/lib/restaurant';
 import { ClosedBanner } from '@/app/(customer)/_components/closed-banner';
+import { RestaurantInfo } from './_components/restaurant-info';
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -24,10 +25,15 @@ export default async function MenuPage({ params, searchParams }: Props) {
     <main className="relative min-h-screen bg-neutral-50">
       <div className="mx-auto max-w-4xl px-4 py-6 lg:px-0">
         {!restaurant.open ? <ClosedBanner>{TEXT.notAcceptingOrders}</ClosedBanner> : null}
-        <div className="mb-8">
+        <div className="mb-4">
           <h1 className="text-3xl font-bold tracking-tight">{TEXT.menuTitle}</h1>
           <p className="mt-1 text-sm text-neutral-500">{TEXT.menuSubtitle}</p>
         </div>
+        <RestaurantInfo
+          deliveryFee={restaurant.deliveryFee}
+          openingHours={restaurant.openingHours}
+          contact={restaurant.contact}
+        />
         <Categories slug={slug} categories={categories} selected={category} />
         <div className="mx-auto grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {data.map((x) => (
