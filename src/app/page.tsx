@@ -8,31 +8,21 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { TEXT } from '@/constants/text';
 import { rSlug } from '@/utils/r-slug';
+import { RestaurantSearch } from '@/db/restaurant';
 
-type Restaurant = {
-  id: string;
-  name: string;
-  slug: string;
-};
+async function searchRestaurants(query: string, signal: AbortSignal): Promise<RestaurantSearch[]> {
+  const response = await fetch(`/api/restaurants?query=${encodeURIComponent(query)}`, { signal });
 
-async function delay(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
+  if (!response.ok) {
+    throw new Error('Unable to search restaurants.');
+  }
 
-async function searchRestaurants(query: string, _signal: AbortSignal): Promise<Restaurant[]> {
-  await delay(500);
-
-  return [
-    { id: '1', name: 'Burgerplace', slug: 'burgerplace' },
-    { id: '2', name: 'Snack Store', slug: 'snack-store' },
-    { id: '3', name: 'Coffee Forever', slug: 'coffeeforever' },
-    { id: '3', name: 'Music Place', slug: 'music' },
-  ].filter((x) => x.name.toLowerCase().includes(query.toLowerCase()));
+  return (await response.json()) as RestaurantSearch[];
 }
 
 export default function Home() {
   const router = useRouter();
-  const [restaurant, setRestaurant] = useState<Restaurant | null>(null);
+  const [restaurant, setRestaurant] = useState<RestaurantSearch | null>(null);
 
   return (
     <main className="min-h-screen bg-neutral-50">
@@ -54,7 +44,7 @@ export default function Home() {
           <div className="w-full max-w-xl text-center">
             <h1 className="text-3xl font-bold tracking-tight">{TEXT.homeTitle}</h1>
             <p className="mt-2 mb-8 text-sm text-neutral-500">{TEXT.homeSubtitle}</p>
-            <SearchInput<Restaurant>
+            <SearchInput<RestaurantSearch>
               label=""
               value={restaurant}
               onChange={setRestaurant}

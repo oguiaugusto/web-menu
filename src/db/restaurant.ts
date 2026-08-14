@@ -17,6 +17,12 @@ export type PublicRestaurant = {
   open: boolean;
 };
 
+export type RestaurantSearch = {
+  id: string;
+  name: string;
+  slug: string;
+};
+
 export function parseRestaurant(restaurant: PrismaRestaurant): Restaurant {
   return {
     ...restaurant,
@@ -31,4 +37,15 @@ export async function getRestaurantBySlug(slug: string): Promise<Restaurant | nu
 
   if (!restaurant) return null;
   return parseRestaurant(restaurant);
+}
+
+export async function searchRestaurants(query: string): Promise<RestaurantSearch[]> {
+  try {
+    return prisma.restaurant.findMany({
+      where: { name: { contains: query, mode: 'insensitive' } },
+      select: { id: true, name: true, slug: true },
+    });
+  } catch {
+    return [];
+  }
 }
