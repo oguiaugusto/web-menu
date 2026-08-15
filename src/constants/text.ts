@@ -50,6 +50,7 @@ export const TEXT = {
   logOut: 'Log out',
   menu: 'Menu',
   orders: 'Orders',
+  cart: 'Cart',
   menuTitle: 'Menu',
   menuSubtitle: 'Fresh food made to order',
   all: 'All',

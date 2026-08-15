@@ -11,7 +11,7 @@ import { ClosedBanner } from '@/app/(customer)/_components/closed-banner';
 import { useRestaurantOpen } from '@/app/(customer)/_hooks/useRestaurantOpen';
 
 type Props = Readonly<{
-  slug: string
+  slug: string;
 }>;
 
 export default function CartContent({ slug }: Props) {
@@ -35,7 +35,7 @@ export default function CartContent({ slug }: Props) {
           <CartItem key={`cart-item-${item.id}`} item={item} />
         ))}
       </div>
-      <div className="sticky bottom-4 mt-6 rounded-2xl border border-neutral-200 bg-white p-4 shadow-lg">
+      <div className="sticky bottom-[calc(4rem_+_env(safe-area-inset-bottom)_+_1rem)] mt-6 rounded-2xl border border-neutral-200 bg-white p-4 shadow-lg sm:bottom-4">
         <div className="flex items-center justify-between">
           <span className="text-neutral-500">{TEXT.total}</span>
           <span className="text-xl font-bold">
