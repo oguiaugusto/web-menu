@@ -46,9 +46,11 @@ export default async function MenuItem({ params }: Props) {
         </div>
         <div className="space-y-3 px-4 py-5 sm:px-6">
           <div className="flex items-start justify-between gap-4">
-            <div>
-              <h1 className="text-2xl font-bold tracking-tight">{data.name}</h1>
-              <p className="mt-2 text-sm leading-relaxed whitespace-pre text-neutral-500">{data.description}</p>
+            <div className="min-w-0">
+              <h1 className="text-2xl font-bold tracking-tight break-words">{data.name}</h1>
+              <p className="mt-2 text-sm leading-relaxed break-words whitespace-pre-wrap text-neutral-500">
+                {data.description}
+              </p>
             </div>
             <span className="shrink-0 text-lg font-semibold">{formatCurrency(data.price, restaurant.currency)}</span>
           </div>
