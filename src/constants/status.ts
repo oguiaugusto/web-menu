@@ -1,14 +1,18 @@
-import { TEXT } from '@/constants/text';
 import { OrderStatus } from '@/generated/prisma/enums';
+import type { TranslationDictionary } from '@/i18n';
 
-export const STATUS_INFO: Record<OrderStatus, { label: string; description: string }> = {
-  PENDING: { label: TEXT.statusLabelPending, description: TEXT.statusDescriptionPending },
-  ACCEPTED: { label: TEXT.statusLabelAccepted, description: TEXT.statusDescriptionAccepted },
-  PREPARING: { label: TEXT.statusLabelPreparing, description: TEXT.statusDescriptionPreparing },
-  READY: { label: TEXT.statusLabelReady, description: TEXT.statusDescriptionReady },
-  DELIVERED: { label: TEXT.statusLabelDelivered, description: TEXT.statusDescriptionDelivered },
-  CANCELLED: { label: TEXT.statusLabelCancelled, description: TEXT.statusDescriptionCancelled },
-} as const;
+export function getStatusInfo(
+  text: TranslationDictionary,
+): Record<OrderStatus, { label: string; description: string }> {
+  return {
+    PENDING: { label: text.statusLabelPending, description: text.statusDescriptionPending },
+    ACCEPTED: { label: text.statusLabelAccepted, description: text.statusDescriptionAccepted },
+    PREPARING: { label: text.statusLabelPreparing, description: text.statusDescriptionPreparing },
+    READY: { label: text.statusLabelReady, description: text.statusDescriptionReady },
+    DELIVERED: { label: text.statusLabelDelivered, description: text.statusDescriptionDelivered },
+    CANCELLED: { label: text.statusLabelCancelled, description: text.statusDescriptionCancelled },
+  };
+}
 
 export const STATUS_COLORS: Record<OrderStatus, string> = {
   PENDING: 'bg-amber-100 text-amber-700',

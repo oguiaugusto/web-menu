@@ -1,13 +1,12 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { TEXT } from '@/constants/text';
 import { useAdmin } from '@/providers/admin-provider';
 import { useState } from 'react';
 import { OpenCloseDialog } from '../../../_components/open-close-dialog';
 
 export function StatusSection() {
-  const { isOpen, setIsOpen } = useAdmin();
+  const { isOpen, setIsOpen, text: TEXT } = useAdmin();
 
   const [openDialogOpen, setOpenDialogOpen] = useState(false);
   const [closeDialogOpen, setCloseDialogOpen] = useState(false);

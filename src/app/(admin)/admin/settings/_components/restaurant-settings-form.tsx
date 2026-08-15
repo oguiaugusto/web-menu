@@ -7,7 +7,6 @@ import { Input } from '@/components/ui/input';
 import { Select } from '@/components/ui/select';
 import { SUPPORTED_CURRENCIES } from '@/constants/supported-currencies';
 import { SUPPORTED_LANGUAGES } from '@/constants/supported-languages';
-import { TEXT } from '@/constants/text';
 import { Restaurant } from '@/db/restaurant';
 import { FieldErrors } from '@/types/misc';
 import { getHandleChange } from '@/utils/getHandleChange';
@@ -17,6 +16,8 @@ import { toastSuccess } from '@/utils/toast';
 import { useAdmin } from '@/providers/admin-provider';
 import { useState } from 'react';
 import { StatusSection } from './status-section';
+import { getText } from '@/i18n';
+import { useRouter } from 'next/navigation';
 
 type Props = Readonly<{
   restaurant: Restaurant;
@@ -24,7 +25,8 @@ type Props = Readonly<{
 }>;
 
 export function RestaurantSettingsForm({ restaurant, email }: Props) {
-  const { setRestaurant } = useAdmin();
+  const router = useRouter();
+  const { setRestaurant, text: TEXT, errorMessages } = useAdmin();
 
   const [fields, setFields] = useState({
     name: restaurant.name,
@@ -63,7 +65,7 @@ export function RestaurantSettingsForm({ restaurant, email }: Props) {
 
     try {
       const result = await updateRestaurantSettings(fields);
-      if (!result.success) return handleSubmitError(result, setFieldErrors);
+      if (!result.success) return handleSubmitError(result, setFieldErrors, errorMessages);
 
       setFields((p) => ({
         ...p,
@@ -83,7 +85,8 @@ export function RestaurantSettingsForm({ restaurant, email }: Props) {
         contact: result.restaurant.contact,
       }));
 
-      toastSuccess(TEXT.restaurantSettingsSaved, { position: 'bottom-center' });
+      toastSuccess(getText(result.restaurant.language).restaurantSettingsSaved, { position: 'bottom-center' });
+      router.refresh();
     } finally {
       setIsSubmitting(false);
     }
@@ -109,6 +112,7 @@ export function RestaurantSettingsForm({ restaurant, email }: Props) {
                 label={TEXT.restaurantName}
                 value={fields.name}
                 error={fieldErrors.name}
+                errorMessages={errorMessages}
                 onChange={handleChange}
                 required
                 showRequired
@@ -119,6 +123,8 @@ export function RestaurantSettingsForm({ restaurant, email }: Props) {
                   value={fields.slug}
                   currentSlug={restaurant.slug}
                   error={fieldErrors.slug}
+                  errorMessages={errorMessages}
+                  text={TEXT}
                   onChange={handleSlugChange}
                   required
                   showRequired
@@ -135,6 +141,7 @@ export function RestaurantSettingsForm({ restaurant, email }: Props) {
                 options={[...SUPPORTED_LANGUAGES]}
                 value={fields.language}
                 error={fieldErrors.language}
+                errorMessages={errorMessages}
                 onChange={handleChange}
                 required
                 showRequired
@@ -145,6 +152,7 @@ export function RestaurantSettingsForm({ restaurant, email }: Props) {
                 options={[...SUPPORTED_CURRENCIES]}
                 value={fields.currency}
                 error={fieldErrors.currency}
+                errorMessages={errorMessages}
                 onChange={handleChange}
                 required
                 showRequired
@@ -160,6 +168,7 @@ export function RestaurantSettingsForm({ restaurant, email }: Props) {
                 prefix={{ value: getCurrencySymbol(fields.currency) }}
                 value={getMoneyFormatter(fields.currency).format(fields.deliveryFee)}
                 error={fieldErrors.deliveryFee}
+                errorMessages={errorMessages}
                 onChange={handleCurrencyChange}
                 additionalInputProps={{ inputMode: 'decimal' }}
                 required
@@ -171,6 +180,7 @@ export function RestaurantSettingsForm({ restaurant, email }: Props) {
                 label={TEXT.openingHours}
                 value={fields.openingHours}
                 error={fieldErrors.openingHours}
+                errorMessages={errorMessages}
                 onChange={handleChange}
               />
               <Input
@@ -178,6 +188,7 @@ export function RestaurantSettingsForm({ restaurant, email }: Props) {
                 label={TEXT.contact}
                 value={fields.contact}
                 error={fieldErrors.contact}
+                errorMessages={errorMessages}
                 onChange={handleChange}
               />
             </div>
@@ -186,7 +197,12 @@ export function RestaurantSettingsForm({ restaurant, email }: Props) {
             <h2 className="text-lg font-semibold text-neutral-900">{TEXT.account}</h2>
             <p className="mt-1 text-sm text-neutral-500">{TEXT.accountDescription}</p>
             <div className="mt-5 max-w-md">
-              <Input label={TEXT.email} value={email} additionalInputProps={{ disabled: true }} />
+              <Input
+                label={TEXT.email}
+                value={email}
+                errorMessages={errorMessages}
+                additionalInputProps={{ disabled: true }}
+              />
             </div>
           </section>
           <div className="flex justify-end border-t border-neutral-200 pt-6">

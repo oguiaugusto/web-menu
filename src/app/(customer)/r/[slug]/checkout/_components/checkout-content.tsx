@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { TextArea } from '@/components/ui/textarea';
 import { useRouter } from 'next/navigation';
-import { ERROR_MESSAGES, TEXT } from '@/constants/text';
 import { Radio } from '@/components/ui/radio';
 import { createOrder, UnavailableItem } from '@/actions/orders';
 import { FieldErrors } from '@/types/misc';
@@ -24,6 +23,8 @@ import { useRestaurantOpen } from '@/app/(customer)/_hooks/useRestaurantOpen';
 import { ErrorCode } from '@/types/enums';
 import { ClosedDialog } from './closed-dialog';
 import { UnavailableDialog } from './unavailable-dialog';
+import { PaymentMethod } from '@/generated/prisma/enums';
+import { formatFieldError } from '@/utils/format-field-error';
 
 type Props = Readonly<{
   slug: string;
@@ -41,6 +42,7 @@ const DEFAULT_FIELDS = {
 export default function CheckoutContent({ slug }: Props) {
   const router = useRouter();
   const restaurant = useRestaurant();
+  const { text: TEXT, errorMessages, paymentMethods } = restaurant;
   const { items, subtotal, clearCart } = useCart();
 
   const isOpen = useRestaurantOpen(slug);
@@ -78,7 +80,7 @@ export default function CheckoutContent({ slug }: Props) {
         phone: fields.phone,
         address: fields.address,
         notes: fields.notes,
-        payment: fields.payment as any,
+        payment: fields.payment as PaymentMethod,
         changeFor: Number(fields.changeFor) > 0 ? Number(fields.changeFor) : undefined,
         items: items.map((x) => ({ id: x.id, quantity: x.quantity })),
       });
@@ -95,7 +97,7 @@ export default function CheckoutContent({ slug }: Props) {
           return;
         }
 
-        return handleSubmitError(result, setFieldErrors);
+        return handleSubmitError(result, setFieldErrors, errorMessages);
       }
 
       toastSuccess(TEXT.orderPlaced, { position: 'bottom-center' });
@@ -133,6 +135,7 @@ export default function CheckoutContent({ slug }: Props) {
               label={TEXT.name}
               placeholder={TEXT.yourName}
               error={fieldErrors.name}
+              errorMessages={errorMessages}
               onChange={handleChange}
               required
               showRequired
@@ -143,6 +146,7 @@ export default function CheckoutContent({ slug }: Props) {
               label={TEXT.phone}
               placeholder={TEXT.yourPhoneNumber}
               error={fieldErrors.phone}
+              errorMessages={errorMessages}
               onChange={handleChange}
               required
               showRequired
@@ -154,6 +158,7 @@ export default function CheckoutContent({ slug }: Props) {
               errorLabel={TEXT.address}
               placeholder={TEXT.yourAddress}
               error={fieldErrors.address}
+              errorMessages={errorMessages}
               onChange={handleChange}
               required
               showRequired
@@ -164,6 +169,7 @@ export default function CheckoutContent({ slug }: Props) {
               label={TEXT.notes}
               placeholder={TEXT.extraInstructions}
               error={fieldErrors.notes}
+              errorMessages={errorMessages}
               onChange={handleChange}
               rows={4}
             />
@@ -173,10 +179,24 @@ export default function CheckoutContent({ slug }: Props) {
                 <RequiredStar required />
               </label>
               <div className="w-fit">
-                <Radio name="payment" label={TEXT.cash} value="CASH" checked={fields.payment} onChange={handleChange} />
-                <Radio name="payment" label={TEXT.card} value="CARD" checked={fields.payment} onChange={handleChange} />
+                <Radio
+                  name="payment"
+                  label={paymentMethods.CASH}
+                  value="CASH"
+                  checked={fields.payment}
+                  onChange={handleChange}
+                />
+                <Radio
+                  name="payment"
+                  label={paymentMethods.CARD}
+                  value="CARD"
+                  checked={fields.payment}
+                  onChange={handleChange}
+                />
                 {fieldErrors.payment ? (
-                  <p className="text-sm text-red-600">{`${TEXT.paymentMethod} ${ERROR_MESSAGES[fieldErrors.payment]}`}</p>
+                  <p className="text-sm text-red-600">
+                    {formatFieldError(TEXT.paymentMethod, fieldErrors.payment, errorMessages)}
+                  </p>
                 ) : null}
               </div>
               {fields.payment === 'CASH' ? (
@@ -188,12 +208,15 @@ export default function CheckoutContent({ slug }: Props) {
                       prefix={{ value: getCurrencySymbol(restaurant.currency) }}
                       value={getMoneyFormatter(restaurant.currency).format(fields.changeFor)}
                       label={TEXT.needChangeFor}
-                      placeholder={TEXT.startingMoney}
+                      placeholder={getMoneyFormatter(restaurant.currency).format(0)}
                       onChange={handleMoneyChange}
+                      errorMessages={errorMessages}
                     />
                   </div>
                   {fieldErrors.changeFor ? (
-                    <p className="text-sm text-red-600">{`${TEXT.needChangeFor} ${ERROR_MESSAGES[fieldErrors.changeFor]}`}</p>
+                    <p className="text-sm text-red-600">
+                      {formatFieldError(TEXT.needChangeFor, fieldErrors.changeFor, errorMessages)}
+                    </p>
                   ) : null}
                 </div>
               ) : null}
@@ -214,7 +237,7 @@ export default function CheckoutContent({ slug }: Props) {
               </div>
               <Button
                 variant="primary-text"
-                className="mt-2 w-full text-end text-sm"
+                className="ms-auto mt-2 text-end text-sm"
                 onClick={() => router.replace(rSlug(slug, '/cart'))}
               >
                 {TEXT.editCart}

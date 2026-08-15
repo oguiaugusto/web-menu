@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { TEXT } from '@/constants/text';
+import { useRestaurant } from '@/providers/restaurant-provider';
 import { rSlug } from '@/utils/r-slug';
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
 import { CircleAlert } from 'lucide-react';
@@ -14,6 +14,7 @@ type Props = Readonly<{
 
 export function ClosedDialog({ isOpen, slug }: Props) {
   const router = useRouter();
+  const { text: TEXT } = useRestaurant();
 
   return (
     <Dialog open={isOpen} as="div" className="relative z-100 focus:outline-none" onClose={() => {}}>

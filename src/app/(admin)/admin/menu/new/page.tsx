@@ -1,4 +1,3 @@
-import { TEXT } from '@/constants/text';
 import { MenuItemForm } from '../_components/menu-item-form';
 import { getMenuCategories } from '@/db/menu-item';
 import { requireCurrentUser } from '@/lib/auth/user';
@@ -6,7 +5,7 @@ import { Metadata } from 'next';
 import { mountAdminPageMetadata } from '@/utils/mount-page-metadata';
 
 export async function generateMetadata(): Promise<Metadata> {
-  return mountAdminPageMetadata(TEXT.menuItemFormTitleNew);
+  return mountAdminPageMetadata('menuItemFormTitleNew');
 }
 
 export default async function MenuItemNewPage() {

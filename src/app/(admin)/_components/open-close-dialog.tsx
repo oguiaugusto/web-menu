@@ -2,7 +2,7 @@
 
 import { updateRestaurantOpen } from '@/actions/restaurant';
 import { Button } from '@/components/ui/button';
-import { ERROR_MESSAGES, TEXT } from '@/constants/text';
+import { useAdmin } from '@/providers/admin-provider';
 import { toastError, toastSuccess } from '@/utils/toast';
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
 import { DoorClosed, DoorOpen } from 'lucide-react';
@@ -16,6 +16,7 @@ type Props = Readonly<{
 }>;
 
 export function OpenCloseDialog({ mode, isDialogOpen, setIsDialogOpen, setOpenRestaurant }: Props) {
+  const { text: TEXT, errorMessages } = useAdmin();
   const [pending, setPending] = useState(false);
 
   const openMode = mode === 'open';
@@ -27,7 +28,7 @@ export function OpenCloseDialog({ mode, isDialogOpen, setIsDialogOpen, setOpenRe
       const result = await updateRestaurantOpen(openMode);
 
       if (!result.success) {
-        if (result.error.form) toastError(ERROR_MESSAGES[result.error.form], { position: 'top-center' });
+        if (result.error.form) toastError(errorMessages[result.error.form], { position: 'top-center' });
         return;
       }
 
@@ -78,7 +79,13 @@ export function OpenCloseDialog({ mode, isDialogOpen, setIsDialogOpen, setOpenRe
               >
                 {TEXT.cancel}
               </Button>
-              <Button type="button" variant="primary" className="flex-1 text-sm" onClick={handleOpen} disabled={pending}>
+              <Button
+                type="button"
+                variant="primary"
+                className="flex-1 text-sm"
+                onClick={handleOpen}
+                disabled={pending}
+              >
                 {openMode ? TEXT.openRestaurant : TEXT.closeRestaurant}
               </Button>
             </div>

@@ -2,7 +2,6 @@
 
 import { useCart } from '@/providers/cart-provider';
 import { Button } from '@/components/ui/button';
-import { TEXT } from '@/constants/text';
 import { CartItem } from './cart-item';
 import EmptyCart from '@/app/(customer)/_components/empty-cart';
 import { rSlug } from '@/utils/r-slug';
@@ -17,7 +16,7 @@ type Props = Readonly<{
 }>;
 
 export default function CartContent({ slug }: Props) {
-  const { currency } = useRestaurant();
+  const { currency, text: TEXT } = useRestaurant();
   const { items, subtotal, clearCart } = useCart();
 
   const isOpen = useRestaurantOpen(slug);

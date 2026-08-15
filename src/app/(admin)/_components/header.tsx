@@ -2,13 +2,12 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { TEXT } from '@/constants/text';
 import { DropdownMenu } from './dropdown-menu';
 import OpenClosedBadge from './open-closed-bagde';
 import { useAdmin } from '@/providers/admin-provider';
 
 export function Header() {
-  const { restaurant } = useAdmin();
+  const { restaurant, text: TEXT } = useAdmin();
 
   return (
     <header className="sticky top-0 z-50 border-b border-neutral-200 bg-white">

@@ -2,7 +2,7 @@
 
 import { deleteMenuItem } from '@/actions/menu-item';
 import { Button } from '@/components/ui/button';
-import { ERROR_MESSAGES, TEXT } from '@/constants/text';
+import { useAdmin } from '@/providers/admin-provider';
 import { toastError, toastSuccess } from '@/utils/toast';
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
 import { Trash2, TriangleAlert } from 'lucide-react';
@@ -16,6 +16,7 @@ type Props = Readonly<{
 
 export function DeleteDialog({ itemId, buttonClass }: Props) {
   const router = useRouter();
+  const { text: TEXT, errorMessages } = useAdmin();
 
   const [isOpen, setIsOpen] = useState(false);
   const [pending, setPending] = useState(false);
@@ -27,7 +28,7 @@ export function DeleteDialog({ itemId, buttonClass }: Props) {
       const result = await deleteMenuItem(itemId);
 
       if (!result.success && result.error.form) {
-        toastError(ERROR_MESSAGES[result.error.form], { position: 'top-center' });
+        toastError(errorMessages[result.error.form], { position: 'top-center' });
         return;
       }
 

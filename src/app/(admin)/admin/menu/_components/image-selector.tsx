@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { Check, ImageIcon } from 'lucide-react';
 import { useEffect, useId, useRef, useState, type ChangeEvent } from 'react';
 import { Input } from '@/components/ui/input';
-import { TEXT } from '@/constants/text';
+import { useAdmin } from '@/providers/admin-provider';
 import { cn } from '@/utils/cn';
 import { SegmentedButtonGroup } from './segmented-button-group';
 
@@ -38,6 +38,7 @@ function isExampleImage(value?: string) {
 }
 
 export function ImageSelector({ value, onChange }: ImageSelectorProps) {
+  const { text: TEXT, errorMessages } = useAdmin();
   const initialSource = isExampleImage(value) || !value ? 'examples' : 'url';
 
   const [source, setSource] = useState<ImageSource>(initialSource);
@@ -157,7 +158,13 @@ export function ImageSelector({ value, onChange }: ImageSelectorProps) {
                       isSelected ? 'border-red-muted ring-red-muted/30 ring-2' : 'border-transparent',
                     )}
                   >
-                    <Image src={image} alt="Example menu item" fill sizes="auto" className="object-cover" />
+                    <Image
+                      src={image}
+                      alt={TEXT.menuItemImageExampleImage}
+                      fill
+                      sizes="auto"
+                      className="object-cover"
+                    />
                     {isSelected ? (
                       <span className="bg-red-muted absolute top-1.5 right-1.5 flex size-5 items-center justify-center rounded-full text-white shadow-xs">
                         <Check aria-hidden="true" size={13} strokeWidth={3} />
@@ -177,6 +184,7 @@ export function ImageSelector({ value, onChange }: ImageSelectorProps) {
               placeholder="https://example.com/image.jpg"
               value={url}
               onChange={handleUrlChange}
+              errorMessages={errorMessages}
               additionalInputProps={{ id: urlInputId, autoComplete: 'url' }}
             />
             <p className="text-sm text-neutral-500">{TEXT.menuItemImageUrlHelper}</p>

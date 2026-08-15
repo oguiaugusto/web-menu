@@ -3,23 +3,23 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select } from '@/components/ui/select';
-import { TEXT } from '@/constants/text';
+import { useAdmin } from '@/providers/admin-provider';
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
 import { ArrowDownUp, Plus, Search } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-const SORT_BY_FIELDS = [
-  { value: 'category', label: TEXT.category },
-  { value: 'name', label: TEXT.name },
-  { value: 'price', label: TEXT.price },
-  { value: 'updatedAt', label: TEXT.lastUpdated },
-];
-
 const MIN_LENGTH = 2;
 
 export function Toolbar() {
+  const { text: TEXT, errorMessages } = useAdmin();
+  const sortByFields = [
+    { value: 'category', label: TEXT.category },
+    { value: 'name', label: TEXT.name },
+    { value: 'price', label: TEXT.price },
+    { value: 'updatedAt', label: TEXT.lastUpdated },
+  ];
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -62,7 +62,7 @@ export function Toolbar() {
     const pSortBy = params.get('sortBy');
 
     setQuery(pQuery ?? '');
-    setSortBy(SORT_BY_FIELDS.some((x) => x.value === pSortBy) ? pSortBy! : 'category');
+    setSortBy(sortByFields.some((x) => x.value === pSortBy) ? pSortBy! : 'category');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -84,6 +84,7 @@ export function Toolbar() {
           suffix={{ value: <Search className="text-neutral-400" size={18} /> }}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
+          errorMessages={errorMessages}
         />
         <div className="flex gap-2">
           <div className="min-w-0 flex-1">
@@ -93,7 +94,8 @@ export function Toolbar() {
                 updateQuery('sortBy', e.target.value);
                 setSortBy(e.target.value);
               }}
-              options={SORT_BY_FIELDS}
+              options={sortByFields}
+              errorMessages={errorMessages}
             />
           </div>
           <Button

@@ -1,12 +1,13 @@
 'use client';
 
-import { TEXT } from '@/constants/text';
+import { useRestaurant } from '@/providers/restaurant-provider';
 import { rSlug } from '@/utils/r-slug';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 
 export default function OrderNotFound() {
   const { slug, code } = useParams<{ slug: string; code: string }>();
+  const { text: TEXT } = useRestaurant();
 
   return (
     <main className="mx-auto max-w-4xl px-4 py-6 lg:px-0">

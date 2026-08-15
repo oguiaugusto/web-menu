@@ -3,7 +3,6 @@
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Minus, Plus } from 'lucide-react';
-import { TEXT } from '@/constants/text';
 import { useCart } from '@/providers/cart-provider';
 import { Button } from '@/components/ui/button';
 import { MenuItem } from '@/db/menu-item';
@@ -20,7 +19,7 @@ type Props = {
 export function QuantityAndAdd({ slug, data }: Props) {
   const router = useRouter();
 
-  const { currency } = useRestaurant();
+  const { currency, text: TEXT } = useRestaurant();
   const { addItem } = useCart();
   const [quantity, setQuantity] = useState(1);
 

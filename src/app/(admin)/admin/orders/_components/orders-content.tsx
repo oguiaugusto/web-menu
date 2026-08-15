@@ -3,7 +3,6 @@
 import { Search } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
 import { Input } from '@/components/ui/input';
-import { ERROR_MESSAGES, TEXT } from '@/constants/text';
 import { OrderDialog } from './order-dialog';
 import { OrdersSection } from './orders-section';
 import { Order } from '@/db/order';
@@ -25,6 +24,8 @@ function filterOrders(orders: Order[], query: string): Order[] {
 export default function OrdersContent() {
   const {
     restaurant: { currency, language },
+    text: TEXT,
+    errorMessages,
   } = useAdmin();
 
   const [query, setQuery] = useState('');
@@ -72,7 +73,7 @@ export default function OrdersContent() {
       const result = await updateOrderStatus(order.id, nextStatus);
 
       if (!result.success) {
-        if (result.error.form) toastError(ERROR_MESSAGES[result.error.form], { position: 'top-center' });
+        if (result.error.form) toastError(errorMessages[result.error.form], { position: 'top-center' });
         return;
       }
 
@@ -101,7 +102,7 @@ export default function OrdersContent() {
       const result = await updateOrderStatus(order.id, OrderStatus.CANCELLED);
 
       if (!result.success && result.error.form) {
-        toastError(ERROR_MESSAGES[result.error.form], { position: 'top-center' });
+        toastError(errorMessages[result.error.form], { position: 'top-center' });
         return;
       }
 
@@ -128,6 +129,7 @@ export default function OrdersContent() {
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             additionalInputProps={{ 'aria-label': TEXT.searchOrdersPlaceholder }}
+            errorMessages={errorMessages}
           />
         </div>
         <div className="mt-8">
@@ -137,6 +139,7 @@ export default function OrdersContent() {
             onOrderClick={setSelectedOrder}
             emptyText={query.length ? TEXT.noOrdersFound : TEXT.noActiveOrders}
             language={language}
+            text={TEXT}
           />
         </div>
         <div className="my-10 border-t border-neutral-200" />
@@ -146,6 +149,7 @@ export default function OrdersContent() {
           onOrderClick={setSelectedOrder}
           emptyText={query.length ? TEXT.noOrdersFound : TEXT.noCompletedOrders}
           language={language}
+          text={TEXT}
         />
       </div>
       <OrderDialog

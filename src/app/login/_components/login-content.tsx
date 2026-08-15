@@ -4,7 +4,7 @@ import { login } from '@/actions/auth/login';
 import { AuthCard } from '@/components/auth-card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { TEXT } from '@/constants/text';
+import { useLocale } from '@/providers/locale-provider';
 import { FieldErrors } from '@/types/misc';
 import { getHandleChange } from '@/utils/getHandleChange';
 import { handleSubmitError } from '@/utils/handle-submit-error';
@@ -15,6 +15,7 @@ import { useState } from 'react';
 export default function LoginContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { text: TEXT, errorMessages } = useLocale();
 
   const [fields, setFields] = useState({
     email: '',
@@ -36,7 +37,7 @@ export default function LoginContent() {
         password: fields.password,
       });
 
-      if (!result.success) return handleSubmitError(result, setFieldErrors);
+      if (!result.success) return handleSubmitError(result, setFieldErrors, errorMessages);
 
       router.replace(searchParams.get('next') ?? '/admin');
     } finally {
@@ -58,6 +59,7 @@ export default function LoginContent() {
               placeholder={TEXT.emailPlaceholder}
               value={fields.email}
               error={fieldErrors.email}
+              errorMessages={errorMessages}
               onChange={handleChange}
               required
             />
@@ -78,6 +80,7 @@ export default function LoginContent() {
                 placeholder="••••••••"
                 value={fields.password}
                 error={fieldErrors.password}
+                errorMessages={errorMessages}
                 onChange={handleChange}
                 required
               />

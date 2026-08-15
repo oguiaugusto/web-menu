@@ -1,12 +1,12 @@
 import { MenuCard } from './_components/menu-card';
-import { TEXT } from '@/constants/text';
+import { getText } from '@/i18n';
 import { Categories } from './_components/categories';
 import { getMenuCategories, getMenuItems } from '@/db/menu-item';
 import { getRestaurant } from '@/lib/restaurant';
 import { ClosedBanner } from '@/app/(customer)/_components/closed-banner';
 import { RestaurantInfo } from './_components/restaurant-info';
 import { Metadata } from 'next';
-import { mountCustomerPageMetadata } from '@/utils/mount-page-metadata';
+import { mountPageMetadata } from '@/utils/mount-page-metadata';
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -17,7 +17,8 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
   const { slug } = await params;
   const { category } = await searchParams;
 
-  return mountCustomerPageMetadata(slug, category ?? '');
+  const restaurant = await getRestaurant(slug);
+  return mountPageMetadata(restaurant.name, category || getText(restaurant.language).menuTitle);
 }
 
 export default async function MenuPage({ params, searchParams }: Props) {
@@ -25,6 +26,8 @@ export default async function MenuPage({ params, searchParams }: Props) {
   const { category } = await searchParams;
 
   const restaurant = await getRestaurant(slug);
+  const TEXT = getText(restaurant.language);
+
   const [categories, data] = await Promise.all([
     getMenuCategories(restaurant.id, true),
     getMenuItems(restaurant.id, category),
@@ -43,8 +46,9 @@ export default async function MenuPage({ params, searchParams }: Props) {
           deliveryFee={restaurant.deliveryFee}
           openingHours={restaurant.openingHours}
           contact={restaurant.contact}
+          text={TEXT}
         />
-        <Categories slug={slug} categories={categories} selected={category} />
+        <Categories slug={slug} categories={categories} selected={category} text={TEXT} />
         <div className="mx-auto grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {data.map((x) => (
             <MenuCard key={`menu-item-${x.id}`} slug={slug} item={x} currency={restaurant.currency} />

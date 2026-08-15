@@ -2,9 +2,9 @@
 
 import { Fragment } from 'react/jsx-runtime';
 import { useEffect, useState } from 'react';
-import { TEXT } from '@/constants/text';
+import { useRestaurant } from '@/providers/restaurant-provider';
 import { cn } from '@/utils/cn';
-import { STATUS_INFO } from '../../../../../../../constants/status';
+import { getStatusInfo } from '../../../../../../../constants/status';
 import type { OrderStatus as POrderStatus } from '@/generated/prisma/enums';
 
 type Props = { slug: string; code: string; status: POrderStatus };
@@ -12,9 +12,11 @@ type Props = { slug: string; code: string; status: POrderStatus };
 const ORDER_STEPS: POrderStatus[] = ['PENDING', 'ACCEPTED', 'PREPARING', 'READY', 'DELIVERED'] as const;
 
 export function OrderStatus({ slug, code, status }: Props) {
+  const { text: TEXT } = useRestaurant();
   const [currentStatus, setCurrentStatus] = useState(status);
 
-  const statusInfo = STATUS_INFO[currentStatus];
+  const statusInfo = getStatusInfo(TEXT);
+  const currentStatusInfo = statusInfo[currentStatus];
   const currentStepIndex = ORDER_STEPS.indexOf(currentStatus);
 
   useEffect(() => {
@@ -55,11 +57,11 @@ export function OrderStatus({ slug, code, status }: Props) {
             >
               <div
                 className={cn(
-                  'absolute top-4 left-1/2 hidden -translate-x-1/2 text-xs sm:block',
+                  'absolute top-4 left-1/2 hidden w-16 -translate-x-1/2 text-center text-xs sm:block',
                   index <= currentStepIndex ? 'text-red-muted' : 'text-neutral-500',
                 )}
               >
-                {STATUS_INFO[step].label}
+                {statusInfo[step].label}
               </div>
             </div>
             {index < ORDER_STEPS.length - 1 ? (
@@ -77,8 +79,8 @@ export function OrderStatus({ slug, code, status }: Props) {
     <section className="rounded-2xl border border-neutral-200 bg-white p-6">
       <div className="text-center">
         <p className="text-sm text-neutral-500">{TEXT.currentStatus}</p>
-        <p className="text-red-muted mt-2 text-lg font-semibold">{statusInfo?.label}</p>
-        <p className="mt-1 text-sm text-neutral-500">{statusInfo?.description}</p>
+        <p className="text-red-muted mt-2 text-lg font-semibold">{currentStatusInfo?.label}</p>
+        <p className="mt-1 text-sm text-neutral-500">{currentStatusInfo?.description}</p>
       </div>
       {currentStatus !== 'CANCELLED' ? renderSteps() : null}
     </section>

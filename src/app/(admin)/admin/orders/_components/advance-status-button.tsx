@@ -2,10 +2,10 @@
 
 import { Check } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import { TEXT } from '@/constants/text';
+import { useAdmin } from '@/providers/admin-provider';
 import { cn } from '@/utils/cn';
 import { OrderStatus } from '@/generated/prisma/enums';
-import { STATUS_INFO } from '@/constants/status';
+import { getStatusInfo } from '@/constants/status';
 
 type Props = Readonly<{
   nextStatus: OrderStatus;
@@ -16,6 +16,9 @@ type Props = Readonly<{
 const HOLD_DURATION = 800;
 
 export function AdvanceStatusButton({ nextStatus, onComplete, pending }: Props) {
+  const { text: TEXT } = useAdmin();
+  const statusInfo = getStatusInfo(TEXT);
+
   const frame = useRef<number | null>(null);
   const startedAt = useRef<number | null>(null);
   const [progress, setProgress] = useState(0);
@@ -100,7 +103,7 @@ export function AdvanceStatusButton({ nextStatus, onComplete, pending }: Props) 
           <span className="block text-[11px] font-semibold tracking-[0.14em] uppercase">
             {TEXT.pressAndHoldToAdvanceTo}
           </span>
-          <span className="mt-1 block text-base font-semibold">{STATUS_INFO[nextStatus].label}</span>
+          <span className="mt-1 block text-base font-semibold">{statusInfo[nextStatus].label}</span>
         </span>
       )}
     </button>

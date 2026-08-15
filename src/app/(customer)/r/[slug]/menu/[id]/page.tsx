@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import { QuantityAndAdd } from './_components/quantity-and-add';
-import { TEXT } from '@/constants/text';
+import { getText } from '@/i18n';
 import { getMenuItem } from '@/db/menu-item';
 import Image from 'next/image';
 import { getRestaurant } from '@/lib/restaurant';
@@ -17,6 +17,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const restaurant = await getRestaurant(slug);
   const item = await getMenuItem(restaurant.id, id, true);
+
+  const TEXT = getText(restaurant.language);
 
   return mountPageMetadata(restaurant.name, item?.name ?? TEXT.itemNotFound);
 }

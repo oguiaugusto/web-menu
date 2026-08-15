@@ -1,4 +1,4 @@
-import { TEXT } from '@/constants/text';
+import { getPaymentMethods, getText } from '@/i18n';
 import { CopyCode } from './_components/copy-code';
 import { getOrder } from '@/db/order';
 import { notFound } from 'next/navigation';
@@ -20,6 +20,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const restaurant = await getRestaurant(slug);
   const data = await getOrder(restaurant.id, code);
 
+  const TEXT = getText(restaurant.language);
+
   return mountPageMetadata(restaurant.name, data ? `${TEXT.order} ${data.code}` : TEXT.orderNotFound);
 }
 
@@ -27,6 +29,10 @@ export default async function OrderPage({ params }: Props) {
   const { slug, code } = await params;
 
   const restaurant = await getRestaurant(slug);
+
+  const TEXT = getText(restaurant.language);
+  const paymentMethods = getPaymentMethods(restaurant.language);
+
   const data = await getOrder(restaurant.id, code);
   if (!data) notFound();
 
@@ -75,7 +81,7 @@ export default async function OrderPage({ params }: Props) {
             <div className="mt-6">
               <h2 className="font-semibold">{TEXT.payment}</h2>
               <p className="mt-2 text-sm text-neutral-500">
-                {data.payment}
+                {paymentMethods[data.payment]}
                 {data.changeFor
                   ? ` (${TEXT.changeFor.toLowerCase()} ${formatCurrency(data.changeFor, restaurant.currency)})`
                   : ''}

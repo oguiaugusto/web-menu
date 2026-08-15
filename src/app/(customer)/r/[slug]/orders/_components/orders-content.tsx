@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { ERROR_MESSAGES, TEXT } from '@/constants/text';
 import { OrderSummary } from '@/db/order';
 import { getOrderCodes } from '@/utils/localstorage-orders';
 import { OrderCard } from './order-card';
@@ -19,7 +18,7 @@ type Props = Readonly<{
 export default function OrdersContent({ slug }: Props) {
   const router = useRouter();
 
-  const { language } = useRestaurant();
+  const { language, text: TEXT, errorMessages } = useRestaurant();
 
   const [code, setCode] = useState('');
   const [orders, setOrders] = useState<OrderSummary[] | null>(null);
@@ -47,7 +46,7 @@ export default function OrdersContent({ slug }: Props) {
     e.preventDefault();
 
     if (!code.toUpperCase().startsWith('WM-') || code.length !== 9) {
-      toastError(ERROR_MESSAGES.invalid_code, { position: 'top-center' });
+      toastError(errorMessages.invalid_code, { position: 'top-center' });
     } else {
       router.push(rSlug(slug, `/orders/${code.toUpperCase()}`));
     }
@@ -76,7 +75,7 @@ export default function OrdersContent({ slug }: Props) {
           <h2 className="mb-4 text-lg font-semibold">{TEXT.recentOrders}</h2>
           <div className="space-y-3">
             {orders?.map((x) => (
-              <OrderCard key={x.code} slug={slug} order={x} language={language} />
+              <OrderCard key={x.code} slug={slug} order={x} language={language} text={TEXT} />
             ))}
           </div>
         </section>
@@ -105,6 +104,7 @@ export default function OrdersContent({ slug }: Props) {
               placeholder="WM-XXXXXX"
               value={code}
               onChange={(e) => setCode(e.target.value.slice(0, 9).toUpperCase())}
+              errorMessages={errorMessages}
             />
           </div>
           <Button type="submit" variant="primary" disabled={code.length !== 9}>

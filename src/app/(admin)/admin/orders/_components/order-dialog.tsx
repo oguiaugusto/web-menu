@@ -4,7 +4,6 @@ import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
 import { ArrowRight, MapPin, Phone, UserRound, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { TEXT } from '@/constants/text';
 import { NEXT_STATUS } from '@/constants/status';
 import { AdvanceStatusButton } from './advance-status-button';
 import { CancelOrderDialog } from './cancel-order-dialog';
@@ -13,6 +12,7 @@ import { formatOrderItem } from '../_helpers/format-order-item';
 import { OrderStatusBadge } from '../../../../../components/order-status-badge';
 import { Order } from '@/db/order';
 import { formatCurrency } from '@/utils/money';
+import { useAdmin } from '@/providers/admin-provider';
 
 type Props = Readonly<{
   order: Order | null;
@@ -25,6 +25,7 @@ type Props = Readonly<{
 }>;
 
 export function OrderDialog({ order, onClose, onAdvance, onCancelOrder, pending, currency, language }: Props) {
+  const { text: TEXT, paymentMethods } = useAdmin();
   const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
 
   useEffect(() => {
@@ -46,7 +47,7 @@ export function OrderDialog({ order, onClose, onAdvance, onCancelOrder, pending,
             >
               <div className="flex items-start justify-between gap-4 border-b border-neutral-100 pb-5">
                 <div>
-                  <OrderStatusBadge status={order.status} />
+                  <OrderStatusBadge status={order.status} text={TEXT} />
                   <DialogTitle className="mt-3 font-mono text-xl font-semibold">{order.code}</DialogTitle>
                   <p className="mt-1 text-sm text-neutral-500">{formatOrderDate(order.createdAt, language)}</p>
                 </div>
@@ -94,7 +95,7 @@ export function OrderDialog({ order, onClose, onAdvance, onCancelOrder, pending,
                 <section className="py-3">
                   <h2 className="text-sm font-semibold">{TEXT.payment}</h2>
                   <p className="mt-1 flex items-center text-sm text-neutral-600">
-                    {order.payment}
+                    {paymentMethods[order.payment]}
                     {order.changeFor ? (
                       <>
                         <span className="mx-1">•</span>

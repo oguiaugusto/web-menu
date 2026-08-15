@@ -1,7 +1,6 @@
 import { Metadata } from 'next';
 import CartContent from './_components/cart-content';
 import { mountCustomerPageMetadata } from '@/utils/mount-page-metadata';
-import { TEXT } from '@/constants/text';
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -9,7 +8,7 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  return mountCustomerPageMetadata(slug, TEXT.yourCart);
+  return mountCustomerPageMetadata(slug, 'yourCart');
 }
 
 export default async function CartPage({ params }: Props) {

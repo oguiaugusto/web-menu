@@ -1,7 +1,8 @@
 'use client';
 
 import { Input } from '@/components/ui/input';
-import { TEXT } from '@/constants/text';
+import type { ErrorMessages, TranslationDictionary } from '@/i18n';
+import type { ErrorCode } from '@/types/enums';
 import { useEffect, useState } from 'react';
 import { checkPasswordStrength } from '../../../utils/check-password-strength';
 import { cn } from '@/utils/cn';
@@ -9,12 +10,14 @@ import { Eye, EyeOff } from 'lucide-react';
 
 type Props = Readonly<{
   value: string;
-  error?: string;
+  error?: ErrorCode;
+  errorMessages: ErrorMessages;
+  text: TranslationDictionary;
   onChange: React.ChangeEventHandler<HTMLInputElement>;
   setIsValid: React.Dispatch<React.SetStateAction<boolean>>;
 }>;
 
-export function PasswordInput({ value, error, onChange, setIsValid }: Props) {
+export function PasswordInput({ value, error, errorMessages, text: TEXT, onChange, setIsValid }: Props) {
   const [show, setShow] = useState(false);
   const [score, setScore] = useState(0);
 
@@ -50,6 +53,7 @@ export function PasswordInput({ value, error, onChange, setIsValid }: Props) {
         type={show ? 'text' : 'password'}
         value={value}
         error={error}
+        errorMessages={errorMessages}
         onChange={onChange}
         suffix={{ value: renderEye() }}
         additionalInputProps={{ 'aria-autocomplete': 'none', autoComplete: 'new-password' }}

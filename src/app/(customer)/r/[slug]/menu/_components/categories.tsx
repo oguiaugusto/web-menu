@@ -1,4 +1,4 @@
-import { TEXT } from '@/constants/text';
+import type { TranslationDictionary } from '@/i18n';
 import { cn } from '@/utils/cn';
 import { rSlug } from '@/utils/r-slug';
 import Link from 'next/link';
@@ -7,9 +7,10 @@ type Props = Readonly<{
   slug: string;
   categories: string[];
   selected?: string;
+  text: TranslationDictionary;
 }>;
 
-export async function Categories({ slug, categories, selected }: Props) {
+export async function Categories({ slug, categories, selected, text: TEXT }: Props) {
   const renderLink = (category: string, noCategory?: boolean) => (
     <Link
       key={category}

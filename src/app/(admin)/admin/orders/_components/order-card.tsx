@@ -3,16 +3,18 @@ import { formatOrderDate } from '@/utils/format-order-date';
 import { formatOrderItem } from '../_helpers/format-order-item';
 import { OrderStatusBadge } from '../../../../../components/order-status-badge';
 import { Order } from '@/db/order';
+import type { TranslationDictionary } from '@/i18n';
 
 type Props = Readonly<{
   order: Order;
   onClick(): void;
   language: string;
+  text: TranslationDictionary;
 }>;
 
 const PREVIEW_ITEM_COUNT = 2;
 
-export function OrderCard({ order, onClick, language }: Props) {
+export function OrderCard({ order, onClick, language, text }: Props) {
   const previewItems = order.items
     .slice(0, PREVIEW_ITEM_COUNT)
     .map((x) => formatOrderItem(x))
@@ -30,7 +32,7 @@ export function OrderCard({ order, onClick, language }: Props) {
           <p className="font-mono text-sm font-semibold">{order.code}</p>
           <p className="mt-1 truncate text-sm text-neutral-500">{order.customerName}</p>
         </div>
-        <OrderStatusBadge status={order.status} />
+        <OrderStatusBadge status={order.status} text={text} />
       </div>
       <div className="mt-4 border-t border-neutral-100 pt-3">
         <p className="line-clamp-1 text-sm text-neutral-700">

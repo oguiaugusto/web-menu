@@ -1,4 +1,4 @@
-import { TEXT } from '@/constants/text';
+import { getText } from '@/i18n';
 import { EmptyTable } from './_components/empty-table';
 import { MenuItemsTable } from './_components/menu-items-table';
 import { Toolbar } from './_components/toolbar';
@@ -16,13 +16,14 @@ type Props = Readonly<{
 }>;
 
 export async function generateMetadata(): Promise<Metadata> {
-  return mountAdminPageMetadata(TEXT.menuItems);
+  return mountAdminPageMetadata('menuItems');
 }
 
 export default async function MenuPage({ searchParams }: Props) {
   const params = await searchParams;
 
   const user = await requireCurrentUser();
+  const TEXT = getText(user.restaurant.language);
   const items = await getMenuItemsList({
     query: params.query,
     sortBy: params.sortBy,
@@ -38,9 +39,9 @@ export default async function MenuPage({ searchParams }: Props) {
         <Toolbar />
         <div className="mt-6">
           {!items.length && !params.query ? (
-            <EmptyTable />
+            <EmptyTable text={TEXT} />
           ) : (
-            <MenuItemsTable items={items} currency={user.restaurant.currency} />
+            <MenuItemsTable items={items} currency={user.restaurant.currency} text={TEXT} />
           )}
         </div>
       </div>

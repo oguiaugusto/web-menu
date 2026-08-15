@@ -1,5 +1,9 @@
-import { PAYMENT_METHODS } from '@/constants/text';
-import { Order as PrismaOrder, OrderStatus, OrderItem as PrismaOrderItem } from '@/generated/prisma/client';
+import {
+  Order as PrismaOrder,
+  OrderStatus,
+  OrderItem as PrismaOrderItem,
+  PaymentMethod,
+} from '@/generated/prisma/client';
 import { prisma } from '@/lib/prisma';
 import { OrderItem, parseOrderItem } from './order-item';
 import { requireCurrentUser } from '@/lib/auth/user';
@@ -8,7 +12,7 @@ export type Order = Omit<PrismaOrder, 'changeFor' | 'deliveryFee' | 'total' | 'p
   changeFor: number | null;
   deliveryFee: number | null;
   total: number;
-  payment: string;
+  payment: PaymentMethod;
   items: OrderItem[];
 };
 
@@ -24,7 +28,7 @@ function parseOrder(order: PrismaOrder & { items: PrismaOrderItem[] }): Order {
     changeFor: order.changeFor?.toNumber() ?? null,
     deliveryFee: order.deliveryFee?.toNumber() ?? null,
     total: order.total.toNumber(),
-    payment: PAYMENT_METHODS[order.payment],
+    payment: order.payment,
     items: order.items.map(parseOrderItem),
   };
 }

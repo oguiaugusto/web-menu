@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { ReceiptText, ShoppingCart, UtensilsCrossed } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { CartAmountBubble } from '@/app/(customer)/_components/cart-amount-bubble';
-import { TEXT } from '@/constants/text';
+import { useRestaurant } from '@/providers/restaurant-provider';
 import { rSlug } from '@/utils/r-slug';
 import { cn } from '@/utils/cn';
 
@@ -18,6 +18,8 @@ function isPathActive(pathname: string, href: string) {
 
 export function CustomerBottomNav({ slug }: Props) {
   const pathname = usePathname();
+  const { text: TEXT } = useRestaurant();
+
   const ordersHref = rSlug(slug, 'orders');
   const menuHref = rSlug(slug, 'menu');
   const cartHref = rSlug(slug, 'cart');

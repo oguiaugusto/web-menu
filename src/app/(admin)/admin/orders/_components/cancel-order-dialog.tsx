@@ -3,7 +3,7 @@
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
 import { TriangleAlert } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { TEXT } from '@/constants/text';
+import { useAdmin } from '@/providers/admin-provider';
 
 type Props = Readonly<{
   open: boolean;
@@ -13,6 +13,7 @@ type Props = Readonly<{
 }>;
 
 export function CancelOrderDialog({ open, onClose, onConfirm, pending }: Props) {
+  const { text: TEXT } = useAdmin();
   return (
     <Dialog open={open} as="div" className="relative z-[110] focus:outline-none" onClose={onClose}>
       <div className="fixed inset-0 z-[110] w-screen overflow-y-auto bg-neutral-800/50">

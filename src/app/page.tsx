@@ -6,7 +6,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { TEXT } from '@/constants/text';
+import { useLocale } from '@/providers/locale-provider';
 import { rSlug } from '@/utils/r-slug';
 import { RestaurantSearch } from '@/db/restaurant';
 
@@ -22,6 +22,7 @@ async function searchRestaurants(query: string, signal: AbortSignal): Promise<Re
 
 export default function Home() {
   const router = useRouter();
+  const { text: TEXT, errorMessages } = useLocale();
   const [restaurant, setRestaurant] = useState<RestaurantSearch | null>(null);
 
   return (
@@ -52,7 +53,9 @@ export default function Home() {
               search={searchRestaurants}
               getKey={(item) => item.id}
               getLabel={(item) => item.name}
-              placeholder="Search restaurants"
+              placeholder={TEXT.searchRestaurants}
+              text={TEXT}
+              errorMessages={errorMessages}
               suffix={<Search size={18} />}
             />
           </div>

@@ -2,7 +2,7 @@
 
 import { UnavailableItem } from '@/actions/orders';
 import { Button } from '@/components/ui/button';
-import { TEXT } from '@/constants/text';
+import { useRestaurant } from '@/providers/restaurant-provider';
 import { useCart } from '@/providers/cart-provider';
 import { rSlug } from '@/utils/r-slug';
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
@@ -19,6 +19,7 @@ type Props = Readonly<{
 
 export function UnavailableDialog({ isOpen, setIsOpen, slug, items }: Props) {
   const router = useRouter();
+  const { text: TEXT } = useRestaurant();
   const { removeItem } = useCart();
 
   return (

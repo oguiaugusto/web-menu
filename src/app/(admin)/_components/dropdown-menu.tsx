@@ -5,7 +5,6 @@ import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import { Check, Copy, DoorClosed, DoorOpen, ExternalLink, LogOut, Menu as MenuIcon, Settings } from 'lucide-react';
 import { rSlug } from '@/utils/r-slug';
 import { cn } from '@/utils/cn';
-import { TEXT } from '@/constants/text';
 import { logout } from '@/actions/auth/logout';
 import { useCopy } from '@/hooks/use-copy';
 import { useEffect, useState } from 'react';
@@ -13,7 +12,7 @@ import { OpenCloseDialog } from './open-close-dialog';
 import { useAdmin } from '@/providers/admin-provider';
 
 export function DropdownMenu({ slug }: Readonly<{ slug: string }>) {
-  const { isOpen, setIsOpen } = useAdmin();
+  const { isOpen, setIsOpen, text: TEXT } = useAdmin();
 
   const [openDialogOpen, setOpenDialogOpen] = useState(false);
   const [closeDialogOpen, setCloseDialogOpen] = useState(false);

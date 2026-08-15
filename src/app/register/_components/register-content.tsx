@@ -4,7 +4,6 @@ import { AuthCard } from '@/components/auth-card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { RestaurantSlugInput } from '@/components/restaurant-slug-input';
-import { TEXT } from '@/constants/text';
 import { useState } from 'react';
 import Link from 'next/link';
 import { PasswordInput } from './password-input';
@@ -14,10 +13,11 @@ import { register } from '@/actions/auth/register';
 import { useRouter } from 'next/navigation';
 import { getHandleChange } from '@/utils/getHandleChange';
 import { handleSubmitError } from '@/utils/handle-submit-error';
-import { SUPPORTED_LANGUAGES } from '@/constants/supported-languages';
+import { useLocale } from '@/providers/locale-provider';
 
 export default function RegisterContent() {
   const router = useRouter();
+  const { language, text: TEXT, errorMessages } = useLocale();
 
   const [fields, setFields] = useState({
     restaurantName: '',
@@ -72,10 +72,6 @@ export default function RegisterContent() {
     setIsSubmitting(true);
 
     try {
-      const browserLocale = navigator.languages?.length ? navigator.languages[0] : navigator.language;
-      const baseLanguage = browserLocale?.split('-')?.[0] ?? 'en';
-      const supportedLanguage = SUPPORTED_LANGUAGES.find((x) => x.value.startsWith(baseLanguage))?.value ?? 'en';
-
       const result = await register(
         {
           email: fields.email,
@@ -83,10 +79,10 @@ export default function RegisterContent() {
           restaurantName: fields.restaurantName,
           restaurantUrl: fields.restaurantUrl,
         },
-        supportedLanguage,
+        language,
       );
 
-      if (!result.success) return handleSubmitError(result, setFieldErrors);
+      if (!result.success) return handleSubmitError(result, setFieldErrors, errorMessages);
 
       router.replace('/admin');
     } finally {
@@ -112,6 +108,7 @@ export default function RegisterContent() {
               label={TEXT.restaurantName}
               placeholder={TEXT.restaurantPlaceholder}
               error={fieldErrors.restaurantName}
+              errorMessages={errorMessages}
               value={fields.restaurantName}
               onChange={handleNameChange}
               additionalInputProps={inputProps}
@@ -121,6 +118,8 @@ export default function RegisterContent() {
             <RestaurantSlugInput
               value={fields.restaurantUrl}
               error={fieldErrors.restaurantUrl}
+              errorMessages={errorMessages}
+              text={TEXT}
               onChange={handleUrlChange}
               required
               showRequired
@@ -132,6 +131,7 @@ export default function RegisterContent() {
               placeholder={TEXT.emailPlaceholder}
               value={fields.email}
               error={fieldErrors.email}
+              errorMessages={errorMessages}
               onChange={handleChange}
               additionalInputProps={inputProps}
               required
@@ -140,6 +140,8 @@ export default function RegisterContent() {
             <PasswordInput
               value={fields.password}
               error={fieldErrors.password}
+              errorMessages={errorMessages}
+              text={TEXT}
               onChange={handleChange}
               setIsValid={setIsPasswordValid}
             />

@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { TEXT } from '@/constants/text';
+import type { TranslationDictionary } from '@/i18n';
 import { MenuItem } from '@/db/menu-item';
 import { cn } from '@/utils/cn';
 import { SquarePen } from 'lucide-react';
@@ -8,9 +8,9 @@ import { DeleteDialog } from './delete-dialog';
 import { AvailableSwitch } from './available-switch';
 import { formatCurrency } from '@/utils/money';
 
-type Props = Readonly<{ items: MenuItem[]; currency: string }>;
+type Props = Readonly<{ items: MenuItem[]; currency: string; text: TranslationDictionary }>;
 
-export function MenuItemsTable({ items, currency }: Props) {
+export function MenuItemsTable({ items, currency, text: TEXT }: Props) {
   const actionButtonClass = cn(
     'cursor-pointer rounded-md p-2 text-neutral-500 transition-colors hover:bg-neutral-200/50',
   );

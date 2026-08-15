@@ -3,6 +3,7 @@ import { CustomerBottomNav } from '@/app/(customer)/r/[slug]/_components/custome
 import { getRestaurant } from '@/lib/restaurant';
 import { CartProvider } from '@/providers/cart-provider';
 import { RestaurantProvider } from '@/providers/restaurant-provider';
+import { getText } from '@/i18n';
 
 type Props = Readonly<{
   children: React.ReactNode;
@@ -12,11 +13,12 @@ type Props = Readonly<{
 export default async function RestaurantLayout({ children, params }: Props) {
   const { slug } = await params;
   const restaurant = await getRestaurant(slug);
+  const TEXT = getText(restaurant.language);
 
   return (
     <RestaurantProvider restaurant={restaurant}>
       <CartProvider slug={slug}>
-        <Header slug={slug} />
+        <Header slug={slug} text={TEXT} />
         <div className="pb-[calc(4rem_+_env(safe-area-inset-bottom))] sm:pb-0">{children}</div>
         <CustomerBottomNav slug={slug} />
       </CartProvider>

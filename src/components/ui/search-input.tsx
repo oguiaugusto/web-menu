@@ -15,7 +15,9 @@ import {
   type ReactNode,
   type RefAttributes,
 } from 'react';
-import { ERROR_MESSAGES, TEXT } from '@/constants/text';
+import type { ErrorMessages, TranslationDictionary } from '@/i18n';
+import type { ErrorCode } from '@/types/enums';
+import { formatFieldError } from '@/utils/format-field-error';
 import { cn } from '@/utils/cn';
 import { Tooltip } from 'react-tooltip';
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
@@ -36,7 +38,9 @@ export type SearchInputProps<T> = {
   tooltip?: React.ReactNode;
   placeholder?: string;
   suffix?: ReactNode;
-  error?: string;
+  error?: ErrorCode;
+  errorMessages: ErrorMessages;
+  text: TranslationDictionary;
   errorLabel?: string;
   disabled?: boolean;
   debounce?: number;
@@ -63,6 +67,8 @@ function SearchInputInner<T>(
     placeholder,
     suffix,
     error,
+    errorMessages,
+    text: TEXT,
     errorLabel,
     disabled = false,
     debounce = DEFAULT_DEBOUNCE,
@@ -258,7 +264,7 @@ function SearchInputInner<T>(
           />
           {suffix || isLoading ? (
             <span className="pointer-events-none absolute inset-y-0 right-4 flex items-center text-neutral-500">
-              {isLoading ? <Loader2 aria-label="Searching" className="size-[18px] animate-spin" /> : suffix}
+              {isLoading ? <Loader2 aria-label={TEXT.searching} className="size-[18px] animate-spin" /> : suffix}
             </span>
           ) : null}
           <ComboboxOptions
@@ -294,7 +300,7 @@ function SearchInputInner<T>(
       </Combobox>
       {error ? (
         <p id={errorId} className="mt-1 text-sm text-red-600">
-          {`${errorLabel ?? label} ${ERROR_MESSAGES[error]}`}
+          {formatFieldError(errorLabel ?? label, error, errorMessages)}
         </p>
       ) : null}
     </div>

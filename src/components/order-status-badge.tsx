@@ -1,13 +1,15 @@
-import { STATUS_COLORS, STATUS_DOT_COLORS, STATUS_INFO } from '@/constants/status';
+import { STATUS_COLORS, STATUS_DOT_COLORS, getStatusInfo } from '@/constants/status';
 import { cn } from '@/utils/cn';
 import type { OrderStatus } from '@/generated/prisma/enums';
+import type { TranslationDictionary } from '@/i18n';
 
 type Props = Readonly<{
   status: OrderStatus;
   hideDot?: boolean;
+  text: TranslationDictionary;
 }>;
 
-export function OrderStatusBadge({ status, hideDot }: Props) {
+export function OrderStatusBadge({ status, hideDot, text }: Props) {
   return (
     <span
       className={cn(
@@ -16,7 +18,7 @@ export function OrderStatusBadge({ status, hideDot }: Props) {
       )}
     >
       {!hideDot ? <span className={cn('size-1.5 rounded-full', STATUS_DOT_COLORS[status])} /> : null}
-      <span className="mb-[-1px]">{STATUS_INFO[status].label}</span>
+      <span className="mb-[-1px]">{getStatusInfo(text)[status].label}</span>
     </span>
   );
 }

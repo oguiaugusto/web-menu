@@ -1,10 +1,12 @@
 import { PaymentMethod } from '@/generated/prisma/enums';
+import { ErrorCode } from '@/types/enums';
 
-export const TEXT = {
+export const EN = {
   homeTitle: 'Find a restaurant',
   homeSubtitle: 'Search by restaurant name or access it directly through its shared link.',
   searching: 'Searching...',
   noResultsFound: 'No results found.',
+  searchRestaurants: 'Search restaurants',
   signIn: 'Sign in',
   signUp: 'Sign up',
   signInTitle: 'Sign in to your account',
@@ -78,7 +80,6 @@ export const TEXT = {
   cash: 'Cash',
   card: 'Card',
   needChangeFor: 'Need change for?',
-  startingMoney: '0.00',
   orderSummary: 'Order summary',
   edit: 'Edit',
   editCart: 'Edit cart',
@@ -195,40 +196,40 @@ export const TEXT = {
   checking: 'Checking...',
   pageNotFound: 'Page not found',
   pageNotFoundDescription: "The page you're looking for doesn't exist.",
-  goToHomePage: 'Got to Home Page',
+  goToHomePage: 'Go to Home Page',
   adminPageNotFoundDescription: "This page doesn't exist or is no longer available.",
   backToOrders: 'Back to Orders',
   customerPageNotFoundDescription: "We couldn't find what you were looking for.",
   goBack: 'Go back',
   itemNotFound: 'Item not found',
-};
+} as const;
 
-export const ERROR_MESSAGES: Record<string, string> = {
-  required: 'is required',
-  invalid_field: 'is invalid',
-  invalid_type: 'is invalid',
-  invalid_value: 'is invalid',
-  invalid_format: 'has invalid format',
-  too_big: 'is too large',
-  too_small: 'is too small',
-  invalid_payment_method: 'must be "Cash" or "Card"',
-  change_for_smaller_than_total: 'must be greater than the order total',
-  empty_order: 'Order cannot be empty',
-  order_not_found: 'Order not found',
-  invalid_code: 'Invalid order code',
-  weak_password: 'must be 8 characters long and include letters and numbers',
-  already_registered: 'is already registered',
-  already_in_use: 'is already in use',
-  wrong_credentials: 'Email or password is incorrect',
-  item_not_deleted: 'Item not found or already deleted',
-  status_not_updated: 'Order status not updated',
-  failed_to_open_close_restaurant: 'Failed to open/close the restaurant',
-  failed_to_update_restaurant: 'Failed to update restaurant settings',
-  restaurant_closed: 'Restaurant closed',
-  unavailable_items: 'Unavailable items',
-};
+export const EN_ERROR_MESSAGES = {
+  [ErrorCode.REQUIRED]: 'Required field',
+  [ErrorCode.INVALID_FIELD]: 'Invalid field',
+  [ErrorCode.INVALID_TYPE]: 'Invalid value',
+  [ErrorCode.INVALID_VALUE]: 'Invalid value',
+  [ErrorCode.INVALID_FORMAT]: 'Invalid format',
+  [ErrorCode.TOO_BIG]: 'Value is too large',
+  [ErrorCode.TOO_SMALL]: 'Value is too small',
+  [ErrorCode.INVALID_PAYMENT_METHOD]: 'Must be “Cash” or “Card”',
+  [ErrorCode.CHANGE_FOR_SMALLER_THAN_TOTAL]: 'Must be greater than the order total',
+  [ErrorCode.EMPTY_ORDER]: 'Order cannot be empty',
+  [ErrorCode.ORDER_NOT_FOUND]: 'Order not found',
+  [ErrorCode.INVALID_CODE]: 'Invalid order code',
+  [ErrorCode.WEAK_PASSWORD]: 'Must be 8 characters long and include letters and numbers',
+  [ErrorCode.ALREADY_REGISTERED]: 'Already registered',
+  [ErrorCode.ALREADY_IN_USE]: 'Already in use',
+  [ErrorCode.WRONG_CREDENTIALS]: 'Email or password is incorrect',
+  [ErrorCode.ITEM_NOT_DELETED]: 'Item not found or already deleted',
+  [ErrorCode.STATUS_NOT_UPDATED]: 'Order status not updated',
+  [ErrorCode.FAILED_TO_OPEN_CLOSE_RESTAURANT]: 'Failed to open/close the restaurant',
+  [ErrorCode.FAILED_TO_UPDATE_RESTAURANT]: 'Failed to update restaurant settings',
+  [ErrorCode.RESTAURANT_CLOSED]: 'Restaurant closed',
+  [ErrorCode.UNAVAILABLE_ITEMS]: 'Unavailable items',
+} satisfies Record<ErrorCode, string>;
 
-export const PAYMENT_METHODS: Record<PaymentMethod, string> = {
-  CASH: 'Cash',
-  CARD: 'Card',
-};
+export const EN_PAYMENT_METHODS = {
+  [PaymentMethod.CASH]: 'Cash',
+  [PaymentMethod.CARD]: 'Card',
+} satisfies Record<PaymentMethod, string>;

@@ -1,11 +1,11 @@
 import Link from 'next/link';
 import { ShoppingCart } from 'lucide-react';
 import { CartAmountBubble } from '../../../_components/cart-amount-bubble';
-import { TEXT } from '@/constants/text';
+import type { TranslationDictionary } from '@/i18n';
 import Image from 'next/image';
 import { rSlug } from '@/utils/r-slug';
 
-export function Header({ slug }: Readonly<{ slug: string }>) {
+export function Header({ slug, text: TEXT }: Readonly<{ slug: string; text: TranslationDictionary }>) {
   return (
     <header className="bg-red-muted sticky top-0 z-50 border-b border-red-700 text-white">
       <div className="mx-auto flex h-16 max-w-235 items-center justify-center px-4 sm:justify-between">

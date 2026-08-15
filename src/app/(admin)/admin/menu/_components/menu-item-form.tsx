@@ -6,7 +6,6 @@ import { Switch } from '@/components/ui/switch';
 import { TextArea } from '@/components/ui/textarea';
 import { CategoryInput } from './category-input';
 import { ImageSelector } from './image-selector';
-import { TEXT } from '@/constants/text';
 import { MenuItem } from '@/db/menu-item';
 import { FieldErrors } from '@/types/misc';
 import { getHandleChange } from '@/utils/getHandleChange';
@@ -18,6 +17,7 @@ import { handleSubmitError } from '@/utils/handle-submit-error';
 import { toastSuccess } from '@/utils/toast';
 import Link from 'next/link';
 import RequiredStar from '@/components/required-star';
+import { useAdmin } from '@/providers/admin-provider';
 
 type Props = Readonly<{
   mode: 'create' | 'edit';
@@ -28,6 +28,7 @@ type Props = Readonly<{
 
 export function MenuItemForm({ mode, item, categories, currency }: Props) {
   const router = useRouter();
+  const { text: TEXT, errorMessages } = useAdmin();
 
   const editMode = mode === 'edit';
   if (editMode && !item) router.replace('/admin/menu/new');
@@ -82,7 +83,7 @@ export function MenuItemForm({ mode, item, categories, currency }: Props) {
         result = await createMenuItem(data);
       }
 
-      if (!result.success) return handleSubmitError(result, setFieldErrors);
+      if (!result.success) return handleSubmitError(result, setFieldErrors, errorMessages);
 
       const successMessage = mode === 'create' ? TEXT.menuItemCreated : TEXT.menuItemUpdated;
       toastSuccess(successMessage, { position: 'bottom-center' });
@@ -123,6 +124,7 @@ export function MenuItemForm({ mode, item, categories, currency }: Props) {
                 placeholder={TEXT.menuItemNamePlaceholder}
                 value={fields.name}
                 error={fieldErrors.name}
+                errorMessages={errorMessages}
                 onChange={handleChange}
                 additionalInputProps={{ autoComplete: 'off' }}
                 required
@@ -135,6 +137,7 @@ export function MenuItemForm({ mode, item, categories, currency }: Props) {
                 prefix={{ value: getCurrencySymbol(currency) }}
                 value={getMoneyFormatter(currency).format(fields.price)}
                 error={fieldErrors.price}
+                errorMessages={errorMessages}
                 onChange={handleMoneyChange}
                 required
                 showRequired
@@ -147,6 +150,7 @@ export function MenuItemForm({ mode, item, categories, currency }: Props) {
               placeholder={TEXT.menuItemDescriptionPlaceholder}
               value={fields.description}
               error={fieldErrors.description}
+              errorMessages={errorMessages}
               onChange={handleChange}
             />
             <div className="grid gap-3 sm:grid-cols-2 sm:items-start">

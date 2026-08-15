@@ -4,7 +4,9 @@ import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions } from '@headl
 import { Check, CircleQuestionMark } from 'lucide-react';
 import { useEffect, useId, useState, type ChangeEvent, type ReactNode } from 'react';
 import { Tooltip } from 'react-tooltip';
-import { ERROR_MESSAGES, TEXT } from '@/constants/text';
+import { useAdmin } from '@/providers/admin-provider';
+import type { ErrorCode } from '@/types/enums';
+import { formatFieldError } from '@/utils/format-field-error';
 import { cn } from '@/utils/cn';
 import RequiredStar from '@/components/required-star';
 
@@ -14,7 +16,7 @@ export type CategoryInputProps = {
   onChange(value: string): void;
   categories: string[];
   placeholder?: string;
-  error?: string;
+  error?: ErrorCode;
   errorLabel?: string;
   disabled?: boolean;
   tooltip?: ReactNode;
@@ -31,6 +33,7 @@ export function CategoryInput({
   disabled = false,
   tooltip,
 }: CategoryInputProps) {
+  const { text: TEXT, errorMessages } = useAdmin();
   const [query, setQuery] = useState(value);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -149,7 +152,7 @@ export function CategoryInput({
       </Combobox>
       {error ? (
         <p id={errorId} className="mt-1 text-sm text-red-600">
-          {`${errorLabel ?? label} ${ERROR_MESSAGES[error]}`}
+          {formatFieldError(errorLabel ?? label, error, errorMessages)}
         </p>
       ) : null}
     </label>

@@ -6,7 +6,8 @@ import { useDebouncedValue } from '@/hooks/use-debounced-value';
 import { CircleCheck, CircleX, LoaderCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Input } from './ui/input';
-import { TEXT } from '@/constants/text';
+import type { ErrorMessages, TranslationDictionary } from '@/i18n';
+import type { ErrorCode } from '@/types/enums';
 import { Tooltip } from 'react-tooltip';
 
 type Availability = 'idle' | 'checking' | 'available' | 'unavailable';
@@ -15,7 +16,9 @@ type RestaurantSlugInputProps = Readonly<{
   value: string;
   onChange: (value: string) => void;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
-  error?: string;
+  error?: ErrorCode;
+  errorMessages: ErrorMessages;
+  text: TranslationDictionary;
   currentSlug?: string;
   disabled?: boolean;
   required?: boolean;
@@ -30,6 +33,8 @@ export function RestaurantSlugInput({
   onChange,
   onBlur,
   error,
+  errorMessages,
+  text: TEXT,
   currentSlug,
   disabled,
   required,
@@ -129,6 +134,7 @@ export function RestaurantSlugInput({
       label={TEXT.restaurantUrl}
       value={value}
       error={error}
+      errorMessages={errorMessages}
       onChange={handleChange}
       onBlur={handleBlur}
       additionalInputProps={{

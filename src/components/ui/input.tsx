@@ -1,6 +1,8 @@
 'use client';
 
-import { ERROR_MESSAGES } from '@/constants/text';
+import type { ErrorMessages } from '@/i18n';
+import type { ErrorCode } from '@/types/enums';
+import { formatFieldError } from '@/utils/format-field-error';
 import { cn } from '@/utils/cn';
 import { CircleQuestionMark } from 'lucide-react';
 import { useLayoutEffect, useRef, useState } from 'react';
@@ -18,7 +20,8 @@ type Props = Readonly<{
   tooltip?: React.ReactNode;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
-  error?: string;
+  error?: ErrorCode;
+  errorMessages?: ErrorMessages;
   errorLabel?: string;
   required?: boolean;
   showRequired?: boolean;
@@ -37,6 +40,7 @@ export function Input({
   onChange,
   onBlur,
   error,
+  errorMessages,
   errorLabel,
   required,
   showRequired,
@@ -113,7 +117,9 @@ export function Input({
           </span>
         ) : null}
       </div>
-      {error ? <p className="mt-1 text-sm text-red-600">{`${errorLabel ?? label} ${ERROR_MESSAGES[error]}`}</p> : null}
+      {error && errorMessages ? (
+        <p className="mt-1 text-sm text-red-600">{formatFieldError(errorLabel ?? label, error, errorMessages)}</p>
+      ) : null}
     </label>
   );
 }

@@ -1,6 +1,7 @@
 import { OrderCard } from './order-card';
 import { Order } from '@/db/order';
 import { OrderCardSkeleton } from './order-card-skeleton';
+import type { TranslationDictionary } from '@/i18n';
 
 type Props = Readonly<{
   title: string;
@@ -8,9 +9,10 @@ type Props = Readonly<{
   onOrderClick(order: Order): void;
   emptyText?: string;
   language: string;
+  text: TranslationDictionary;
 }>;
 
-export function OrdersSection({ title, orders, onOrderClick, emptyText, language }: Props) {
+export function OrdersSection({ title, orders, onOrderClick, emptyText, language, text }: Props) {
   const renderOrders = () => {
     if (orders === null) {
       return (
@@ -33,7 +35,7 @@ export function OrdersSection({ title, orders, onOrderClick, emptyText, language
     return (
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {orders.map((order) => (
-          <OrderCard key={order.id} order={order} onClick={() => onOrderClick(order)} language={language} />
+          <OrderCard key={order.id} order={order} onClick={() => onOrderClick(order)} language={language} text={text} />
         ))}
       </div>
     );

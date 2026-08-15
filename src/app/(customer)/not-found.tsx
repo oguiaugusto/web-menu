@@ -1,6 +1,8 @@
 import { NotFoundPage } from '@/components/not-found';
-import { TEXT } from '@/constants/text';
+import { getText } from '@/i18n';
 import { mountPageMetadata } from '@/utils/mount-page-metadata';
+
+const TEXT = getText();
 
 export const metadata = mountPageMetadata('Web Menu', TEXT.pageNotFound);
 

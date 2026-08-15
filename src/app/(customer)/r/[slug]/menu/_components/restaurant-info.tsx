@@ -1,4 +1,4 @@
-import { TEXT } from '@/constants/text';
+import type { TranslationDictionary } from '@/i18n';
 import { formatCurrency } from '@/utils/money';
 import { Clock3, MessageCircle, Truck } from 'lucide-react';
 
@@ -7,9 +7,10 @@ type Props = Readonly<{
   deliveryFee?: number | null;
   openingHours?: string | null;
   contact?: string | null;
+  text: TranslationDictionary;
 }>;
 
-export function RestaurantInfo({ currency, deliveryFee, openingHours, contact }: Props) {
+export function RestaurantInfo({ currency, deliveryFee, openingHours, contact, text: TEXT }: Props) {
   const columns = 1 + Number(Boolean(openingHours)) + Number(Boolean(contact));
 
   return (
@@ -21,9 +22,7 @@ export function RestaurantInfo({ currency, deliveryFee, openingHours, contact }:
         <Truck className="shrink-0 text-neutral-400" size={17} />
         <div className="min-w-0">
           <p className="text-xs font-medium text-neutral-500">{TEXT.deliveryFee}</p>
-          <p className="mt-0.5 text-sm font-medium text-neutral-800">
-            {formatCurrency(deliveryFee ?? 0, currency)}
-          </p>
+          <p className="mt-0.5 text-sm font-medium text-neutral-800">{formatCurrency(deliveryFee ?? 0, currency)}</p>
         </div>
       </div>
       {openingHours ? (

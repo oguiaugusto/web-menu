@@ -2,7 +2,8 @@ import type { Metadata } from 'next';
 import { Toaster } from 'sonner';
 import { inter } from '@/constants/fonts';
 import { ScrollToTop } from '@/components/scroll-to-top';
-import 'react-tooltip/dist/react-tooltip.css'
+import { LocaleProvider } from '@/providers/locale-provider';
+import 'react-tooltip/dist/react-tooltip.css';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -17,9 +18,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.className} h-full antialiased`}>
       <body className="min-h-full">
-        <ScrollToTop />
-        <Toaster offset={{ top: 70 }} mobileOffset={{ top: 70 }} />
-        {children}
+        <LocaleProvider>
+          <ScrollToTop />
+          <Toaster offset={{ top: 70 }} mobileOffset={{ top: 70 }} />
+          {children}
+        </LocaleProvider>
       </body>
     </html>
   );

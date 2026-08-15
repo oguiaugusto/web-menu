@@ -4,14 +4,16 @@ import { ChevronRight } from 'lucide-react';
 import { rSlug } from '@/utils/r-slug';
 import { OrderStatusBadge } from '@/components/order-status-badge';
 import { formatOrderDate } from '@/utils/format-order-date';
+import type { TranslationDictionary } from '@/i18n';
 
 type Props = {
   slug: string;
   order: OrderSummary;
   language: string;
+  text: TranslationDictionary;
 };
 
-export function OrderCard({ slug, order, language }: Props) {
+export function OrderCard({ slug, order, language, text }: Props) {
   return (
     <Link
       href={rSlug(slug, `/orders/${order.code}`)}
@@ -22,7 +24,7 @@ export function OrderCard({ slug, order, language }: Props) {
         <p className="mt-1 text-sm text-neutral-500">{formatOrderDate(order.createdAt, language)}</p>
       </div>
       <div className="flex items-center gap-1">
-        <OrderStatusBadge status={order.status} hideDot />
+        <OrderStatusBadge status={order.status} hideDot text={text} />
         <ChevronRight size={18} />
       </div>
     </Link>

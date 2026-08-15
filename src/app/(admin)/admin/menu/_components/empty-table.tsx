@@ -1,9 +1,9 @@
 import { Button } from '@/components/ui/button';
-import { TEXT } from '@/constants/text';
+import type { TranslationDictionary } from '@/i18n';
 import { Package } from 'lucide-react';
 import Link from 'next/link';
 
-export function EmptyTable() {
+export function EmptyTable({ text: TEXT }: Readonly<{ text: TranslationDictionary }>) {
   return (
     <section className="rounded-xl border border-neutral-200 bg-white px-6 py-16 text-center shadow-sm">
       <div className="bg-red-muted/10 text-red-muted mx-auto flex size-12 items-center justify-center rounded-full">
