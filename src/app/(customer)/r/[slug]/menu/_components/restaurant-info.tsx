@@ -1,5 +1,4 @@
 import { TEXT } from '@/constants/text';
-import { cn } from '@/utils/cn';
 import { Clock3, MessageCircle, Truck } from 'lucide-react';
 
 type Props = Readonly<{
@@ -12,7 +11,10 @@ export function RestaurantInfo({ deliveryFee, openingHours, contact }: Props) {
   const columns = 1 + Number(Boolean(openingHours)) + Number(Boolean(contact));
 
   return (
-    <div className={cn('mb-4 grid gap-3 rounded-lg border border-neutral-200 bg-white p-4', `sm:grid-cols-${columns}`)}>
+    <div
+      className="mb-4 space-y-3 rounded-lg border border-neutral-200 bg-white p-4 sm:grid sm:gap-3 sm:space-y-0"
+      style={{ gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))` }}
+    >
       <div className="flex items-start gap-2.5">
         <Truck className="shrink-0 text-neutral-400" size={17} />
         <div className="min-w-0">
