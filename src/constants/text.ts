@@ -1,8 +1,6 @@
 import { PaymentMethod } from '@/generated/prisma/enums';
 
 export const TEXT = {
-  languageCountryISO: 'en-US',
-  currency: '$',
   homeTitle: 'Find a restaurant',
   homeSubtitle: 'Search by restaurant name or access it directly through its shared link.',
   searching: 'Searching...',

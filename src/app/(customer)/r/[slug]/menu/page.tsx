@@ -39,6 +39,7 @@ export default async function MenuPage({ params, searchParams }: Props) {
           <p className="mt-1 text-sm text-neutral-500">{TEXT.menuSubtitle}</p>
         </div>
         <RestaurantInfo
+          currency={restaurant.currency}
           deliveryFee={restaurant.deliveryFee}
           openingHours={restaurant.openingHours}
           contact={restaurant.contact}
@@ -46,7 +47,7 @@ export default async function MenuPage({ params, searchParams }: Props) {
         <Categories slug={slug} categories={categories} selected={category} />
         <div className="mx-auto grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {data.map((x) => (
-            <MenuCard key={`menu-item-${x.id}`} slug={slug} item={x} />
+            <MenuCard key={`menu-item-${x.id}`} slug={slug} item={x} currency={restaurant.currency} />
           ))}
         </div>
       </div>

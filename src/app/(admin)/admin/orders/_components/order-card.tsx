@@ -1,16 +1,18 @@
 import { CalendarClock, ChevronRight } from 'lucide-react';
-import { formatOrderDate, formatOrderItem } from '../_helpers/format-order';
+import { formatOrderDate } from '@/utils/format-order-date';
+import { formatOrderItem } from '../_helpers/format-order-item';
 import { OrderStatusBadge } from '../../../../../components/order-status-badge';
 import { Order } from '@/db/order';
 
 type Props = Readonly<{
   order: Order;
   onClick(): void;
+  language: string;
 }>;
 
 const PREVIEW_ITEM_COUNT = 2;
 
-export function OrderCard({ order, onClick }: Props) {
+export function OrderCard({ order, onClick, language }: Props) {
   const previewItems = order.items
     .slice(0, PREVIEW_ITEM_COUNT)
     .map((x) => formatOrderItem(x))
@@ -38,7 +40,7 @@ export function OrderCard({ order, onClick }: Props) {
         <div className="mt-3 flex items-center justify-between gap-2 text-xs text-neutral-500">
           <span className="flex items-center gap-1.5">
             <CalendarClock size={14} />
-            {formatOrderDate(order.createdAt)}
+            {formatOrderDate(order.createdAt, language)}
           </span>
           <ChevronRight className="text-neutral-400 transition-transform group-hover:translate-x-0.5" size={18} />
         </div>

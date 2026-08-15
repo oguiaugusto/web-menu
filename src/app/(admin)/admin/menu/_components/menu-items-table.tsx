@@ -6,8 +6,11 @@ import { SquarePen } from 'lucide-react';
 import Link from 'next/link';
 import { DeleteDialog } from './delete-dialog';
 import { AvailableSwitch } from './available-switch';
+import { formatCurrency } from '@/utils/money';
 
-export function MenuItemsTable({ items }: Readonly<{ items: MenuItem[] }>) {
+type Props = Readonly<{ items: MenuItem[]; currency: string }>;
+
+export function MenuItemsTable({ items, currency }: Props) {
   const actionButtonClass = cn(
     'cursor-pointer rounded-md p-2 text-neutral-500 transition-colors hover:bg-neutral-200/50',
   );
@@ -55,9 +58,8 @@ export function MenuItemsTable({ items }: Readonly<{ items: MenuItem[] }>) {
                 {item.name}
               </th>
               <td className="px-5 py-4 text-sm text-neutral-600">{item.category}</td>
-              <td className="px-5 py-4 text-sm font-medium text-neutral-900">
-                {TEXT.currency}
-                {item.price.toFixed(2)}
+              <td className="px-5 py-4 text-start text-sm font-medium text-neutral-900">
+                {formatCurrency(item.price, currency)}
               </td>
               <td className="px-5 py-4">
                 <div className="mt-[-6px] flex justify-center">

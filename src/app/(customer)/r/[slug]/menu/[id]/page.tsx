@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { getRestaurant } from '@/lib/restaurant';
 import { mountPageMetadata } from '@/utils/mount-page-metadata';
 import { Metadata } from 'next';
+import { formatCurrency } from '@/utils/money';
 
 type Props = {
   params: Promise<{ slug: string; id: string }>;
@@ -47,10 +48,7 @@ export default async function MenuItem({ params }: Props) {
               <h1 className="text-2xl font-bold tracking-tight">{data.name}</h1>
               <p className="mt-2 text-sm leading-relaxed whitespace-pre text-neutral-500">{data.description}</p>
             </div>
-            <span className="shrink-0 text-lg font-semibold">
-              {TEXT.currency}
-              {data.price}
-            </span>
+            <span className="shrink-0 text-lg font-semibold">{formatCurrency(data.price, restaurant.currency)}</span>
           </div>
         </div>
       </div>

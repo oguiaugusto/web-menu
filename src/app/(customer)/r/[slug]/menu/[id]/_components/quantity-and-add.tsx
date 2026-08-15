@@ -9,6 +9,8 @@ import { Button } from '@/components/ui/button';
 import { MenuItem } from '@/db/menu-item';
 import { toastSuccess } from '@/utils/toast';
 import { rSlug } from '@/utils/r-slug';
+import { useRestaurant } from '@/providers/restaurant-provider';
+import { formatCurrency } from '@/utils/money';
 
 type Props = {
   slug: string;
@@ -18,6 +20,7 @@ type Props = {
 export function QuantityAndAdd({ slug, data }: Props) {
   const router = useRouter();
 
+  const { currency } = useRestaurant();
   const { addItem } = useCart();
   const [quantity, setQuantity] = useState(1);
 
@@ -52,10 +55,7 @@ export function QuantityAndAdd({ slug, data }: Props) {
       </div>
       <Button variant="primary" className="flex max-w-60 flex-1 items-center justify-between" onClick={handleAdd}>
         <span>{TEXT.add}</span>
-        <span>
-          {TEXT.currency}
-          {data.price * quantity}
-        </span>
+        <span>{formatCurrency(data.price * quantity, currency)}</span>
       </Button>
     </div>
   );

@@ -1,15 +1,16 @@
 import Link from 'next/link';
-import { TEXT } from '@/constants/text';
 import { MenuItem } from '@/db/menu-item';
 import Image from 'next/image';
 import { rSlug } from '@/utils/r-slug';
+import { formatCurrency } from '@/utils/money';
 
 type Props = {
   slug: string;
   item: MenuItem;
+  currency: string;
 };
 
-export function MenuCard({ slug, item }: Props) {
+export function MenuCard({ slug, item, currency }: Props) {
   return (
     <Link href={rSlug(slug, `/menu/${item.id}`)}>
       <div className="group grid grid-cols-[100px_1fr] overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm transition-all hover:shadow-md sm:grid-cols-none">
@@ -32,10 +33,7 @@ export function MenuCard({ slug, item }: Props) {
             </p>
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-lg font-semibold">
-              {TEXT.currency}
-              {item.price}
-            </span>
+            <span className="text-lg font-semibold">{formatCurrency(item.price, currency)}</span>
           </div>
         </div>
       </div>

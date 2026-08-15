@@ -3,15 +3,15 @@ import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
 import { rSlug } from '@/utils/r-slug';
 import { OrderStatusBadge } from '@/components/order-status-badge';
+import { formatOrderDate } from '@/utils/format-order-date';
 
 type Props = {
   slug: string;
   order: OrderSummary;
+  language: string;
 };
 
-export function OrderCard({ slug, order }: Props) {
-  const date = new Date(order.createdAt).toLocaleString();
-
+export function OrderCard({ slug, order, language }: Props) {
   return (
     <Link
       href={rSlug(slug, `/orders/${order.code}`)}
@@ -19,7 +19,7 @@ export function OrderCard({ slug, order }: Props) {
     >
       <div>
         <p className="font-mono font-semibold">{order.code}</p>
-        <p className="mt-1 text-sm text-neutral-500">{date}</p>
+        <p className="mt-1 text-sm text-neutral-500">{formatOrderDate(order.createdAt, language)}</p>
       </div>
       <div className="flex items-center gap-1">
         <OrderStatusBadge status={order.status} hideDot />

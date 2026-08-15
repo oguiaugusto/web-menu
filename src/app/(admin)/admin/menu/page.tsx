@@ -5,6 +5,7 @@ import { Toolbar } from './_components/toolbar';
 import { getMenuItemsList } from '@/db/menu-item';
 import { Metadata } from 'next';
 import { mountAdminPageMetadata } from '@/utils/mount-page-metadata';
+import { requireCurrentUser } from '@/lib/auth/user';
 
 type Props = Readonly<{
   searchParams: Promise<{
@@ -21,6 +22,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function MenuPage({ searchParams }: Props) {
   const params = await searchParams;
 
+  const user = await requireCurrentUser();
   const items = await getMenuItemsList({
     query: params.query,
     sortBy: params.sortBy,
@@ -34,7 +36,13 @@ export default async function MenuPage({ searchParams }: Props) {
           <h1 className="text-2xl font-semibold tracking-tight text-neutral-900 sm:text-3xl">{TEXT.menuItems}</h1>
         </div>
         <Toolbar />
-        <div className="mt-6">{!items.length && !params.query ? <EmptyTable /> : <MenuItemsTable items={items} />}</div>
+        <div className="mt-6">
+          {!items.length && !params.query ? (
+            <EmptyTable />
+          ) : (
+            <MenuItemsTable items={items} currency={user.restaurant.currency} />
+          )}
+        </div>
       </div>
     </main>
   );

@@ -10,7 +10,7 @@ import { TEXT } from '@/constants/text';
 import { MenuItem } from '@/db/menu-item';
 import { FieldErrors } from '@/types/misc';
 import { getHandleChange } from '@/utils/getHandleChange';
-import { formatMoney, moneyFormatter } from '@/utils/money';
+import { formatMoneyInput, getCurrencySymbol, getMoneyFormatter } from '@/utils/money';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { createMenuItem, MenuItemResult, updateMenuItem } from '@/actions/menu-item';
@@ -19,9 +19,14 @@ import { toastSuccess } from '@/utils/toast';
 import Link from 'next/link';
 import RequiredStar from '@/components/required-star';
 
-type Props = Readonly<{ mode: 'create' | 'edit'; item?: MenuItem; categories: string[] }>;
+type Props = Readonly<{
+  mode: 'create' | 'edit';
+  item?: MenuItem;
+  categories: string[];
+  currency: string;
+}>;
 
-export function MenuItemForm({ mode, item, categories }: Props) {
+export function MenuItemForm({ mode, item, categories, currency }: Props) {
   const router = useRouter();
 
   const editMode = mode === 'edit';
@@ -41,7 +46,7 @@ export function MenuItemForm({ mode, item, categories }: Props) {
 
   const handleChange = getHandleChange(setFields, setFieldErrors);
   const handleMoneyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFields((p) => ({ ...p, [e.target.name]: formatMoney(e.target.value) }));
+    setFields((p) => ({ ...p, [e.target.name]: formatMoneyInput(e.target.value) }));
     setFieldErrors((p) => {
       const next = { ...p };
       delete next[e.target.name];
@@ -127,8 +132,8 @@ export function MenuItemForm({ mode, item, categories }: Props) {
                 type="text"
                 label={TEXT.price}
                 name="price"
-                prefix={{ value: '$' }}
-                value={moneyFormatter.format(fields.price)}
+                prefix={{ value: getCurrencySymbol(currency) }}
+                value={getMoneyFormatter(currency).format(fields.price)}
                 error={fieldErrors.price}
                 onChange={handleMoneyChange}
                 required

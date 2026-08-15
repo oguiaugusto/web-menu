@@ -1,13 +1,15 @@
 import { TEXT } from '@/constants/text';
+import { formatCurrency } from '@/utils/money';
 import { Clock3, MessageCircle, Truck } from 'lucide-react';
 
 type Props = Readonly<{
+  currency: string;
   deliveryFee?: number | null;
   openingHours?: string | null;
   contact?: string | null;
 }>;
 
-export function RestaurantInfo({ deliveryFee, openingHours, contact }: Props) {
+export function RestaurantInfo({ currency, deliveryFee, openingHours, contact }: Props) {
   const columns = 1 + Number(Boolean(openingHours)) + Number(Boolean(contact));
 
   return (
@@ -20,7 +22,7 @@ export function RestaurantInfo({ deliveryFee, openingHours, contact }: Props) {
         <div className="min-w-0">
           <p className="text-xs font-medium text-neutral-500">{TEXT.deliveryFee}</p>
           <p className="mt-0.5 text-sm font-medium text-neutral-800">
-            {`${TEXT.currency}${(deliveryFee ?? 0).toFixed(2)}`}
+            {formatCurrency(deliveryFee ?? 0, currency)}
           </p>
         </div>
       </div>

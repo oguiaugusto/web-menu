@@ -8,9 +8,11 @@ import { TEXT } from '@/constants/text';
 import { NEXT_STATUS } from '@/constants/status';
 import { AdvanceStatusButton } from './advance-status-button';
 import { CancelOrderDialog } from './cancel-order-dialog';
-import { formatCurrency, formatOrderDate, formatOrderItem } from '../_helpers/format-order';
+import { formatOrderDate } from '@/utils/format-order-date';
+import { formatOrderItem } from '../_helpers/format-order-item';
 import { OrderStatusBadge } from '../../../../../components/order-status-badge';
 import { Order } from '@/db/order';
+import { formatCurrency } from '@/utils/money';
 
 type Props = Readonly<{
   order: Order | null;
@@ -18,9 +20,11 @@ type Props = Readonly<{
   onAdvance(order: Order, restart: VoidFunction): void;
   onCancelOrder(order: Order): void;
   pending: boolean;
+  currency: string;
+  language: string;
 }>;
 
-export function OrderDialog({ order, onClose, onAdvance, onCancelOrder, pending }: Props) {
+export function OrderDialog({ order, onClose, onAdvance, onCancelOrder, pending, currency, language }: Props) {
   const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
 
   useEffect(() => {
@@ -44,7 +48,7 @@ export function OrderDialog({ order, onClose, onAdvance, onCancelOrder, pending 
                 <div>
                   <OrderStatusBadge status={order.status} />
                   <DialogTitle className="mt-3 font-mono text-xl font-semibold">{order.code}</DialogTitle>
-                  <p className="mt-1 text-sm text-neutral-500">{formatOrderDate(order.createdAt)}</p>
+                  <p className="mt-1 text-sm text-neutral-500">{formatOrderDate(order.createdAt, language)}</p>
                 </div>
                 <Button
                   type="button"
@@ -94,10 +98,10 @@ export function OrderDialog({ order, onClose, onAdvance, onCancelOrder, pending 
                     {order.changeFor ? (
                       <>
                         <span className="mx-1">•</span>
-                        {formatCurrency(order.changeFor)}
+                        {formatCurrency(order.changeFor, currency)}
                         <ArrowRight size={12} className="mx-1 text-neutral-600" />
                         <span className="font-medium text-neutral-900">
-                          {formatCurrency(order.changeFor - order.total)} {TEXT.change.toLowerCase()}
+                          {formatCurrency(order.changeFor - order.total, currency)} {TEXT.change.toLowerCase()}
                         </span>
                       </>
                     ) : null}
@@ -123,18 +127,21 @@ export function OrderDialog({ order, onClose, onAdvance, onCancelOrder, pending 
                   <div className="flex justify-between text-neutral-600">
                     <span>{TEXT.subtotal}</span>
                     <span>
-                      {formatCurrency(order.items.reduce<number>((acc, curr) => acc + curr.price * curr.quantity, 0))}
+                      {formatCurrency(
+                        order.items.reduce<number>((acc, curr) => acc + curr.price * curr.quantity, 0),
+                        currency,
+                      )}
                     </span>
                   </div>
                   {order.deliveryFee ? (
                     <div className="flex justify-between text-neutral-600">
                       <span>{TEXT.delivery}</span>
-                      <span>{formatCurrency(order.deliveryFee)}</span>
+                      <span>{formatCurrency(order.deliveryFee, currency)}</span>
                     </div>
                   ) : null}
                   <div className="flex justify-between border-t border-neutral-100 pt-3 font-semibold">
                     <span>{TEXT.total}</span>
-                    <span>{formatCurrency(order.total)}</span>
+                    <span>{formatCurrency(order.total, currency)}</span>
                   </div>
                 </section>
               </div>

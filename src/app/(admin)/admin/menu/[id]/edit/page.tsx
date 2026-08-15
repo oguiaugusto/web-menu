@@ -28,5 +28,12 @@ export default async function MenuItemEditPage({ params }: Props) {
   const item = await getMenuItem(user.restaurant.id, id);
   if (!item) notFound();
 
-  return <MenuItemForm mode="edit" categories={categories} item={item} />;
+  return (
+    <MenuItemForm
+      mode="edit"
+      categories={categories}
+      item={item}
+      currency={user.restaurant.currency}
+    />
+  );
 }

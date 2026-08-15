@@ -12,7 +12,7 @@ import { Restaurant } from '@/db/restaurant';
 import { FieldErrors } from '@/types/misc';
 import { getHandleChange } from '@/utils/getHandleChange';
 import { handleSubmitError } from '@/utils/handle-submit-error';
-import { formatMoney, getCurrencySymbol, moneyFormatter } from '@/utils/money';
+import { formatMoneyInput, getCurrencySymbol, getMoneyFormatter } from '@/utils/money';
 import { toastSuccess } from '@/utils/toast';
 import { useAdmin } from '@/providers/admin-provider';
 import { useState } from 'react';
@@ -41,7 +41,7 @@ export function RestaurantSettingsForm({ restaurant, email }: Props) {
 
   const handleChange = getHandleChange(setFields, setFieldErrors);
   const handleCurrencyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFields((p) => ({ ...p, deliveryFee: Number(formatMoney(e.target.value)) }));
+    setFields((p) => ({ ...p, deliveryFee: Number(formatMoneyInput(e.target.value)) }));
     setFieldErrors((p) => {
       const next = { ...p };
       delete next.deliveryFee;
@@ -158,7 +158,7 @@ export function RestaurantSettingsForm({ restaurant, email }: Props) {
                 name="deliveryFee"
                 label={TEXT.deliveryFee}
                 prefix={{ value: getCurrencySymbol(fields.currency) }}
-                value={moneyFormatter.format(fields.deliveryFee)}
+                value={getMoneyFormatter(fields.currency).format(fields.deliveryFee)}
                 error={fieldErrors.deliveryFee}
                 onChange={handleCurrencyChange}
                 additionalInputProps={{ inputMode: 'decimal' }}

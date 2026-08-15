@@ -16,7 +16,7 @@ import EmptyCart from '@/app/(customer)/_components/empty-cart';
 import { getHandleChange } from '@/utils/getHandleChange';
 import { rSlug } from '@/utils/r-slug';
 import { useRestaurant } from '@/providers/restaurant-provider';
-import { formatMoney, moneyFormatter } from '@/utils/money';
+import { formatCurrency, formatMoneyInput, getCurrencySymbol, getMoneyFormatter } from '@/utils/money';
 import { handleSubmitError } from '@/utils/handle-submit-error';
 import RequiredStar from '@/components/required-star';
 import { ClosedBanner } from '@/app/(customer)/_components/closed-banner';
@@ -56,7 +56,7 @@ export default function CheckoutContent({ slug }: Props) {
 
   const handleChange = getHandleChange(setFields, setFieldErrors);
   const handleMoneyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFields((p) => ({ ...p, [e.target.name]: formatMoney(e.target.value) }));
+    setFields((p) => ({ ...p, [e.target.name]: formatMoneyInput(e.target.value) }));
     setFieldErrors((p) => {
       const next = { ...p };
       delete next[e.target.name];
@@ -185,8 +185,8 @@ export default function CheckoutContent({ slug }: Props) {
                     <Input
                       type="text"
                       name="changeFor"
-                      prefix={{ value: TEXT.currency }}
-                      value={moneyFormatter.format(fields.changeFor)}
+                      prefix={{ value: getCurrencySymbol(restaurant.currency) }}
+                      value={getMoneyFormatter(restaurant.currency).format(fields.changeFor)}
                       label={TEXT.needChangeFor}
                       placeholder={TEXT.startingMoney}
                       onChange={handleMoneyChange}
@@ -208,10 +208,7 @@ export default function CheckoutContent({ slug }: Props) {
                     <span>
                       {item.quantity}x {item.name}
                     </span>
-                    <span>
-                      {TEXT.currency}
-                      {(item.price * item.quantity).toFixed(2)}
-                    </span>
+                    <span>{formatCurrency(item.price * item.quantity, restaurant.currency)}</span>
                   </div>
                 ))}
               </div>
@@ -227,25 +224,16 @@ export default function CheckoutContent({ slug }: Props) {
                 <div className="text-sm">
                   <div className="flex justify-between">
                     <span>{TEXT.subtotal}</span>
-                    <span>
-                      {TEXT.currency}
-                      {subtotal.toFixed(2)}
-                    </span>
+                    <span>{formatCurrency(subtotal, restaurant.currency)}</span>
                   </div>
                   <div className="flex justify-between">
                     <span>{TEXT.deliveryFee}</span>
-                    <span>
-                      {TEXT.currency}
-                      {(restaurant.deliveryFee ?? 0).toFixed(2)}
-                    </span>
+                    <span>{formatCurrency(restaurant.deliveryFee ?? 0, restaurant.currency)}</span>
                   </div>
                 </div>
                 <div className="flex justify-between text-base font-semibold">
                   <span>{TEXT.total}</span>
-                  <span>
-                    {TEXT.currency}
-                    {(subtotal + (restaurant.deliveryFee ?? 0)).toFixed(2)}
-                  </span>
+                  <span>{formatCurrency(subtotal + (restaurant.deliveryFee ?? 0), restaurant.currency)}</span>
                 </div>
               </div>
             </div>

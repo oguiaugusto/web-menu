@@ -11,6 +11,7 @@ import { updateOrderStatus } from '@/actions/orders';
 import { OrderStatus } from '@/generated/prisma/enums';
 import { toastError, toastSuccess } from '@/utils/toast';
 import { NEXT_STATUS } from '@/constants/status';
+import { useAdmin } from '@/providers/admin-provider';
 
 function filterOrders(orders: Order[], query: string): Order[] {
   const searchTerm = query.trim().toLowerCase();
@@ -22,6 +23,10 @@ function filterOrders(orders: Order[], query: string): Order[] {
 }
 
 export default function OrdersContent() {
+  const {
+    restaurant: { currency, language },
+  } = useAdmin();
+
   const [query, setQuery] = useState('');
 
   const [activeOrders, setActiveOrders] = useState<Order[] | null>(null);
@@ -131,6 +136,7 @@ export default function OrdersContent() {
             orders={filteredActiveOrders}
             onOrderClick={setSelectedOrder}
             emptyText={query.length ? TEXT.noOrdersFound : TEXT.noActiveOrders}
+            language={language}
           />
         </div>
         <div className="my-10 border-t border-neutral-200" />
@@ -139,6 +145,7 @@ export default function OrdersContent() {
           orders={filteredCompletedOrders}
           onOrderClick={setSelectedOrder}
           emptyText={query.length ? TEXT.noOrdersFound : TEXT.noCompletedOrders}
+          language={language}
         />
       </div>
       <OrderDialog
@@ -147,6 +154,8 @@ export default function OrdersContent() {
         onAdvance={handleAdvance}
         onCancelOrder={handleCancelOrder}
         pending={pending}
+        currency={currency}
+        language={language}
       />
     </main>
   );

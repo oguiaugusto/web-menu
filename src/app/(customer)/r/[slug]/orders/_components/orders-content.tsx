@@ -10,6 +10,7 @@ import { OrderCard } from './order-card';
 import { useRouter } from 'next/navigation';
 import { toastError } from '@/utils/toast';
 import { rSlug } from '@/utils/r-slug';
+import { useRestaurant } from '@/providers/restaurant-provider';
 
 type Props = Readonly<{
   slug: string;
@@ -17,6 +18,8 @@ type Props = Readonly<{
 
 export default function OrdersContent({ slug }: Props) {
   const router = useRouter();
+
+  const { language } = useRestaurant();
 
   const [code, setCode] = useState('');
   const [orders, setOrders] = useState<OrderSummary[] | null>(null);
@@ -73,7 +76,7 @@ export default function OrdersContent({ slug }: Props) {
           <h2 className="mb-4 text-lg font-semibold">{TEXT.recentOrders}</h2>
           <div className="space-y-3">
             {orders?.map((x) => (
-              <OrderCard key={x.code} slug={slug} order={x} />
+              <OrderCard key={x.code} slug={slug} order={x} language={language} />
             ))}
           </div>
         </section>

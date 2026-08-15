@@ -13,5 +13,5 @@ export default async function MenuItemNewPage() {
   const user = await requireCurrentUser();
   const categories = await getMenuCategories(user.restaurant.id);
 
-  return <MenuItemForm mode="create" categories={categories} />;
+  return <MenuItemForm mode="create" categories={categories} currency={user.restaurant.currency} />;
 }

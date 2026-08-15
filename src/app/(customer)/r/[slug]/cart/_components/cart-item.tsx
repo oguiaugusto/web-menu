@@ -1,8 +1,9 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { TEXT } from '@/constants/text';
 import { CartItem as CartItemType, useCart } from '@/providers/cart-provider';
+import { useRestaurant } from '@/providers/restaurant-provider';
+import { formatCurrency } from '@/utils/money';
 import { Minus, Plus, Trash2 } from 'lucide-react';
 import Image from 'next/image';
 
@@ -11,6 +12,7 @@ type Props = {
 };
 
 export function CartItem({ item }: Props) {
+  const { currency } = useRestaurant();
   const { updateQuantity, removeItem } = useCart();
 
   return (
@@ -29,10 +31,7 @@ export function CartItem({ item }: Props) {
       <div className="flex flex-1 flex-col justify-between">
         <div>
           <h2 className="font-semibold">{item.name}</h2>
-          <p className="text-sm text-neutral-500">
-            {TEXT.currency}
-            {item.price * item.quantity}
-          </p>
+          <p className="text-sm text-neutral-500">{formatCurrency(item.price * item.quantity, currency)}</p>
         </div>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">

@@ -7,9 +7,10 @@ type Props = Readonly<{
   orders: Order[] | null;
   onOrderClick(order: Order): void;
   emptyText?: string;
+  language: string;
 }>;
 
-export function OrdersSection({ title, orders, onOrderClick, emptyText }: Props) {
+export function OrdersSection({ title, orders, onOrderClick, emptyText, language }: Props) {
   const renderOrders = () => {
     if (orders === null) {
       return (
@@ -32,7 +33,7 @@ export function OrdersSection({ title, orders, onOrderClick, emptyText }: Props)
     return (
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {orders.map((order) => (
-          <OrderCard key={order.id} order={order} onClick={() => onOrderClick(order)} />
+          <OrderCard key={order.id} order={order} onClick={() => onOrderClick(order)} language={language} />
         ))}
       </div>
     );
