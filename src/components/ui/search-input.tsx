@@ -17,7 +17,6 @@ import {
 } from 'react';
 import type { ErrorMessages, TranslationDictionary } from '@/i18n';
 import type { ErrorCode } from '@/types/enums';
-import { formatFieldError } from '@/utils/format-field-error';
 import { cn } from '@/utils/cn';
 import { Tooltip } from 'react-tooltip';
 import { useDebouncedValue } from '@/hooks/use-debounced-value';
@@ -41,7 +40,6 @@ export type SearchInputProps<T> = {
   error?: ErrorCode;
   errorMessages: ErrorMessages;
   text: TranslationDictionary;
-  errorLabel?: string;
   disabled?: boolean;
   debounce?: number;
   minLength?: number;
@@ -69,7 +67,6 @@ function SearchInputInner<T>(
     error,
     errorMessages,
     text: TEXT,
-    errorLabel,
     disabled = false,
     debounce = DEFAULT_DEBOUNCE,
     minLength = DEFAULT_MIN_LENGTH,
@@ -299,8 +296,8 @@ function SearchInputInner<T>(
         </div>
       </Combobox>
       {error ? (
-        <p id={errorId} className="mt-1 text-sm text-red-600">
-          {formatFieldError(errorLabel ?? label, error, errorMessages)}
+        <p id={errorId} className="text-sm text-red-600">
+          {errorMessages[error]}
         </p>
       ) : null}
     </div>

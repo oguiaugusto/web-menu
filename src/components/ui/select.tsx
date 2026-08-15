@@ -5,7 +5,6 @@ import { Select as HSelect } from '@headlessui/react';
 import { Tooltip } from 'react-tooltip';
 import type { ErrorMessages } from '@/i18n';
 import type { ErrorCode } from '@/types/enums';
-import { formatFieldError } from '@/utils/format-field-error';
 import RequiredStar from '../required-star';
 
 type Props = {
@@ -17,7 +16,6 @@ type Props = {
   onChange?: React.ChangeEventHandler<HTMLSelectElement>;
   error?: ErrorCode;
   errorMessages?: ErrorMessages;
-  errorLabel?: string;
   required?: boolean;
   showRequired?: boolean;
 };
@@ -31,7 +29,6 @@ export function Select({
   onChange,
   error,
   errorMessages,
-  errorLabel,
   required,
   showRequired,
 }: Props) {
@@ -78,9 +75,7 @@ export function Select({
           aria-hidden="true"
         />
       </div>
-      {error && errorMessages ? (
-        <p className="mt-1 text-sm text-red-600">{formatFieldError(errorLabel ?? label ?? '', error, errorMessages)}</p>
-      ) : null}
+      {error && errorMessages ? <p className="text-sm text-red-600">{errorMessages[error]}</p> : null}
     </label>
   );
 }

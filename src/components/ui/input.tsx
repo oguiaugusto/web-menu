@@ -2,7 +2,6 @@
 
 import type { ErrorMessages } from '@/i18n';
 import type { ErrorCode } from '@/types/enums';
-import { formatFieldError } from '@/utils/format-field-error';
 import { cn } from '@/utils/cn';
 import { CircleQuestionMark } from 'lucide-react';
 import { useLayoutEffect, useRef, useState } from 'react';
@@ -22,7 +21,6 @@ type Props = Readonly<{
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
   error?: ErrorCode;
   errorMessages?: ErrorMessages;
-  errorLabel?: string;
   required?: boolean;
   showRequired?: boolean;
   additionalInputProps?: React.ComponentProps<'input'>;
@@ -41,7 +39,6 @@ export function Input({
   onBlur,
   error,
   errorMessages,
-  errorLabel,
   required,
   showRequired,
   additionalInputProps,
@@ -117,9 +114,7 @@ export function Input({
           </span>
         ) : null}
       </div>
-      {error && errorMessages ? (
-        <p className="mt-1 text-sm text-red-600">{formatFieldError(errorLabel ?? label, error, errorMessages)}</p>
-      ) : null}
+      {error && errorMessages ? <p className="text-sm text-red-600">{errorMessages[error]}</p> : null}
     </label>
   );
 }

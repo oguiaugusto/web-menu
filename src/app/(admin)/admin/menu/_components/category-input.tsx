@@ -6,7 +6,6 @@ import { useEffect, useId, useState, type ChangeEvent, type ReactNode } from 're
 import { Tooltip } from 'react-tooltip';
 import { useAdmin } from '@/providers/admin-provider';
 import type { ErrorCode } from '@/types/enums';
-import { formatFieldError } from '@/utils/format-field-error';
 import { cn } from '@/utils/cn';
 import RequiredStar from '@/components/required-star';
 
@@ -17,7 +16,6 @@ export type CategoryInputProps = {
   categories: string[];
   placeholder?: string;
   error?: ErrorCode;
-  errorLabel?: string;
   disabled?: boolean;
   tooltip?: ReactNode;
 };
@@ -29,7 +27,6 @@ export function CategoryInput({
   categories,
   placeholder,
   error,
-  errorLabel,
   disabled = false,
   tooltip,
 }: CategoryInputProps) {
@@ -151,8 +148,8 @@ export function CategoryInput({
         </div>
       </Combobox>
       {error ? (
-        <p id={errorId} className="mt-1 text-sm text-red-600">
-          {formatFieldError(errorLabel ?? label, error, errorMessages)}
+        <p id={errorId} className="text-sm text-red-600">
+          {errorMessages[error]}
         </p>
       ) : null}
     </label>

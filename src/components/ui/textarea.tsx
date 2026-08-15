@@ -1,6 +1,5 @@
 import type { ErrorMessages } from '@/i18n';
 import type { ErrorCode } from '@/types/enums';
-import { formatFieldError } from '@/utils/format-field-error';
 import RequiredStar from '../required-star';
 
 type Props = Readonly<{
@@ -13,7 +12,6 @@ type Props = Readonly<{
   onChange?: React.ChangeEventHandler<HTMLTextAreaElement>;
   error?: ErrorCode;
   errorMessages?: ErrorMessages;
-  errorLabel?: string;
   required?: boolean;
   showRequired?: boolean;
 }>;
@@ -28,7 +26,6 @@ export function TextArea({
   onChange,
   error,
   errorMessages,
-  errorLabel,
   required,
   showRequired,
 }: Props) {
@@ -48,9 +45,7 @@ export function TextArea({
         value={value}
         onChange={onChange}
       />
-      {error && errorMessages ? (
-        <p className="mt-1 text-sm text-red-600">{formatFieldError(errorLabel ?? label, error, errorMessages)}</p>
-      ) : null}
+      {error && errorMessages ? <p className="text-sm text-red-600">{errorMessages[error]}</p> : null}
     </label>
   );
 }

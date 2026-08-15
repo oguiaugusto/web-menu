@@ -24,7 +24,6 @@ import { ErrorCode } from '@/types/enums';
 import { ClosedDialog } from './closed-dialog';
 import { UnavailableDialog } from './unavailable-dialog';
 import { PaymentMethod } from '@/generated/prisma/enums';
-import { formatFieldError } from '@/utils/format-field-error';
 
 type Props = Readonly<{
   slug: string;
@@ -155,7 +154,6 @@ export default function CheckoutContent({ slug }: Props) {
               name="address"
               value={fields.address}
               label={TEXT.addressLabel}
-              errorLabel={TEXT.address}
               placeholder={TEXT.yourAddress}
               error={fieldErrors.address}
               errorMessages={errorMessages}
@@ -194,9 +192,7 @@ export default function CheckoutContent({ slug }: Props) {
                   onChange={handleChange}
                 />
                 {fieldErrors.payment ? (
-                  <p className="text-sm text-red-600">
-                    {formatFieldError(TEXT.paymentMethod, fieldErrors.payment, errorMessages)}
-                  </p>
+                  <p className="text-sm text-red-600">{errorMessages[fieldErrors.payment]}</p>
                 ) : null}
               </div>
               {fields.payment === 'CASH' ? (
@@ -214,9 +210,7 @@ export default function CheckoutContent({ slug }: Props) {
                     />
                   </div>
                   {fieldErrors.changeFor ? (
-                    <p className="text-sm text-red-600">
-                      {formatFieldError(TEXT.needChangeFor, fieldErrors.changeFor, errorMessages)}
-                    </p>
+                    <p className="text-sm text-red-600">{errorMessages[fieldErrors.changeFor]}</p>
                   ) : null}
                 </div>
               ) : null}
